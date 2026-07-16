@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model jogador {
+  id       Int       @id @default(autoincrement())
+  nome     String    @db.VarChar(150)
+  telefone String    @db.VarChar(20)
+  email    String    @unique @db.VarChar(150)
+  reserva  reserva[]
+}
+
+model quadra {
+  id          Int       @id @default(autoincrement())
+  nome        String    @db.VarChar(150)
+  modalidade  String    @db.VarChar(50)
+  localizacao String    @db.VarChar(150)
+  reserva     reserva[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model reserva {
+  id             Int      @id @default(autoincrement())
+  jogador_id     Int
+  quadra_id      Int
+  data           DateTime @db.Date
+  horario_inicio DateTime @db.Time(6)
+  horario_fim    DateTime @db.Time(6)
+  jogador        jogador  @relation(fields: [jogador_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_reserva_jogador")
+  quadra         quadra   @relation(fields: [quadra_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_reserva_quadra")
+}
