@@ -2,10 +2,10 @@
   "name": "atlantico-avanti-2026-group-4-project-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "../backend/src/server.ts",
+  "main": "server.ts",
   "type": "module",
   "scripts": {
-    "start": "node --watch src/server.ts",
+    "start": "node --watch server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

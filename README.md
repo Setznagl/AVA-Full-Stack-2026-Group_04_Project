@@ -4,6 +4,8 @@ Links Importantes:
 Trello: https://trello.com/b/k3P2zFfr/ava-desenvolvimento-full-stack-b-sico-projeto-dfs-20262
 GitHub: https://github.com/VitorPantojaDev/AVA-DESENVOLVIMENTO-FULL-STACK-B-SICO-PROJETO-DFS-2026.2
 
+![img.png](img.png)
+
 Problema: Sistema de Agendamento de Quadras Esportivas
 
 Contexto
