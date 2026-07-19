@@ -8,9 +8,9 @@ uma funcao dentro dela que recebe request e response como argumentos, podemos pa
 segundo argumento do router.get ou app.get e tratar toda a lógica da solicitação em arquivos e camadas isoladas.
  */
 
-router.post("/jogador" , unicJogadorController.insertJogador.bind(unicJogadorController))
-router.get("/jogador/many" , unicJogadorController.findAll.bind(unicJogadorController))
-router.get("/jogador/:id", unicJogadorController.findByID.bind(unicJogadorController))
-router.get("/jogador", unicJogadorController.findByEmail.bind(unicJogadorController))
-router.put("/jogador", unicJogadorController.updateJogador.bind(unicJogadorController))
-router.delete("/jogador/:id", unicJogadorController.deleteJogador.bind(unicJogadorController))
+router.post("/v1/jogador" , unicJogadorController.insertJogador.bind(unicJogadorController))
+router.get("/v1/jogador/many" , unicJogadorController.findAll.bind(unicJogadorController))
+router.get("/v1/jogador/:id", unicJogadorController.findByID.bind(unicJogadorController))
+router.get("/v1/jogador", unicJogadorController.findByEmail.bind(unicJogadorController))
+router.put("/v1/jogador", unicJogadorController.updateJogador.bind(unicJogadorController))
+router.delete("/v1/jogador/:id", unicJogadorController.deleteJogador.bind(unicJogadorController))
