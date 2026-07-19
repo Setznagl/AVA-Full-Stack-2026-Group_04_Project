@@ -1,6 +1,8 @@
 import meu_Prisma_Client_Configurado from "../database/PrismaClient.ts";
 import {PrismaClient} from "@prisma/client/extension";
 import type {jogador} from "../generated/prisma/client.ts";
+import {exceptionHandler} from "../exception/ExceptionHandler.ts";
+import {HttpError} from "../exception/HttpError.ts";
 
 export class JogadorRepository {
     /*
@@ -47,82 +49,90 @@ export class JogadorRepository {
 
      }
      */
+
+    //Injetando a dependência: Repository depende das configurações de acesso ao banco em "meu_Prisma_Client_Configurado"
     private prisma: PrismaClient = meu_Prisma_Client_Configurado;
     constructor(){
 
     }
 
     async insertJogador(provided_nome: string, provided_email: string, provided_telefone: string, provided_senha: string)
-        :Promise<jogador | Error> {
+        :Promise<jogador | HttpError> {
 
-        try{
-            return await this.prisma.jogador.create({
+        try{ return await this.prisma.jogador.create({
+            data: {
+                nome: provided_nome,
+                email: provided_email,
+                telefone: provided_telefone,
+                senha: provided_senha
+            }})
+        }catch(exception: any){
+            console.error(exception);
+            return exceptionHandler.handle(exception, "repository");
+        }
+
+    }
+
+    async findByEmail(provided_email: string)
+        :Promise<jogador | HttpError | null> {
+
+        try{ return await this.prisma.jogador.findUnique({  where: {email: provided_email},  })
+        }catch(exception: any){
+            console.error(exception);
+            return exceptionHandler.handle(exception, "repository");
+        }
+
+    }
+
+    async findByID(provided_id: number)
+        :Promise<jogador | HttpError | null > {
+
+        try{ return await this.prisma.jogador.findUnique({  where: {id: provided_id},  })
+        } catch(exception: any){
+            console.error(exception);
+            return exceptionHandler.handle(exception, "repository");
+        }
+
+    }
+
+    async findAll()
+        : Promise<jogador[] | HttpError > {
+
+        try{ return await this.prisma.jogador.findMany()
+        } catch(exception: any){
+            console.error(exception);
+            return exceptionHandler.handle(exception, "repository");
+        }
+
+    }
+
+    async updateJogador(provided_id: number, provided_nome: string, provided_email: string, provided_telefone: string, provided_senha: string)
+        :Promise<jogador | HttpError> {
+
+        try{  return await this.prisma.jogador.update({  where: { id: provided_id },
                 data: {
                     nome: provided_nome,
                     email: provided_email,
                     telefone: provided_telefone,
                     senha: provided_senha
-                }
-            })
-
-        }catch(error: any){
-            console.log(error);
-            return new Error(error);
+                }})
+        }catch (exception: any){
+            console.error(exception);
+            return exceptionHandler.handle(exception, "repository");
         }
 
     }
 
-    async findByEmail(provided_email: string):Promise<jogador | null | Error > {
+    async deleteJogador(provided_id: number)
+        :Promise<jogador | HttpError> {
 
-        try{
-            let data: jogador = await this.prisma.jogador.findUnique({
-                where: {email: provided_email},
-            })
-
-            if(data !== null){
-                return data;
-            }
-            else return null;
-
-        }catch(error: any){
-            throw new Error(error);
+        try { return await this.prisma.jogador.delete({  where: {id: provided_id}  })
+        }catch (exception: any){
+            console.error(exception);
+            return exceptionHandler.handle(exception, "repository");
         }
-
     }
 
-    async findByID(provided_id: string):Promise<jogador | null | Error > {
-
-        try{
-            let data: jogador = await this.prisma.jogador.findUnique({
-                where: {id: provided_id},
-            })
-
-            if(data !== null){
-                return data;
-            }
-            else return null;
-
-        }catch(error: any){
-            throw new Error(error);
-        }
-
-    }
-
-    async findAll(): Promise<jogador[] | null | Error > {
-
-        try{
-            let data: jogador[] = await this.prisma.jogador.findMany()
-
-            if(data !== null){
-                return data;
-            }
-            else return null;
-
-        }catch(error: any){
-            throw new Error(error);
-        }
-
-    }
 
 
 }
