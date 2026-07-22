@@ -1,6 +1,8 @@
 import meu_Prisma_Client_Configurado from "../database/PrismaClient.ts";
 import { PrismaClient } from "@prisma/client/extension";
-import type { quadra } from "../generated/prisma/client.ts"; 
+import type { quadra } from "../generated/prisma/client.ts";
+import { exceptionHandler } from "../exception/ExceptionHandler.ts";
+import { HttpError } from "../exception/HttpError.ts";
 
 export class QuadraRepository {
     
@@ -12,7 +14,7 @@ export class QuadraRepository {
 
     
     async insertQuadra(provided_nome: string, provided_modalidade: string, provided_localizacao: string)
-    : Promise<quadra | Error> {
+    : Promise<quadra | HttpError> {
         try {
             return await this.prisma.quadra.create({ 
                 data: {
@@ -23,17 +25,17 @@ export class QuadraRepository {
             }); 
         } catch (error: any) {
             console.log(error);
-            return new Error(error); 
+            return exceptionHandler.handle(error, "repository");
         }
     }
 
     
-    async findAll(): Promise<quadra[] | Error> {
+    async findAll(): Promise<quadra[] | HttpError> {
         try {
             return await this.prisma.quadra.findMany();
         } catch (error: any) {
             console.log(error);
-            return new Error(error);
+            return exceptionHandler.handle(error, "repository");
         }
     }
 
@@ -44,7 +46,7 @@ export class QuadraRepository {
             });
         } catch (error: any) {
             console.log(error);
-            return new Error(error); 
+            return exceptionHandler.handle(error, "repository");
         }
     }
 
@@ -55,7 +57,7 @@ export class QuadraRepository {
             });
         } catch (error: any) {
             console.log(error);
-            return new Error(error);
+            return exceptionHandler.handle(error, "repository");
         }
     }
 
@@ -66,7 +68,7 @@ export class QuadraRepository {
             });
         } catch (error: any) {
             console.log(error);
-            return new Error(error);
+            return exceptionHandler.handle(error, "repository");
         }
     }
     
@@ -84,7 +86,7 @@ export class QuadraRepository {
             });
         } catch (error: any) {
             console.log(error);
-            return new Error(error);
+            return exceptionHandler.handle(error, "repository");
         }
     }
 
@@ -96,7 +98,9 @@ export class QuadraRepository {
             });
         } catch (error: any) {
             console.log(error);
-            return new Error(error);
+            return exceptionHandler.handle(error, "repository");
         }
     }
 }
+
+export const QuadraRepositoryInstance = new QuadraRepository();

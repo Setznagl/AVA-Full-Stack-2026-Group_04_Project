@@ -42,7 +42,8 @@ export class JogadorService {
 
         //Confirmando se os dados que recebemos são iguais aos do registro no banco, se forem não precisamos mudar
         const oldData: jogador | HttpError | null = await this.jogadorRepository.findByID(provided_id);
-            if (oldData instanceof HttpError) {  throw oldData  }
+            if (oldData instanceof HttpError) {  
+                throw oldData  }
             if (oldData === null) {
                 return new HttpError(400, "Impossível atualizar os dados do jogador porque o registro informado não existe" , "service");
             }else{
