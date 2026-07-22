@@ -145,3 +145,5 @@ export class QuadraService {
         return resultadoDelete as quadra;
     }
 }
+
+export const unicQuadraServiceInstance = new QuadraService();

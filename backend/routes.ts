@@ -1,7 +1,9 @@
 import {Router} from "express";
 import {unicJogadorController} from "./src/controller/JogadorController.ts";
 import {unicReservaController} from "./src/controller/ReservaController.ts"
+import { unicQuadraController } from "./src/controller/quadracontroller.ts";
 export const router = Router();
+
 /* Aqui estamos mapeando as rotas HTTP:
 Usando router.get ou app.get por exemplo ele tem como parâmetro de entrada uma string que é o path da URL
 e uma função com dois argumentos (req , res) => { ... }, então se criarmos e exportarmos uma funcao ou classe que tenha
@@ -9,18 +11,27 @@ uma funcao dentro dela que recebe request e response como argumentos, podemos pa
 segundo argumento do router.get ou app.get e tratar toda a lógica da solicitação em arquivos e camadas isoladas.
  */
 
-router.post("/jogador" , unicJogadorController.insertJogador.bind(unicJogadorController))
-router.get("/jogador/many" , unicJogadorController.findAll.bind(unicJogadorController))
-router.get("/jogador/:id", unicJogadorController.findByID.bind(unicJogadorController))
-router.get("/jogador", unicJogadorController.findByEmail.bind(unicJogadorController))
-router.put("/jogador", unicJogadorController.updateJogador.bind(unicJogadorController))
-router.delete("/jogador/:id", unicJogadorController.deleteJogador.bind(unicJogadorController))
 
-router.post("/reserva", unicReservaController.insertReserva.bind(unicReservaController))
-router.get("/reserva/many", unicReservaController.findAll.bind(unicReservaController))
-router.get("/reserva/filtro-data", unicReservaController.findByData.bind(unicReservaController))
-router.get("/reserva/jogador/:jogador_id", unicReservaController.findByJogadorID.bind(unicReservaController))
-router.get("/reserva/quadra/:quadra_id", unicReservaController.findByQuadraID.bind(unicReservaController)) 
-router.get("/reserva/:id", unicReservaController.findByID.bind(unicReservaController))
-router.put("/reserva/:id", unicReservaController.updateReserva.bind(unicReservaController))
-router.delete("/reserva/:id", unicReservaController.deleteReserva.bind(unicReservaController))
+router.post("/v1/reserva", unicReservaController.insertReserva.bind(unicReservaController))
+router.get("/v1/reserva/many", unicReservaController.findAll.bind(unicReservaController))
+router.get("/v1/reserva/filtro-data", unicReservaController.findByData.bind(unicReservaController))
+router.get("/v1/reserva/jogador/:jogador_id", unicReservaController.findByJogadorID.bind(unicReservaController))
+router.get("/v1/reserva/quadra/:quadra_id", unicReservaController.findByQuadraID.bind(unicReservaController))
+router.get("/v1/reserva/:id", unicReservaController.findByID.bind(unicReservaController))
+router.put("/v1/reserva/:id", unicReservaController.updateReserva.bind(unicReservaController))
+router.delete("/v1/reserva/:id", unicReservaController.deleteReserva.bind(unicReservaController))
+
+router.post("/v1/jogador" , unicJogadorController.insertJogador.bind(unicJogadorController))
+router.get("/v1/jogador/many" , unicJogadorController.findAll.bind(unicJogadorController))
+router.get("/v1/jogador/:id", unicJogadorController.findByID.bind(unicJogadorController))
+router.get("/v1/jogador", unicJogadorController.findByEmail.bind(unicJogadorController))
+router.put("/v1/jogador", unicJogadorController.updateJogador.bind(unicJogadorController))
+router.delete("/v1/jogador/:id", unicJogadorController.deleteJogador.bind(unicJogadorController))
+
+router.post("/v1/quadra", unicQuadraController.insertQuadra.bind(unicQuadraController));
+router.get("/v1/quadra/many", unicQuadraController.findAll.bind(unicQuadraController));
+router.get("/v1/quadra/:id", unicQuadraController.findById.bind(unicQuadraController));
+router.get("/v1/quadra/nome/:nome", unicQuadraController.findByNome.bind(unicQuadraController));
+router.get("/v1/quadra/modalidade/:modalidade", unicQuadraController.findByModalidade.bind(unicQuadraController));
+router.put("/v1/quadra", unicQuadraController.updateQuadra.bind(unicQuadraController));
+router.delete("/v1/quadra/:id", unicQuadraController.deleteQuadra.bind(unicQuadraController));
