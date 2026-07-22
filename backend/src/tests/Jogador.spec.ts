@@ -406,6 +406,7 @@ describe("JogadorController:" , () => {
     let mockJogadorTelefone: string;
     let mockJogadorSenha: string;
 
+    //Usei a IA pra me ajudar a simular o comportamento do Response do Express pros testes
     const response = {
         body: undefined,
         status: jest.fn().mockReturnThis(),
@@ -459,9 +460,9 @@ describe("JogadorController:" , () => {
     it("Try to find an existing Jogador using field email (From Controller layer)", async () => {
         const mockRequest = {
             body: {
-                "email": `"${mockJogadorEmail}"`,
+                "email": mockJogadorEmail,
             }
-        }
+        } as Request;
 
         await mockJogadorController.findByEmail(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(200);
@@ -478,7 +479,7 @@ describe("JogadorController:" , () => {
             params: {
                 id: mockJogadorID
             }
-        }
+        } as Request;
 
         await mockJogadorController.findByID(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(200);
@@ -488,6 +489,29 @@ describe("JogadorController:" , () => {
         expect(response.body.nome).toBe(mockJogadorNome);
         expect(response.body.telefone).toBe(mockJogadorTelefone);
         expect(response.body.senha).toBe(mockJogadorSenha);
+    })
+
+    it("Try to receive multiple data using findAll (From Controller layer)", async () => {
+        const mockRequest = {
+            body: {}
+        } as Request;
+
+        await mockJogadorController.findAll(mockRequest, response);
+        expect(response.status).toHaveBeenCalledWith(200);
+        expect(response.json).toHaveBeenCalled();
+
+        expect(response.body).toBeInstanceOf(Array);
+        expect(response.body).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    id: mockJogadorID,
+                    nome: mockJogadorNome,
+                    email: mockJogadorEmail,
+                    telefone: mockJogadorTelefone,
+                    senha: mockJogadorSenha
+                })
+            ])
+        )
     })
 
     it("Receiving an unexpected error during findByEmail operation, should return HttpError 500 (From Controller layer)", async () => {
@@ -518,6 +542,53 @@ describe("JogadorController:" , () => {
         }
 
         await mockJogadorController.findByID(mockRequest, response);
+        expect(response.status).toHaveBeenCalledWith(500);
+        expect(response.json).toHaveBeenCalled();
+    })
+
+    it("Receiving an unexpected error during findAll operation, should return HttpError 500 (From Controller layer)", async () => {
+        //Não passando o o driver e configs do banco, o banco irá falhar durante a operação de select
+        const mockJogadorController = new JogadorController(new JogadorService(new JogadorRepository()));
+
+        const mockRequest = {
+            body: {}
+        }
+
+        await mockJogadorController.findAll(mockRequest, response);
+        expect(response.status).toHaveBeenCalledWith(500);
+        expect(response.json).toHaveBeenCalled();
+    })
+
+    it("Receiving an unexpected error during updateJogador operation, should return HttpError 500 (From Controller layer)", async () => {
+        //Não passando o o driver e configs do banco, o banco irá falhar durante a operação de select
+        const mockJogadorController = new JogadorController(new JogadorService(new JogadorRepository()));
+
+        const mockRequest = {
+            body: {
+                "id": mockJogadorID,
+                "email": mockJogadorEmail,
+                "name": mockJogadorNome,
+                "telefone": mockJogadorTelefone,
+                "senha": mockJogadorSenha
+            }
+        }
+
+        await mockJogadorController.updateJogador(mockRequest, response);
+        expect(response.status).toHaveBeenCalledWith(500);
+        expect(response.json).toHaveBeenCalled();
+    })
+
+    it("Receiving an unexpected error during deleteJogador operation, should return HttpError 500 (From Controller layer)", async () => {
+        //Não passando o o driver e configs do banco, o banco irá falhar durante a operação de select
+        const mockJogadorController = new JogadorController(new JogadorService(new JogadorRepository()));
+
+        const mockRequest = {
+            params: {
+                id: mockJogadorID,
+            }
+        }
+
+        await mockJogadorController.deleteJogador(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(500);
         expect(response.json).toHaveBeenCalled();
     })
