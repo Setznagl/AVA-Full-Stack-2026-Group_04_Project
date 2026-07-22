@@ -68,6 +68,23 @@ docker run -d \
   avanti-fullstack-2026-g4-db-image
 ```
 
+# ▶️ Criando um Container separado para os testes unitários
+
+A imagem usada será a mesma, mas passaremos os dados da nossa
+variável de ambiente "MOCK_DATABASE_URL", isso permite que 
+tenhamos um banco local para testes unitários, sem afetar o
+banco principal que pode ser remoto.
+
+```bash
+docker run -d \
+  --name avanti-fullstack-2026-g4-mock-db \
+  -p 5433:5432 \
+  -e POSTGRES_DB=pqsl-mock-db \
+  -e POSTGRES_USER=mock_user \
+  -e POSTGRES_PASSWORD=mock_password \
+  avanti-fullstack-2026-g4-db-image
+```
+
 Parâmetros utilizados:
 
 | Parâmetro                            | Descrição                                                            |
