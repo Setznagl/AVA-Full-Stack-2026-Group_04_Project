@@ -1,13 +1,13 @@
 import express from "express";
-import {JogadorService, unicJogadorServiceInstance} from "../service/JogadorService.ts";
-import type {jogador} from "../generated/prisma/client.ts";
-import {HttpError} from "../exception/HttpError.ts";
+import {JogadorService, unicJogadorServiceInstance} from "../../src/service/JogadorService.ts";
+import type {jogador} from "../../src/generated/prisma/client.ts";
+import {HttpError} from "../../src/exception/HttpError.ts";
 
 export class JogadorController {
 
     //Injetando a dependência: Controller depende das funções do Service
     private jogadorService: JogadorService;
-    constructor( provided_jogadorService: JogadorService = unicJogadorServiceInstance) {
+    constructor( provided_jogadorService: JogadorService) {
         this.jogadorService = provided_jogadorService;
     }
 
@@ -36,7 +36,7 @@ export class JogadorController {
     async findByID(request: express.Request, response: express.Response):Promise<void> {
         const { id } = request.params;
 
-        const requestOutput: jogador | HttpError = await this.jogadorService
+        const requestOutput: jogador | HttpError | null = await this.jogadorService
             .findByID(Number(id));
 
         requestOutput instanceof HttpError
@@ -45,7 +45,7 @@ export class JogadorController {
     }
 
     async findAll(_request: express.Request, response: express.Response):Promise<void> {
-        const requestOutput: jogador[] | HttpError = await this.jogadorService.findAll();
+        const requestOutput: jogador[] | HttpError | null = await this.jogadorService.findAll();
 
         requestOutput instanceof HttpError
             ? response.status(requestOutput.statusCode).json(requestOutput)
@@ -76,4 +76,4 @@ export class JogadorController {
 
 }
 
-export const unicJogadorController = new JogadorController();
+export const unicJogadorControllerInstance = new JogadorController(unicJogadorServiceInstance);
