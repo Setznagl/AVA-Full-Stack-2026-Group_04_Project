@@ -1,4 +1,4 @@
-import meu_Prisma_Client_Configurado from "../database/PrismaClient.ts";
+import {meu_Prisma_Client_Configurado} from "../database/PrismaClient.ts";
 import {PrismaClient} from "@prisma/client/extension";
 import type {jogador} from "../generated/prisma/client.ts";
 import {exceptionHandler} from "../exception/ExceptionHandler.ts";
@@ -24,7 +24,7 @@ export class JogadorRepository {
         private nome: string,
         constructor
             (
-              this.nome = nomeInicial
+              this.nome = "Fulano"
             )
 
       Também podemos atribuir diretamente um valor a um atributo, dispensando chamar a função construtora
@@ -50,10 +50,10 @@ export class JogadorRepository {
      }
      */
 
-    //Injetando a dependência: Repository depende das configurações de acesso ao banco em "meu_Prisma_Client_Configurado"
-    private prisma: PrismaClient = meu_Prisma_Client_Configurado;
-    constructor(){
-
+    //private prisma: PrismaClient = meu_Prisma_Client_Configurado;
+    private prisma: PrismaClient;
+    constructor(providedPrisma: PrismaClient) {
+        this.prisma = providedPrisma;
     }
 
     async insertJogador(provided_nome: string, provided_email: string, provided_telefone: string, provided_senha: string)
@@ -67,7 +67,6 @@ export class JogadorRepository {
                 senha: provided_senha
             }})
         }catch(exception: any){
-            console.error(exception);
             return exceptionHandler.handle(exception, "repository");
         }
 
@@ -76,9 +75,10 @@ export class JogadorRepository {
     async findByEmail(provided_email: string)
         :Promise<jogador | HttpError | null> {
 
+        if(typeof provided_email !== "string"){  return new HttpError(502, "Invalid provided type for 'email'", "repository");  }
+
         try{ return await this.prisma.jogador.findUnique({  where: {email: provided_email},  })
         }catch(exception: any){
-            console.error(exception);
             return exceptionHandler.handle(exception, "repository");
         }
 
@@ -87,10 +87,11 @@ export class JogadorRepository {
     async findByID(provided_id: number)
         :Promise<jogador | HttpError | null > {
 
+        if(typeof provided_id !== "number"){  return new HttpError(502, "Invalid provided type for 'id'", "repository");  }
+
         try{ return await this.prisma.jogador.findUnique({  where: {id: provided_id},  })
         } catch(exception: any){
-            console.error(exception);
-            return exceptionHandler.handle(exception, "repository");
+            return  exceptionHandler.handle(exception, "repository");
         }
 
     }
@@ -100,7 +101,6 @@ export class JogadorRepository {
 
         try{ return await this.prisma.jogador.findMany()
         } catch(exception: any){
-            console.error(exception);
             return exceptionHandler.handle(exception, "repository");
         }
 
@@ -108,6 +108,14 @@ export class JogadorRepository {
 
     async updateJogador(provided_id: number, provided_nome: string, provided_email: string, provided_telefone: string, provided_senha: string)
         :Promise<jogador | HttpError> {
+
+        if(
+            typeof provided_id !== "number" ||
+            typeof provided_nome !== "string" ||
+            typeof provided_email !== "string" ||
+            typeof provided_telefone !== "string" ||
+            typeof provided_senha !== "string"
+        ){  return new HttpError(502, "Invalid provided type for one or more parameters", "repository");  }
 
         try{  return await this.prisma.jogador.update({  where: { id: provided_id },
                 data: {
@@ -117,7 +125,6 @@ export class JogadorRepository {
                     senha: provided_senha
                 }})
         }catch (exception: any){
-            console.error(exception);
             return exceptionHandler.handle(exception, "repository");
         }
 
@@ -126,9 +133,10 @@ export class JogadorRepository {
     async deleteJogador(provided_id: number)
         :Promise<jogador | HttpError> {
 
+        if(typeof provided_id !== "number"){  return new HttpError(502, "Invalid provided type for 'id'", "repository");  }
+
         try { return await this.prisma.jogador.delete({  where: {id: provided_id}  })
         }catch (exception: any){
-            console.error(exception);
             return exceptionHandler.handle(exception, "repository");
         }
     }
@@ -137,7 +145,7 @@ export class JogadorRepository {
 
 }
 
-export const unicJogadorRepositoryInstance = new JogadorRepository();
+export const unicJogadorRepositoryInstance = new JogadorRepository(meu_Prisma_Client_Configurado);
 
 /*
 Podemos evitar instanciar multiplas vezes a classe JogadorRepository criando uma instância única dela

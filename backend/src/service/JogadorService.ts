@@ -1,34 +1,36 @@
 import {JogadorRepository, unicJogadorRepositoryInstance} from "../repository/JogadorRepository.ts";
-import type {jogador} from "../generated/prisma/client.ts";
-import {HttpError} from "../exception/HttpError.ts";
+import type {jogador} from "../../src/generated/prisma/client.ts";
+import {HttpError} from "../../src/exception/HttpError.ts";
 
 export class JogadorService {
 
     //Injetando a dependência: Service depende das funções de operação no banco em Repository
-    private jogadorRepository: JogadorRepository = unicJogadorRepositoryInstance;
-    constructor() {
-
+    private jogadorRepository: JogadorRepository;
+    constructor(providedRepository: JogadorRepository) {
+        this.jogadorRepository = providedRepository;
     }
 
     async insertJogador(provided_nome: string, provided_email: string, provided_telefone: string, provided_senha: string)
         : Promise<jogador | HttpError> {
 
         const data: jogador | HttpError = await this.jogadorRepository.insertJogador(provided_nome, provided_email, provided_telefone, provided_senha);
-            data instanceof HttpError && data.statusCode === 423
-                ? data.message = "Não foi possível criar um novo jogador porque o email já está em uso"
-                : data ;
+
+        data instanceof HttpError && data.statusCode === 423
+            ? data.message = "Não foi possível criar um novo jogador porque o email já está em uso"
+            : data;
         return data;
+
     }
 
-    async findByEmail(email: string): Promise<jogador | HttpError> {
+    async findByEmail(email: string): Promise<jogador | HttpError | null> {
         return await this.jogadorRepository.findByEmail(email);
     }
 
-    async findByID(provided_id: number):Promise<jogador | HttpError  > {
+    async findByID(provided_id: number):Promise<jogador | HttpError | null  > {
         return await this.jogadorRepository.findByID(provided_id);
     }
 
-    async findAll():Promise<jogador[] | HttpError  > {
+    async findAll():Promise<jogador[] | HttpError | null > {
         return await this.jogadorRepository.findAll();
     }
 
@@ -42,7 +44,7 @@ export class JogadorService {
 
         //Confirmando se os dados que recebemos são iguais aos do registro no banco, se forem não precisamos mudar
         const oldData: jogador | HttpError | null = await this.jogadorRepository.findByID(provided_id);
-            if (oldData instanceof HttpError) {  throw oldData  }
+            if (oldData instanceof HttpError) {  return  oldData  }
             if (oldData === null) {
                 return new HttpError(400, "Impossível atualizar os dados do jogador porque o registro informado não existe" , "service");
             }else{
@@ -60,21 +62,13 @@ export class JogadorService {
                 let checked_senha: string = oldData.senha
                 checked_senha !== provided_senha && provided_senha !== null ? checked_senha = provided_senha : checked_senha;
 
-                try{/*
-                    Agora que validamos tudo podemos seguir com a tentativa de alteração e usaremos try porque
-                    podem haver erros durante o processo de atualização
-                    */
-                    return await this.jogadorRepository.updateJogador(
-                        provided_id,
-                        checked_nome,
-                        checked_email,
-                        checked_telefone,
-                        checked_senha
-                    );
-                }catch (exception: any){
-                    console.error(exception);
-                    return exception;
-                }
+                return await this.jogadorRepository.updateJogador(
+                    provided_id,
+                    checked_nome,
+                    checked_email,
+                    checked_telefone,
+                    checked_senha
+                );
 
             }
 
@@ -82,6 +76,7 @@ export class JogadorService {
 
     async deleteJogador(provided_id: number): Promise<jogador | HttpError> {
         const data: jogador | HttpError = await this.jogadorRepository.deleteJogador(provided_id);
+
         data instanceof HttpError && data.statusCode === 404
             ? data.message = "Não foi possível deletar o jogador porque o registro não foi encontrado"
             : data ;
@@ -90,4 +85,4 @@ export class JogadorService {
 
 }
 
-export const unicJogadorServiceInstance = new JogadorService();
+export const unicJogadorServiceInstance = new JogadorService(unicJogadorRepositoryInstance);

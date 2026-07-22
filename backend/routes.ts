@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {unicJogadorController} from "./src/controller/JogadorController.ts";
+import {unicJogadorController} from "./src/controller/JogadorController.js";
 export const router = Router();
 /* Aqui estamos mapeando as rotas HTTP:
 Usando router.get ou app.get por exemplo ele tem como parâmetro de entrada uma string que é o path da URL

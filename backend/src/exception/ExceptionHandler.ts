@@ -5,15 +5,15 @@ class ExceptionHandler {
 
     handle(exception: any , layer: "repository" | "service" | "controller"):HttpError {
 
-        let treatedException: HttpError = new HttpError(500, exception.message, layer);
+        let treatedException: HttpError = new HttpError(500, exception, layer);
 
         if(exception instanceof PrismaClientKnownRequestError){
             switch (exception.code) {
                 case 'P2002':
-                    treatedException = new HttpError(423, `Registro já existe.`, layer);
+                    treatedException = new HttpError(423, `Register already exists.`, layer);
                     break;
                 case 'P2025':
-                    treatedException = new HttpError(404, `Registro não encontrado.`, layer);
+                    treatedException = new HttpError(404, `Register not found.`, layer);
                     break;
             }
         }

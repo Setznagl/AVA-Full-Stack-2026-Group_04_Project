@@ -1,0 +1,34 @@
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: avanti-fullstack-2026-g4-db-image:${IMAGE_TAG:-latest}
+    container_name: avanti-fullstack-2026-g4-db
+
+    ports:
+      - "5432:5432"
+
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-pqsl-db}
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin_da_senha_segura}
+
+    restart: unless-stopped
+
+  postgres-mock:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: avanti-fullstack-2026-g4-db-image:${IMAGE_TAG:-latest}
+    container_name: avanti-fullstack-2026-g4-mock-db
+
+    ports:
+      - "5433:5432"
+
+    environment:
+      POSTGRES_DB: pqsl-mock-db
+      POSTGRES_USER: mock_user
+      POSTGRES_PASSWORD: mock_password
+
+    restart: unless-stopped

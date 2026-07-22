@@ -1,5 +1,5 @@
 import express from "express";
-import {router} from "./routes.ts";
+import {router} from "./routes.js";
 
 const port = process.env.PORT || 3000;
 export const app = express();
