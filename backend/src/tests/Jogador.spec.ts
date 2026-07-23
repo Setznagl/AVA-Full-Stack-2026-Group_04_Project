@@ -459,7 +459,7 @@ describe("JogadorController:" , () => {
     it("Try to find an existing Jogador using field email (From Controller layer)", async () => {
         const mockRequest = {
             body: {
-                "email": `"${mockJogadorEmail}"`,
+                "email": mockJogadorEmail,
             }
         }
 

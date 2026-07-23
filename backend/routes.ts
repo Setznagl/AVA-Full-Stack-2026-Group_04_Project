@@ -1,7 +1,7 @@
 import {Router} from "express";
-import {unicJogadorController} from "./src/controller/JogadorController.ts";
+import {unicJogadorControllerInstance} from "./src/controller/JogadorController.ts";
 import {unicReservaController} from "./src/controller/ReservaController.ts"
-import { unicQuadraController } from "./src/controller/quadracontroller.ts";
+import {unicQuadraController} from "./src/controller/quadracontroller.ts";
 export const router = Router();
 
 /* Aqui estamos mapeando as rotas HTTP:
@@ -21,12 +21,12 @@ router.get("/v1/reserva/:id", unicReservaController.findByID.bind(unicReservaCon
 router.put("/v1/reserva/:id", unicReservaController.updateReserva.bind(unicReservaController))
 router.delete("/v1/reserva/:id", unicReservaController.deleteReserva.bind(unicReservaController))
 
-router.post("/v1/jogador" , unicJogadorController.insertJogador.bind(unicJogadorController))
-router.get("/v1/jogador/many" , unicJogadorController.findAll.bind(unicJogadorController))
-router.get("/v1/jogador/:id", unicJogadorController.findByID.bind(unicJogadorController))
-router.get("/v1/jogador", unicJogadorController.findByEmail.bind(unicJogadorController))
-router.put("/v1/jogador", unicJogadorController.updateJogador.bind(unicJogadorController))
-router.delete("/v1/jogador/:id", unicJogadorController.deleteJogador.bind(unicJogadorController))
+router.post("/v1/jogador" , unicJogadorControllerInstance.insertJogador.bind(unicJogadorControllerInstance))
+router.get("/v1/jogador/many" , unicJogadorControllerInstance.findAll.bind(unicJogadorControllerInstance))
+router.get("/v1/jogador/:id", unicJogadorControllerInstance.findByID.bind(unicJogadorControllerInstance))
+router.get("/v1/jogador", unicJogadorControllerInstance.findByEmail.bind(unicJogadorControllerInstance))
+router.put("/v1/jogador", unicJogadorControllerInstance.updateJogador.bind(unicJogadorControllerInstance))
+router.delete("/v1/jogador/:id", unicJogadorControllerInstance.deleteJogador.bind(unicJogadorControllerInstance))
 
 router.post("/v1/quadra", unicQuadraController.insertQuadra.bind(unicQuadraController));
 router.get("/v1/quadra/many", unicQuadraController.findAll.bind(unicQuadraController));
