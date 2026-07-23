@@ -1,4 +1,4 @@
-import {meu_Prisma_Client_Configurado} from "../database/PrismaClient.ts";
+import meu_Prisma_Client_Configurado from "../database/PrismaClient.ts";
 import {PrismaClient} from "@prisma/client/extension";
 import type {jogador} from "../generated/prisma/client.ts";
 import {exceptionHandler} from "../exception/ExceptionHandler.ts";
