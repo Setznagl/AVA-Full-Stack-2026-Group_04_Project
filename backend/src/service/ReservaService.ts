@@ -5,6 +5,10 @@ import { HttpError } from "../exception/HttpError.ts";
 export class ReservaService {
   private reservaRepository: ReservaRepository = unicReservaRepositoryInstance;
 
+  constructor(providedRepository: ReservaRepository = unicReservaRepositoryInstance) {
+        this.reservaRepository = providedRepository;
+    }
+
   private mesmaData(primeira: Date, segunda: Date): boolean {
     return primeira.toISOString().slice(0, 10) === segunda.toISOString().slice(0, 10);
   }

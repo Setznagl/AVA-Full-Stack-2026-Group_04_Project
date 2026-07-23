@@ -1,5 +1,6 @@
 import express from "express";
 import { ReservaService, unicReservaServiceInstance } from "../service/ReservaService.ts";
+import { ReservaRepository } from "../repository/ReservaRepository.ts";
 import type { reserva } from "../generated/prisma/client.ts";
 import { HttpError } from "../exception/HttpError.ts";
 
@@ -9,9 +10,9 @@ type DadosReserva = DadosHorarioReserva & { jogadorId: number; quadraId: number 
 export class ReservaController {
   private reservaService: ReservaService;
 
-  constructor(providedReservaService: ReservaService = unicReservaServiceInstance) {
-    this.reservaService = providedReservaService;
-  }
+  constructor(providedService: ReservaService = new ReservaService(new ReservaRepository())) {
+        this.reservaService = providedService;
+    }
 
   private idValido(value: unknown): number | null {
     const id = Number(value);

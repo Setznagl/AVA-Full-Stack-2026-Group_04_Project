@@ -7,7 +7,9 @@ import {HttpError} from "../exception/HttpError.ts";
 
 export class ReservaRepository {
     private prisma: PrismaClient = meu_Prisma_Client_Configurado;
-    constructor() {}
+    constructor(providedPrisma: PrismaClient = meu_Prisma_Client_Configurado) {
+        this.prisma = providedPrisma;
+    }
 
     async jogadorExiste(id: number): Promise<boolean | HttpError> {
         try {
