@@ -73,8 +73,8 @@ para não interferir nos dados do banco principal.
  
 ## Equipe e contribuições
 - Camila Vitória — área de contribuição
-- Carlos Leonello - banco de dados
-- Clara Bonan Vianna - área de contribuição
-- Gabriel Setznagl de Mendonça — área de contribuição
+- Carlos Leonello - Banco de dados
+- Clara Bonan Vianna - Implementação de Reserva, validação de horário e filtros de data e quadra
+- Gabriel Setznagl de Mendonça — Implementação do Jogador, criação de scripts de build Dockerfile e docker-compose e implementação de teste unitário com Jest
 - Igor Ezequiel Duarte Barreto - área de contribuição
-- Vitor Alencastro Pantoja - gerenciamento github e inicio de frontend
+- Vitor Alencastro Pantoja - Gerenciamento de repositório Github, README e início de frontend
