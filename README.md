@@ -72,9 +72,9 @@ para não interferir nos dados do banco principal.
    TypeScript e ESM, incluindo os módulos internos do Prisma Client.
  
 ## Equipe e contribuições
-- Camila Vitória — área de contribuição
+- Camila Vitória — Gerenciamento do Trello
 - Carlos Leonello - Banco de dados
 - Clara Bonan Vianna - Implementação de Reserva, validação de horário e filtros de data e quadra
 - Gabriel Setznagl de Mendonça — Implementação do Jogador, criação de scripts de build Dockerfile e docker-compose e implementação de teste unitário com Jest
-- Igor Ezequiel Duarte Barreto - área de contribuição
+- Igor Ezequiel Duarte Barreto - Implementação de Quadra, validação de regras de negócio e filtros por categorias
 - Vitor Alencastro Pantoja - Gerenciamento de repositório Github, README e início de frontend
