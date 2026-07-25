@@ -45,7 +45,6 @@ Backend:
 5. Gere o cliente Prisma e aplique as migrations:
 
        npx prisma generate
-       npx prisma migrate deploy
 
 6. Inicie o servidor:
 
