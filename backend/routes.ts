@@ -4,12 +4,12 @@ import {unicReservaController} from "./src/controller/ReservaController.ts"
 import {unicQuadraController} from "./src/controller/quadracontroller.ts";
 export const router = Router();
 
-/* Aqui estamos mapeando as rotas HTTP:
-Usando router.get ou app.get por exemplo ele tem como parâmetro de entrada uma string que é o path da URL
-e uma função com dois argumentos (req , res) => { ... }, então se criarmos e exportarmos uma funcao ou classe que tenha
-uma funcao dentro dela que recebe request e response como argumentos, podemos passar essa função como
-segundo argumento do router.get ou app.get e tratar toda a lógica da solicitação em arquivos e camadas isoladas.
- */
+router.post("/v1/jogador" , unicJogadorControllerInstance.insertJogador.bind(unicJogadorControllerInstance))
+router.get("/v1/jogador/many" , unicJogadorControllerInstance.findAll.bind(unicJogadorControllerInstance))
+router.get("/v1/jogador/:id", unicJogadorControllerInstance.findByID.bind(unicJogadorControllerInstance))
+router.get("/v1/jogador", unicJogadorControllerInstance.findByEmail.bind(unicJogadorControllerInstance))
+router.put("/v1/jogador", unicJogadorControllerInstance.updateJogador.bind(unicJogadorControllerInstance))
+router.delete("/v1/jogador/:id", unicJogadorControllerInstance.deleteJogador.bind(unicJogadorControllerInstance))
 
 
 router.post("/v1/reserva", unicReservaController.insertReserva.bind(unicReservaController))
