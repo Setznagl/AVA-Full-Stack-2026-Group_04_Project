@@ -1,149 +1,77 @@
-import { QuadraRepository, QuadraRepositoryInstance } from "../repository/QuadraRepository.ts";
+import { QuadraRepository, unicQuadraRepositoryInstance } from "../repository/QuadraRepository.ts";
 import type { quadra } from "../generated/prisma/client.ts";
 import { HttpError } from "../exception/HttpError.ts";
 
 export class QuadraService {
     
-    private quadraRepository: QuadraRepository = QuadraRepositoryInstance;
-    
-    constructor() {}
-
-    private verificarErroFatal(respostaDoBanco: any) {
-        if (respostaDoBanco instanceof HttpError) {
-            throw respostaDoBanco;
-        }
+    private quadraRepository: QuadraRepository;
+    constructor(providedQuadraRepository: QuadraRepository) {
+        this.quadraRepository = providedQuadraRepository;
     }
 
-    async insertQuadra(
-        provided_nome: string, 
-        provided_modalidade: string,
-        provided_localizacao: string
-    ): Promise<quadra | HttpError> {
-            
-        const resultadoInsert = await this.quadraRepository.insertQuadra(provided_nome, provided_modalidade, provided_localizacao);
-        
-        if (resultadoInsert instanceof HttpError && resultadoInsert.statusCode == 423) {
-            resultadoInsert.message = "Quadra em Uso";
-        }
+    async insertQuadra(provided_nome: string, provided_modalidade: string, provided_localizacao: string)
+        :Promise<quadra | HttpError> {
 
-        this.verificarErroFatal(resultadoInsert);
-        
-        return resultadoInsert as quadra;
-    }
+        const data = await this.quadraRepository.insertQuadra(provided_nome, provided_modalidade, provided_localizacao);
 
-    async findAll(): Promise<quadra[] | HttpError> {
-            
-        const resultadoFindAll = await this.quadraRepository.findAll();  
-
-        this.verificarErroFatal(resultadoFindAll);
-
-        const listaCompleta = resultadoFindAll as quadra[];
-        
-        if (listaCompleta.length === 0) {
-            throw new HttpError(404, "Nao encontrado", "service");
-        }
-        
-        return listaCompleta;
+        data instanceof HttpError && data.statusCode === 423
+            ? data.message = "Não foi possível criar uma nova Quadra porque o nome já está em uso"
+            : data;
+        return data;
     }
 
     async findById(provided_id: number): Promise<quadra | null | HttpError> {
-            
-        if (provided_id <= 0) {
-           throw new HttpError(400, "ID Inválido!", "service");
-        }
-
-        const resultadoBusca = await this.quadraRepository.findById(provided_id);
-            
-        this.verificarErroFatal(resultadoBusca);
-
-        if (resultadoBusca === null) {
-            throw new HttpError(404, "Nao encontrado", "service");
-        }
-
-        return resultadoBusca as quadra;
+        return await this.quadraRepository.findById(provided_id);
     }
 
-    async findByNome(provided_nome: string): Promise<quadra | null | Error> {
-        
-        const resultadoBusca = await this.quadraRepository.findByNome(provided_nome);
-
-        this.verificarErroFatal(resultadoBusca);
-
-        if (resultadoBusca === null) {
-            throw new HttpError(404, "Nao encontrado", "service");
-        }
-
-        return resultadoBusca as quadra;
-    }
-    
-    async findByModalidade(provided_modalidade: string): Promise<quadra[] | Error> {
-        
-        const resultadoBusca = await this.quadraRepository.findByModalidade(provided_modalidade);
-
-        this.verificarErroFatal(resultadoBusca);
-        
-        const listaModalidade = resultadoBusca as quadra[];
-
-        if (listaModalidade.length === 0) {
-            throw new HttpError(404, "Nao encontrado", "service");
-        }
-
-        return listaModalidade;
+    async findByNome(provided_nome: string): Promise<quadra | null | HttpError> {
+        return await this.quadraRepository.findByNome(provided_nome);
     }
 
-    async updateQuadra(
-        provided_id: number,  
-        provided_nome: string, 
-        provided_modalidade: string,
-        provided_localizacao: string
-    ): Promise<quadra | HttpError> {
-       
-        if (provided_id <= 0) {
-            throw new HttpError(400, "ID Inválido!", "service");
+    async findByModalidade(provided_modalidade: string): Promise<quadra[] | null | HttpError> {
+        return await this.quadraRepository.findByModalidade(provided_modalidade);
+    }
+
+    async findAll(): Promise<quadra[] | HttpError> {
+        return await this.quadraRepository.findAll();
+    }
+
+    async updateQuadra(provided_id: number, provided_nome: string, provided_modalidade: string, provided_localizacao: string)
+        :Promise<quadra | HttpError> {
+
+        const oldData = await this.quadraRepository.findById(provided_id);
+
+        if (oldData instanceof HttpError) { return oldData; }
+        if (oldData === null) {
+            return new HttpError(404, "Impossível atualizar os dados da Quadra porque o registro informado não existe" , "service");
+        }else{
+            let checked_nome: string = oldData.nome;
+            checked_nome !== provided_nome && provided_nome !== null ? checked_nome = provided_nome : checked_nome;
+            let checked_modalidade: string = oldData.modalidade;
+            checked_modalidade !== provided_modalidade && provided_modalidade !== null ? checked_modalidade = provided_modalidade : checked_modalidade;
+            let checked_localizacao: string = oldData.localizacao;
+            checked_localizacao !== provided_localizacao && provided_localizacao !== null ? checked_localizacao = provided_localizacao : checked_localizacao;
+
+            return await this.quadraRepository.updateQuadra(
+                provided_id,
+                checked_nome,
+                checked_modalidade,
+                checked_localizacao
+            );
         }
-
-        const quadraAntigaBusca = await this.quadraRepository.findById(provided_id);
-
-        this.verificarErroFatal(quadraAntigaBusca);
-        
-        if (quadraAntigaBusca === null) {
-            throw new HttpError(404, "Impossível atualizar: Quadra não encontrada", "service");
-        }
-        
-        const quadraAntiga = quadraAntigaBusca as quadra;
-        
-        const checkedNome = provided_nome || quadraAntiga.nome;
-        const checkedModalidade = provided_modalidade || quadraAntiga.modalidade;
-        const checkedLocalizacao = provided_localizacao || quadraAntiga.localizacao;
-       
-        const resultadoUpdate = await this.quadraRepository.updateQuadra(
-            provided_id,
-            checkedNome,
-            checkedModalidade,
-            checkedLocalizacao
-        );
-
-        this.verificarErroFatal(resultadoUpdate);
-
-        return resultadoUpdate as quadra;
     }
 
     async deleteQuadra(provided_id: number): Promise<quadra | HttpError | null> {
-        
-        if (provided_id <= 0) {
-            throw new HttpError(400, "ID Inválido!", "service");
-        }
+        const data: quadra | HttpError = await this.quadraRepository.deleteQuadra(provided_id);
 
-        const resultadoDelete = await this.quadraRepository.deleteQuadra(provided_id);
+        data instanceof HttpError && data.statusCode === 404
+            ? data.message = "Não foi possível deletar a Quadra porque o registro não foi encontrado"
+            : data;
+        return data;
 
-        this.verificarErroFatal(resultadoDelete);
-
-        if (resultadoDelete === null) {
-            throw new HttpError(404, "Impossível deletar: Quadra não encontrada", "service");
-        }
-
-        return resultadoDelete as quadra;
     }
+
+
 }
 
-export const unicQuadraServiceInstance = new QuadraService();
+export const unicQuadraServiceInstance = new QuadraService(unicQuadraRepositoryInstance);

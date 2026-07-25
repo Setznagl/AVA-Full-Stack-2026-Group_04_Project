@@ -1,15 +1,17 @@
+// noinspection DuplicatedCode
+
 // DESCRIBE -> Declara bloco de testes
-
 // IT or TEST -> Define um teste específico (test case)
-
 // EXPECT -> Asserções sobre o resultado esperado
-import {Request} from "express";
-import {HttpError} from "../../src/exception/HttpError.ts"
-import exceptionHandler from "../../src/exception/ExceptionHandler.ts";
+
+import type {Request} from "express";
+import {HttpError} from "../exception/HttpError.ts"
 import mock_Prisma_Client_Configurado from "../../src/tests/mock/mock_PrismaClient.ts"
-import {JogadorRepository} from "../../src/repository/JogadorRepository.ts"
-import {JogadorService} from "../../src/service/JogadorService.ts"
-import {JogadorController} from "../../src/controller/JogadorController.ts"
+import type {jogador} from "../generated/prisma/client.ts"
+import {JogadorRepository} from "../repository/JogadorRepository.ts"
+import {JogadorService} from "../service/JogadorService.ts"
+import {JogadorController, unicJogadorControllerInstance} from "../controller/JogadorController.ts"
+
 
 beforeAll(async () => {
     await mock_Prisma_Client_Configurado.jogador.deleteMany()
@@ -26,12 +28,13 @@ describe("JogadorRepository:", () => {
     let mockJogadorSenha: string;
 
     it("Should insert and return a new Jogador", async () => {
-        const mockInsert = await mockJogadorRepository.insertJogador(
+        let mockInsert = await mockJogadorRepository.insertJogador(
             "Jogador Mock",
             "jogador_mock@example.com",
             "1234567890",
             "1234567890"
         )
+        if(mockInsert instanceof HttpError){throw mockInsert}
 
         expect(mockInsert).toHaveProperty("id");
         expect(mockInsert).toHaveProperty("nome", "Jogador Mock");
@@ -39,12 +42,13 @@ describe("JogadorRepository:", () => {
         expect(mockInsert).toHaveProperty("telefone", "1234567890");
         expect(mockInsert).toHaveProperty("senha", "1234567890");
 
-        console.log(`Jogador inserted with ID === ${mockInsert.id}`);
         mockJogadorID = mockInsert.id;
         mockJogadorNome = mockInsert.nome;
         mockJogadorEmail = mockInsert.email;
         mockJogadorTelefone = mockInsert.telefone;
         mockJogadorSenha = mockInsert.senha;
+
+
     })
 
     it("Retry insert: Should return HttpError 423 due unique constraint violation", async () => {
@@ -65,28 +69,63 @@ describe("JogadorRepository:", () => {
         }
     });
 
+    it("Try to insert sending invalid types for any field" , async () => {
+        let mockInsert = await mockJogadorRepository.insertJogador(
+            "Jogador Mock",
+            // @ts-expect-error
+            1231.2121,
+            "1234567890",
+            "1234567890"
+        )
+        expect(mockInsert).toBeInstanceOf(HttpError);
+        if(mockInsert instanceof HttpError){
+            expect(mockInsert.statusCode).toBe(502);
+            expect(mockInsert.message).toBe("Invalid provided type for one or more parameters");
+        }else{
+            throw mockInsert;
+        }
+    })
+
     it("Try to find an existing Jogador using field email", async () => {
         const mockFind = await mockJogadorRepository.findByEmail(mockJogadorEmail);
         expect(mockFind).toHaveProperty("email" , mockJogadorEmail)
+        expect(mockFind).toHaveProperty("id" , mockJogadorID)
+        expect(mockFind).toHaveProperty("telefone" , mockJogadorTelefone)
+        expect(mockFind).toHaveProperty("senha" , mockJogadorSenha)
+        expect(mockFind).toHaveProperty("nome" , mockJogadorNome)
     });
 
     it("Try to find an existing Jogador using field email, but sending a non-string value", async () => {
-        const mockError: HttpError = await mockJogadorRepository.findByEmail(12345 as unknown as string)
-        expect(mockError).toBeInstanceOf(HttpError);
-        expect(mockError.statusCode).toBe(502);
-        expect(mockError.message).toBe("Invalid provided type for 'email'", "repository");
+        const mockError = await mockJogadorRepository.findByEmail(12345 as unknown as string)
+        if(mockError instanceof HttpError){
+            expect(mockError).toBeInstanceOf(HttpError);
+            expect(mockError.statusCode).toBe(502);
+            expect(mockError.message).toBe("Invalid provided type for 'email'");
+        }else {
+            throw mockError;
+        }
+
     })
 
     it("Try to find an existing Jogador using field id" , async () => {
         const mockFind = await mockJogadorRepository.findByID(mockJogadorID);
         expect(mockFind).toHaveProperty("id" , mockJogadorID)
+        expect(mockFind).toHaveProperty("email" , mockJogadorEmail)
+        expect(mockFind).toHaveProperty("telefone" , mockJogadorTelefone)
+        expect(mockFind).toHaveProperty("senha" , mockJogadorSenha)
+        expect(mockFind).toHaveProperty("nome" , mockJogadorNome)
     })
 
     it("Try to find an existing Jogador using field id sending a non-number value", async () => {
-        const mock: HttpError = await mockJogadorRepository.findByID("not_a_number" as unknown as number);
-        expect(mock).toBeInstanceOf(HttpError);
-        expect(mock.statusCode).toBe(502);
-        expect(mock.message).toBe("Invalid provided type for 'id'", "repository");
+        const mockError = await mockJogadorRepository.findByID("not_a_number" as unknown as number);
+        expect(mockError).toBeInstanceOf(HttpError);
+        if(mockError instanceof HttpError){
+            expect(mockError.statusCode).toBe(502);
+            expect(mockError.message).toBe("Invalid provided type for 'id'");
+        }else{
+            throw mockError;
+        }
+
     })
 
     it("Try to find a non-existing Jogador using field email", async () => {
@@ -112,16 +151,16 @@ describe("JogadorRepository:", () => {
     })
 
     it("Try to update sending invalid types for any field", async () => {
-        const mockFind = await mockJogadorRepository.updateJogador(
-            mockJogadorID,
+        const mockFind = await mockJogadorRepository.updateJogador(mockJogadorID,
             "Jogador Mock Updated Failure",
             "updated_mock_jogador@example.com",
             "21341434",
+            // @ts-expect-error
             21893183.129 //invalid type value
         )
         expect(mockFind).toBeInstanceOf(HttpError);
         expect((mockFind as HttpError).statusCode).toBe(502);
-        expect((mockFind as HttpError).message).toBe("Invalid provided type for one or more parameters", "repository");
+        expect((mockFind as HttpError).message).toBe("Invalid provided type for one or more parameters");
     })
 
     it("Try to update a non-existing Jogador using field id", async () => {
@@ -144,13 +183,16 @@ describe("JogadorRepository:", () => {
     })
 
     it("Try to update an existing Jogador using field id", async () => {
-        const mockFind = await mockJogadorRepository.updateJogador(
+        const mockFind:jogador | HttpError = await mockJogadorRepository.updateJogador(
             mockJogadorID,
             "Jogador Mock Updated",
             "updated_mock_jogador@example.com",
             "21341434",
             "21893183129"
         )
+        if(mockFind instanceof HttpError) {
+            throw mockFind;
+        }
         expect(mockFind).toHaveProperty("nome" , "Jogador Mock Updated")
         expect(mockFind).toHaveProperty("email" , "updated_mock_jogador@example.com")
         expect(mockFind).toHaveProperty("telefone" , "21341434")
@@ -165,7 +207,7 @@ describe("JogadorRepository:", () => {
         const mockError = await mockJogadorRepository.deleteJogador("not_a_number" as unknown as number);
         expect(mockError).toBeInstanceOf(HttpError);
         expect((mockError as HttpError).statusCode).toBe(502);
-        expect((mockError as HttpError).message).toBe("Invalid provided type for 'id'", "repository");
+        expect((mockError as HttpError).message).toBe("Invalid provided type for 'id'");
     })
 
     it("Try to delete an existing Jogador using field id" , async () => {
@@ -180,53 +222,73 @@ describe("JogadorRepository:", () => {
 
     it("Receiving an unexpected error during findByEmail operation, should return HttpError 500", async () => {
         //Mocking a Prisma error by not providing Prisma client to the repository, which will cause an error when trying to access the database.
-        const undefinedRepository: JogadorRepository = new JogadorRepository();
+        const undefinedRepository: JogadorRepository = new JogadorRepository(undefined);
 
-        const mockError: HttpError = await undefinedRepository.findByEmail(mockJogadorEmail);
+        const mockError = await undefinedRepository.findByEmail(mockJogadorEmail);
         expect(mockError).toBeInstanceOf(HttpError);
-        expect(mockError.statusCode).toBe(500);
+        if(mockError instanceof HttpError) {
+            expect(mockError.statusCode).toBe(500);
+        }
+
     })
 
     it("Receiving an unexpected error during findByID operation, should return HttpError 500", async () => {
         //Mocking a Prisma error by not providing Prisma client to the repository, which will cause an error when trying to access the database.
-        const undefinedRepository: JogadorRepository = new JogadorRepository();
+        const undefinedRepository: JogadorRepository = new JogadorRepository(undefined);
 
-        const mockError: HttpError = await undefinedRepository.findByID(mockJogadorID);
-        expect(mockError).toBeInstanceOf(HttpError);
-        expect(mockError.statusCode).toBe(500);
+        const mockError= await undefinedRepository.findByID(mockJogadorID);
+        if(mockError instanceof HttpError) {
+            expect(mockError).toBeInstanceOf(HttpError);
+            expect(mockError.statusCode).toBe(500);
+        }else {
+            throw mockError;
+        }
+
     })
 
     it("Receiving an unexpected error during findAll operation, should return HttpError 500", async () => {
         //Mocking a Prisma error by not providing Prisma client to the repository, which will cause an error when trying to access the database.
-        const undefinedRepository: JogadorRepository = new JogadorRepository();
+        const undefinedRepository: JogadorRepository = new JogadorRepository(undefined);
 
-        const mockError: HttpError = await undefinedRepository.findAll();
-        expect(mockError).toBeInstanceOf(HttpError);
-        expect(mockError.statusCode).toBe(500);
+        const mockError = await undefinedRepository.findAll();
+        if(mockError instanceof HttpError) {
+            expect(mockError).toBeInstanceOf(HttpError);
+            expect(mockError.statusCode).toBe(500);
+        }else{
+            throw mockError;
+        }
     })
 
     it("Receiving an unexpected error during updateJogador operation, should return HttpError 500", async () => {
         //Mocking a Prisma error by not providing Prisma client to the repository, which will cause an error when trying to access the database.
-        const undefinedRepository: JogadorRepository = new JogadorRepository();
+        const undefinedRepository: JogadorRepository = new JogadorRepository(undefined);
 
-        const mockError: HttpError = await undefinedRepository.updateJogador(
+        const mockError = await undefinedRepository.updateJogador(
             mockJogadorID,
             "Jogador Mock Updated",
             "updated_mock_jogador@example.com",
             "21341434",
             "21893183129"
         )
-        expect(mockError).toBeInstanceOf(HttpError);
-        expect(mockError.statusCode).toBe(500);
+        if(mockError instanceof HttpError) {
+            expect(mockError).toBeInstanceOf(HttpError);
+            expect(mockError.statusCode).toBe(500);
+        }else{
+            throw mockError;
+        }
     })
 
     it("Receiving an unexpected error during deleteJogador operation, should return HttpError 500", async () => {
         //Mocking a Prisma error by not providing Prisma client to the repository, which will cause an error when trying to access the database.
-        const undefinedRepository: JogadorRepository = new JogadorRepository();
+        const undefinedRepository: JogadorRepository = new JogadorRepository(undefined);
 
-        const mockError: HttpError = await undefinedRepository.deleteJogador(mockJogadorID);
-        expect(mockError).toBeInstanceOf(HttpError);
-        expect(mockError.statusCode).toBe(500);
+        const mockError = await undefinedRepository.deleteJogador(mockJogadorID);
+        if(mockError instanceof HttpError) {
+            expect(mockError).toBeInstanceOf(HttpError);
+            expect(mockError.statusCode).toBe(500);
+        }else{
+            throw mockError;
+        }
     })
 
 });
@@ -249,13 +311,14 @@ describe("JogadorService:" , () => {
             "1234567890"
         )
 
+        if(mockInsert instanceof HttpError){throw mockInsert;}
+
         expect(mockInsert).toHaveProperty("id");
         expect(mockInsert).toHaveProperty("nome", "Jogador Mock");
         expect(mockInsert).toHaveProperty("email", "jogador_mock@example.com");
         expect(mockInsert).toHaveProperty("telefone", "1234567890");
         expect(mockInsert).toHaveProperty("senha", "1234567890");
 
-        console.log(`Jogador inserted with ID === ${mockInsert.id}`);
         mockJogadorID = mockInsert.id;
         mockJogadorNome = mockInsert.nome;
         mockJogadorEmail = mockInsert.email;
@@ -267,15 +330,19 @@ describe("JogadorService:" , () => {
         " (From Service layer)\n Custom Expected Message: " +
         "\"Não foi possível criar um novo jogador porque o email já está em uso\"", async () => {
 
-        const mockError:HttpError = await mockJogadorService.insertJogador(
+        const mockError = await mockJogadorService.insertJogador(
             mockJogadorNome,
             mockJogadorEmail,
             mockJogadorTelefone,
             mockJogadorSenha
         );
 
-        expect(mockError.statusCode).toBe(423);
-        expect(mockError.message).toBe("Não foi possível criar um novo jogador porque o email já está em uso");
+        if(mockError instanceof HttpError){
+            expect(mockError.statusCode).toBe(423);
+            expect(mockError.message).toBe("Não foi possível criar um novo jogador porque o email já está em uso");
+        }else {
+            throw mockError;
+        }
 
     });
 
@@ -349,7 +416,7 @@ describe("JogadorService:" , () => {
 
 
         if (mockError instanceof HttpError) {
-            expect(mockError.statusCode).toBe(400);
+            expect(mockError.statusCode).toBe(404);
             expect(mockError.message).toBe("Impossível atualizar os dados do jogador porque o registro informado não existe");
             expect(mockError.layer).toBe("service");
         } else {
@@ -358,47 +425,57 @@ describe("JogadorService:" , () => {
 
     })
 
-    it("Try to delete unexisting Jogador (From Repository layer)" , async () => {
-        const mockError:HttpError = await mockJogadorService.deleteJogador(mockJogadorID + 1);
+    it("Try to delete unexisting Jogador (From Service layer)" , async () => {
+        const mockError = await mockJogadorService.deleteJogador(mockJogadorID + 1);
         expect(mockError).toBeInstanceOf(HttpError);
-
-        if(mockError.statusCode === 404){
-            expect((mockError as HttpError).statusCode).toBe(404);
-            expect((mockError as HttpError).message).toBe("Não foi possível deletar o jogador porque o registro não foi encontrado");
-        }else{
+        if(mockError instanceof HttpError){
+            if(mockError.statusCode === 404){
+                expect((mockError as HttpError).statusCode).toBe(404);
+                expect((mockError as HttpError).message).toBe("Não foi possível deletar o jogador porque o registro não foi encontrado");
+            }else {
+                throw mockError;
+            }
+        } else{
             throw mockError;
         }
     })
 
     it("Receiving an unexpected error during deleteJogador operation, should return HttpError 500 (From Service layer)", async () => {
         //Mocking a Prisma error by not providing Prisma client to the repository, which will cause an error when trying to access the database.
-        const undefinedService: JogadorService = new JogadorService(new JogadorRepository());
+        const undefinedService: JogadorService = new JogadorService(new JogadorRepository(undefined));
 
-        const mockError: HttpError = await undefinedService.deleteJogador(mockJogadorID);
+        const mockError = await undefinedService.deleteJogador(mockJogadorID);
         expect(mockError).toBeInstanceOf(HttpError);
-        expect(mockError.statusCode).toBe(500);
+        if(mockError instanceof HttpError) {
+            expect(mockError.statusCode).toBe(500);
+        }
+
     })
 
     it("Try to updatedJogador from service, but forcing an unexpected error for (const oldData)", async() => {
         //If repository fails we'll receive a HttpErro in "const oldData: jogador | HttpError | null = await this.jogadorRepository.findByID(provided_id);"
-        const undefinedService: JogadorService = new JogadorService(new JogadorRepository());
+        const undefinedService: JogadorService = new JogadorService(new JogadorRepository(undefined));
 
-        const mockError:HttpError = await undefinedService.updateJogador(
+        const mockError = await undefinedService.updateJogador(
             mockJogadorID + 1,
             "Jogador Mock Updated",
             "updated_mock_jogador@example.com",
             "21341434",
             "21893183129",
         )
-        expect(mockError.statusCode).toBe(500);
-
+        expect(mockError).toBeInstanceOf(HttpError);
+        if(mockError instanceof HttpError){
+            expect(mockError.statusCode).toBe(500);
+        }else{
+            throw mockError;
+        }
     })
 
 })
 
 describe("JogadorController:" , () => {
 
-    const mockJogadorController = new JogadorController(new JogadorService(new JogadorRepository(mock_Prisma_Client_Configurado)))
+    const mockJogadorController = unicJogadorControllerInstance;
 
     let mockJogadorID: number;
     let mockJogadorNome: string;
@@ -425,7 +502,7 @@ describe("JogadorController:" , () => {
                 "telefone": "1234567890",
                 "senha": "1234567890"
             }
-        } as Request;
+        } as unknown as Request;
 
         mockJogadorNome = "Jogador Mock";
         mockJogadorEmail = "jogador_mock_from_controller@example.com";
@@ -444,12 +521,12 @@ describe("JogadorController:" , () => {
     it("Retry insert: Should return HttpError 423 due unique constraint violation (From Controller layer)" , async () => {
         const mockRequest = {
             body: {
-                "nome": `${mockJogadorNome}`,
-                "email": `${mockJogadorEmail}`,
-                "telefone": `${mockJogadorTelefone}`,
-                "senha": `${mockJogadorSenha}`
+                "nome": mockJogadorNome,
+                "email": mockJogadorEmail,
+                "telefone": mockJogadorTelefone,
+                "senha": mockJogadorSenha
             }
-        } as Request;
+        } as unknown as Request;
 
         await mockJogadorController.insertJogador(mockRequest, response);
 
@@ -459,10 +536,10 @@ describe("JogadorController:" , () => {
 
     it("Try to find an existing Jogador using field email (From Controller layer)", async () => {
         const mockRequest = {
-            body: {
-                "email": mockJogadorEmail,
+            params: {
+                email: mockJogadorEmail,
             }
-        } as Request;
+        } as unknown as Request;
 
         await mockJogadorController.findByEmail(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(200);
@@ -477,9 +554,9 @@ describe("JogadorController:" , () => {
     it("Try to find an existing Jogador using field id (From Controller layer)", async () => {
         const mockRequest = {
             params: {
-                id: mockJogadorID
+                id: mockJogadorID,
             }
-        } as Request;
+        } as unknown as Request;
 
         await mockJogadorController.findByID(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(200);
@@ -494,7 +571,7 @@ describe("JogadorController:" , () => {
     it("Try to receive multiple data using findAll (From Controller layer)", async () => {
         const mockRequest = {
             body: {}
-        } as Request;
+        } as unknown as Request;
 
         await mockJogadorController.findAll(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(200);
@@ -514,15 +591,56 @@ describe("JogadorController:" , () => {
         )
     })
 
+    it("Try to update an existing Jogador using field id (From Controller layer)", async () => {
+        const mockRequest = {
+            params:{
+                id: mockJogadorID,
+            },
+            body: {
+                nome: "Jogador Mock Novo Nome",
+                email: "novoemail@example.com",
+                telefone: "999999999",
+                senha: "novasenha"
+            }
+        } as unknown as Request;
+
+        await mockJogadorController.updateJogador(mockRequest, response);
+        expect(response.status).toHaveBeenCalledWith(202);
+        expect(response.json).toHaveBeenCalled();
+        expect(response.body.id).toBe(mockJogadorID);
+        expect(response.body.email).toBe("novoemail@example.com");
+        expect(response.body.nome).toBe("Jogador Mock Novo Nome");
+        expect(response.body.telefone).toBe("999999999");
+        expect(response.body.senha).toBe("novasenha");
+
+        // Atualizar variáveis se o teste foi bem sucedido
+        mockJogadorNome = response.body.nome;
+        mockJogadorEmail = response.body.email;
+        mockJogadorTelefone = response.body.telefone;
+        mockJogadorSenha = response.body.senha;
+    })
+
+    it("Try to delete an existing Jogador using field id (From Controller layer)", async () => {
+        const mockRequest = {
+            params: {
+                id: mockJogadorID,
+            }
+        } as unknown as Request;
+
+        await mockJogadorController.deleteJogador(mockRequest, response);
+        expect(response.status).toHaveBeenCalledWith(204);
+        expect(response.json).toHaveBeenCalled();
+    })
+
     it("Receiving an unexpected error during findByEmail operation, should return HttpError 500 (From Controller layer)", async () => {
         //Não passando o o driver e configs do banco, o banco irá falhar durante a operação de select
-        const mockJogadorController = new JogadorController(new JogadorService(new JogadorRepository()))
+        const mockJogadorController = new JogadorController(new JogadorService(new JogadorRepository(undefined)))
 
         const mockRequest = {
-            body: {
-                "email": `"${mockJogadorEmail}"`,
+            params: {
+                email: mockJogadorEmail,
             }
-        }
+        } as unknown as Request;
 
         await mockJogadorController.findByEmail(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(500);
@@ -533,13 +651,13 @@ describe("JogadorController:" , () => {
 
     it("Receiving an unexpected error during findByID operation, should return HttpError 500 (From Controller layer)", async () => {
         //Não passando o o driver e configs do banco, o banco irá falhar durante a operação de select
-        const mockJogadorController = new JogadorController(new JogadorService(new JogadorRepository()));
+        const mockJogadorController = new JogadorController(new JogadorService(new JogadorRepository(undefined)));
 
         const mockRequest = {
             params: {
                 id: mockJogadorID
             }
-        }
+        } as unknown as Request;
 
         await mockJogadorController.findByID(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(500);
@@ -548,11 +666,11 @@ describe("JogadorController:" , () => {
 
     it("Receiving an unexpected error during findAll operation, should return HttpError 500 (From Controller layer)", async () => {
         //Não passando o o driver e configs do banco, o banco irá falhar durante a operação de select
-        const mockJogadorController = new JogadorController(new JogadorService(new JogadorRepository()));
+        const mockJogadorController = new JogadorController(new JogadorService(new JogadorRepository(undefined)));
 
         const mockRequest = {
             body: {}
-        }
+        } as unknown as Request
 
         await mockJogadorController.findAll(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(500);
@@ -561,17 +679,19 @@ describe("JogadorController:" , () => {
 
     it("Receiving an unexpected error during updateJogador operation, should return HttpError 500 (From Controller layer)", async () => {
         //Não passando o o driver e configs do banco, o banco irá falhar durante a operação de select
-        const mockJogadorController = new JogadorController(new JogadorService(new JogadorRepository()));
+        const mockJogadorController = new JogadorController(new JogadorService(new JogadorRepository(undefined)));
 
         const mockRequest = {
+            params:{
+                id: mockJogadorID,
+            },
             body: {
-                "id": mockJogadorID,
                 "email": mockJogadorEmail,
                 "name": mockJogadorNome,
                 "telefone": mockJogadorTelefone,
                 "senha": mockJogadorSenha
             }
-        }
+        } as unknown as Request;
 
         await mockJogadorController.updateJogador(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(500);
@@ -580,19 +700,86 @@ describe("JogadorController:" , () => {
 
     it("Receiving an unexpected error during deleteJogador operation, should return HttpError 500 (From Controller layer)", async () => {
         //Não passando o o driver e configs do banco, o banco irá falhar durante a operação de select
-        const mockJogadorController = new JogadorController(new JogadorService(new JogadorRepository()));
+        const mockJogadorController = new JogadorController(new JogadorService(new JogadorRepository(undefined)));
 
         const mockRequest = {
             params: {
                 id: mockJogadorID,
             }
-        }
+        } as unknown as Request;
 
         await mockJogadorController.deleteJogador(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(500);
         expect(response.json).toHaveBeenCalled();
     })
 
+    it("Try to find an existing Jogador using field 'id' but sending a non-number value" , async () => {
+        // @ts-expect-error
+        const mockRequest = {
+            params: {
+                id: "not_a_number",
+            }
+        } as Request;
+
+        const mockError = await mockJogadorController.findByID(mockRequest, response)
+        expect(mockError instanceof HttpError).toBe(true);
+        if(mockError instanceof HttpError){
+            expect(mockError.statusCode).toBe(400);
+            expect(mockError.message).toBe("Invalid path parameter");
+        }
+    })
+
+    it("Try to find an existing Jogador using field 'email' but sending a non-string value" , async () => {
+        // @ts-expect-error
+        const mockRequest = {
+            params: {
+                email: 123.21,
+            }
+        } as Request;
+
+        const mockError = await mockJogadorController.findByEmail(mockRequest, response)
+        expect(mockError instanceof HttpError).toBe(true);
+        if(mockError instanceof HttpError){
+            expect(mockError.statusCode).toBe(400);
+            expect(mockError.message).toBe("Invalid path parameter");
+        }
+    })
+
+    it("Try to update an existing Jogador using field id but sending a non-number value" , async () => {
+        // @ts-expect-error
+        const mockRequest = {
+            params: {
+                id: "not_a_number",
+            },body:{
+                email: mockJogadorEmail,
+                telefone: mockJogadorTelefone,
+                senha: mockJogadorSenha,
+            }
+        } as Request;
+
+        const mockError = await mockJogadorController.updateJogador(mockRequest, response)
+        expect(mockError instanceof HttpError).toBe(true);
+        if(mockError instanceof HttpError){
+            expect(mockError.statusCode).toBe(400);
+            expect(mockError.message).toBe("Invalid path parameter");
+        }
+    })
+
+    it("Try to delete an existing Jogador using field id but sending a non-number value" , async () => {
+        // @ts-expect-error
+        const mockRequest = {
+            params: {
+                id: "not_a_number",
+            }
+        } as Request;
+
+        const mockError = await mockJogadorController.deleteJogador(mockRequest, response)
+        expect(mockError instanceof HttpError).toBe(true);
+        if(mockError instanceof HttpError){
+            expect(mockError.statusCode).toBe(400);
+            expect(mockError.message).toBe("Invalid path parameter");
+        }
+    })
 
 
 })

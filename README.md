@@ -1,175 +1,225 @@
-# AVA-DESENVOLVIMENTO-FULL-STACK-B-SICO-PROJETO-DFS-2026.2
+# 🏟️ Sistema de Agendamento de Quadras Esportivas
 
-Links Importantes:
-Trello: https://trello.com/b/k3P2zFfr/ava-desenvolvimento-full-stack-b-sico-projeto-dfs-20262
-GitHub: https://github.com/VitorPantojaDev/AVA-DESENVOLVIMENTO-FULL-STACK-B-SICO-PROJETO-DFS-2026.2
+![Node.js](https://img.shields.io/badge/Node.js-20+-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Jest](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
-![img.png](img.png)
+> Projeto da disciplina **Desenvolvimento Full Stack Básico** (Atlântico Avanti) — Grupo 4 — Turma DFS-2026.2
 
-Problema: Sistema de Agendamento de Quadras Esportivas
+---
 
-Contexto
-Em muitas quadras esportivas de bairros, escolas ou condomínios, a reserva de horários é feita de forma desorganizada, utilizando cadernos, grupos de mensagens ou apenas por ordem de chegada. Essa prática pode gerar conflitos de horário, dificultar a visualização da disponibilidade das quadras e prejudicar a organização das partidas.
+## 💻 Sobre o projeto
 
-Com o objetivo de tornar esse processo mais simples e organizado, será desenvolvida uma aplicação web que permitirá cadastrar quadras, registrar jogadores e realizar reservas de horários, facilitando o gerenciamento da agenda das quadras esportivas.
+O **Sistema de Agendamento de Quadras Esportivas** é uma aplicação web voltada para a organização de reservas de quadras esportivas em bairros e centros esportivos.
 
-Objetivo
+A plataforma permite:
+- 🧑‍🤝‍🧑 Cadastrar **jogadores**;
+- 🏸 Cadastrar **quadras** e suas categorias (futebol, vôlei, tênis, etc.);
+- 📅 Registrar **reservas** de horário por quadra e data;
+- 🚫 Impedir **conflitos de agenda**, garantindo que a mesma quadra não seja reservada duas vezes no mesmo horário.
 
-Desenvolver uma aplicação web funcional que permita cadastrar jogadores e quadras, realizar reservas de horários e consultar a agenda das quadras. A aplicação deve possibilitar o gerenciamento das reservas de forma simples, evitando conflitos de horário.
+O projeto foi construído com uma arquitetura em camadas no back-end (API REST), banco de dados relacional gerenciado via ORM, testes automatizados isolados por ambiente e conteinerização completa via Docker — reproduzindo boas práticas de um fluxo de desenvolvimento profissional.
 
-Funcionalidades do Sistema
+---
 
-1. Cadastro de Jogadores
-2. 
-O sistema deve permitir o cadastro de jogadores que utilizarão as quadras.
+## 🛠 Tecnologias
 
-O cadastro deve conter:
+O projeto está dividido em **Back-End** (API REST) e **Front-End** (interface web), com o Docker orquestrando o ambiente de banco de dados.
 
-● Nome completo
+### 🎨 Front-End
 
-● E-mail
+| Tecnologia | Descrição |
+|---|---|
+| ⚛️ **React** | Biblioteca para construção da interface do usuário |
+| ⚡ **Vite** | Build tool utilizada para desenvolvimento rápido do front-end |
 
-● Telefone
+### ⚙️ Back-End
 
-3. Cadastro de Quadras
-   
-O sistema deve permitir o cadastro das quadras esportivas disponíveis.
+| Tecnologia | Descrição |
+|---|---|
+| 🟩 **Node.js** | Ambiente de execução JavaScript no servidor |
+| 🚂 **Express** | Framework para construção da API REST |
+| 🔷 **TypeScript** | Superset de JavaScript com tipagem estática |
+| ▲ **Prisma ORM** | Mapeamento objeto-relacional para acesso ao banco de dados |
+| 🐘 **PostgreSQL** | Banco de dados relacional principal da aplicação |
+| 🃏 **Jest** (+ `@swc/jest`) | Framework de testes unitários, com suporte a TypeScript/ESM |
 
-Cada quadra deve possuir:
+### 🐳 DevOps
 
-● Nome da quadra (Ex.: Quadra Society, Quadra de Vôlei)
+| Tecnologia | Descrição |
+|---|---|
+| 🐳 **Docker & Docker Compose** | Conteinerização do banco de dados de produção e do banco de testes (`postgres-mock`) |
 
-● Modalidade esportiva (Futebol, Vôlei, Basquete, Tênis, etc.)
+---
 
-● Localização
+## 🚀 Funcionalidades
 
-5. Cadastro de Reservas
-   
-O sistema deve permitir o cadastro de reservas para utilização das quadras.
+- ✅ Cadastro de **jogadores**
+- ✅ Cadastro de **quadras**, com filtros por categoria
+- ✅ Criação de **reservas**, com validação de horário e filtros por data e quadra
+- ✅ Bloqueio automático de **conflitos de agendamento** na mesma quadra
+- ✅ Conteinerização do banco de dados principal (`postgres`) via Docker Compose
+- ✅ Banco de dados isolado para testes automatizados (`postgres-mock`), sem impactar os dados de produção
+- 🔜 Testes unitários com **Jest** com cobertura de código de (100% Jogador, 100% Quadra, 0% Reserva)
+- 🔜 Interface web (front-end em React) em desenvolvimento
+- 🔜 Documentação da API via Swagger (em desenvolvimento)
+- 🔜 Autenticação e autorização de usuários com JWT (em desenvolvimento)
 
-Cada reserva deve conter:
+---
 
-● Jogador responsável
+## 📋 Pré-requisitos
 
-● Quadra
+Antes de começar, você vai precisar ter instalado:
 
-● Data
+- [Node.js](https://nodejs.org/) 20+
+- [Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/)
+- [npm](https://www.npmjs.com/)
 
-● Horário de início
+---
 
-● Horário de fim
+## ⚙️ Como executar o back-end
 
-O sistema deve verificar se já existe uma reserva para o mesmo horário na mesma quadra. Caso exista conflito, a nova reserva não deverá ser cadastrada.
+1. Clone o repositório e entre na pasta `backend`:
 
-7. Visualização da Agenda
-   
-Os usuários da aplicação devem poder consultar as reservas realizadas.
+   ```bash
+   git clone <url-do-repositorio>
+   cd backend
+   ```
 
-A visualização deve apresentar:
+2. Instale as dependências:
 
-● Lista de reservas contendo quadra, jogador, data e horário.
-
-● Consulta da agenda por quadra.
-
-● Identificação dos horários ocupados e disponíveis.
-
-Requisitos Técnicos
-
-Backend
-
-O backend será responsável pela lógica da aplicação e gerenciamento dos dados. Deve ser desenvolvido utilizando:
-
-● Node.js com Express.
-
-● Prisma ORM para realizar as operações no banco de dados.
-
-● Implementação das operações de CRUD (Create, Read, Update, Delete) para jogadores, quadras e reservas.
-
-● Validação para impedir reservas em horários já ocupados para a mesma quadra.
-
-Banco de Dados
-
-Utilizar um banco de dados relacional, como PostgreSQL, para armazenar as informações da aplicação.
-
-Estrutura básica do banco:
-
-Jogadores: Armazena os dados dos usuários do sistema.
-(id, nome, email, telefone)
-
-Quadras: Armazenar as quadras disponíveis.
-(id, nome, modalidade, localizacao)
-
-Reservas: Armazena os horários reservados.
-(id, jogador_id, quadra_id, data, horario_inicio, horario_fim)
-
-Observação: A estrutura do banco de dados é apenas uma sugestão inicial. As equipes podem adicionar novos atributos, tabelas e relacionamentos sempre que julgarem necessário para melhorar a aplicação.
-
-Frontend
-
-O frontend deverá ser desenvolvido com ReactJS, fornecendo uma interface simples e amigável.
-
-O frontend deve:
-
-● Exibir a agenda de reservas das quadras.
-
-● Possuir formulários para cadastro de jogadores, quadras e reservas.
-
-● Permitir edição e remoção de reservas.
-
-● Incluir uma landing page apresentando o sistema e incentivando a prática esportiva na comunidade.
-
-Extras (Desafios Opcionais)
-
-1. Filtros
-Implementar filtros para facilitar a consulta das reservas, como:
-
-● Busca por data.
-
-● Busca por modalidade esportiva.
-
-● Busca por quadra.
-
-3. Autenticação (Opcional)
-   
-Implementar um sistema de autenticação para usuários.
-
-Após o login:
-
-● Jogadores poderão visualizar suas próprias reservas.
-
-● Um usuário administrador poderá cadastrar, editar e excluir quadras, além de gerenciar reservas.
-
-Observação: O sistema de login não é obrigatório para o funcionamento da aplicação.
-
-Diretrizes Gerais
-
-O desafio deverá ser realizado pelas equipes já organizadas, com foco no cadastro e gerenciamento de jogadores, quadras e reservas. As equipes têm liberdade para adicionar novos campos, entidades ou funcionalidades que considerem relevantes, desde que as funcionalidades básicas sejam atendidas.
-
-Versionamento do Projeto e Trabalho em Equipe
-
-As equipes devem utilizar o GitHub para versionamento e colaboração. No dia da entrega, apenas um integrante do grupo deverá enviar:
-
-● O link do repositório no GitHub.
-
-● Uma descrição da contribuição de cada membro da equipe.
-
-Enviar para os e-mails:
-
-● jheyele_xavier@atlantico.com.br
-
-● julia_freitas@atlantico.com.br
-
-● murilo_scapim@atlantico.com.br
-
-No repositório, deve existir uma documentação (README) explicando:
-
-● O objetivo do projeto.
-
-● As tecnologias utilizadas.
-
-● As instruções para executar a aplicação.
-
-Datas de Entrega
-
-Backend: até 25/07/2026
-Frontend: até 22/08/2026
+   ```bash
+   npm install
+   ```
+
+3. Crie o arquivo `.env` na pasta `backend` (baseado no `.env.example`) com as variáveis de conexão do banco:
+
+   ```env
+   DATABASE_URL="postgresql://admin:admin_da_senha_segura@localhost:5432/pqsl-db"
+   MOCK_DATABASE_URL="postgresql://mock_user:mock_password@localhost:5433/pqsl-mock-db"
+   ```
+
+4. Suba o banco de dados com Docker Compose:
+
+   ```bash
+   docker compose -f docker/docker-compose.yml up -d
+   ```
+
+5. Gere o cliente Prisma e aplique as migrations:
+
+   ```bash
+   npx prisma generate
+   npx prisma migrate deploy
+   ```
+
+6. Inicie o servidor:
+
+   ```bash
+   npm start
+   ```
+
+   A API sobe por padrão na porta `3000`. Para confirmar que está no ar:
+
+   ```bash
+   curl http://localhost:3000/v1/teste
+   ```
+
+---
+
+## 🧪 Como rodar os testes
+
+Os testes usam um banco **separado** (`postgres-mock`, definido no `docker-compose.yml`), garantindo que não interfiram nos dados do banco principal.
+
+1. Suba o banco de testes (caso ainda não esteja rodando):
+
+   ```bash
+   docker compose -f docker/docker-compose.yml up -d postgres-mock
+   ```
+
+2. Rode os testes:
+
+   ```bash
+   npm test
+   ```
+
+   Os testes usam **`@swc/jest`** (configurado em `jest.config.js`) para suportar TypeScript e ESM, incluindo os módulos internos do Prisma Client.
+
+---
+
+## 🌎 Autores e Contribuições
+<table> 
+  <tr> 
+    <td align="center"> 
+      <a href="https://github.com/">
+        <img src="https://avatars.githubusercontent.com/u/91721431?v=4" width="100px;" alt="Foto do autor"/> 
+        <br />
+      </a>
+        <p align="center"><b>Gabriel Setznagl de Mendonça</b></p>
+        <b align="center">☕ Back-End</b> <br><br>
+        <b align="center">Implementação do Jogador, scripts Docker e testes unitários com Jest<br></b>
+        <br>
+    </td> 
+    <td align="center"> 
+      <a href="https://github.com/">
+        <img src="https://avatars.githubusercontent.com/u/243326528?v=4" width="100px;" alt="Foto do autor"/> 
+        <br />
+      </a>
+        <p align="center"><b>Vitor Alencastro Pantoja</b></p>
+        <b align="center">🎨 Front-End</b> <br><br>
+        <b align="center">Gerenciamento do repositório GitHub, README e início do front-end<br></b>
+        <br /> 
+    </td> 
+        <td align="center"> 
+      <a href="https://github.com/">
+        <img src="https://avatars.githubusercontent.com/u/231565173?v=4" width="100px;" alt="Foto do autor"/> 
+        <br />
+      </a>
+        <p align="center"><b>Clara Bonan Vianna</b></p>
+        <b align="center">☕ Back-End</b> <br><br>
+        <b align="center">Implementação de Reserva, validação de horário e filtros de data e quadra<br></b>
+        <br /> 
+    </td> 
+        <td align="center"> 
+      <a href="https://github.com/">
+        <img src="https://avatars.githubusercontent.com/u/188599152?v=4" width="100px;" alt="Foto do autor"/> 
+        <br />
+      </a>
+        <p align="center"><b>Carlos Leonello</b></p>
+        <b align="center"><br>💾 Database</b> <br><br>
+        <b align="center">Modelagem do Banco de dados e modelo entidade-relacionamento<br></b>
+        <br /> 
+    </td> 
+        <td align="center"> 
+      <a href="https://github.com/">
+        <img src="https://avatars.githubusercontent.com/u/131815218?v=4" width="100px;" alt="Foto do autor"/> 
+        <br />
+      </a>
+        <p align="center"><b>Igor Ezequiel Duarte Barreto</b></p>
+        <b align="center">☕ Back-End</b> <br><br>
+        <b align="center">Implementação de Quadra e filtros por categorias<br></b>
+        <br /> 
+    </td> 
+        </td> 
+        <td align="center"> 
+      <a href="https://github.com/">
+        <img src="https://avatars.githubusercontent.com/u/177791071?v=4" width="100px;" alt="Foto do autor"/> 
+        <br />
+      </a>
+        <p align="center"><b>Camila Vitória</b></p>
+        <b align="center"><br>👥 Scrum-Master</b> <br><br>
+        <b align="center">Gerenciamento e divisão de tarefas pelo Trello<br></b>
+        <br /> 
+    </td> 
+
+  </tr> 
+</table>
+
+## 📝 Licença
+
+Este projeto foi desenvolvido para fins educacionais no âmbito da disciplina **Desenvolvimento Full Stack Básico** — Atlântico Avanti, turma DFS-2026.2.
