@@ -5,8 +5,10 @@
   "main": "server.ts",
   "type": "module",
   "scripts": {
-    "start": "node --watch server.ts",
-    "test": "jest --passWithNoTests"
+    "dev": "tsx watch server.ts",
+    "start": "tsx server.ts",
+    "test": "jest --runInBand",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "license": "MIT",

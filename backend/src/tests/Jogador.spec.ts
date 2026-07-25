@@ -536,8 +536,8 @@ describe("JogadorController:" , () => {
 
     it("Try to find an existing Jogador using field email (From Controller layer)", async () => {
         const mockRequest = {
-            params: {
-                email: mockJogadorEmail,
+            body: {
+                "email": mockJogadorEmail,
             }
         } as unknown as Request;
 

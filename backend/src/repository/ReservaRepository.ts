@@ -6,9 +6,8 @@ import {HttpError} from "../exception/HttpError.ts";
 
 
 export class ReservaRepository {
-
-    private prisma: PrismaClient;
-    constructor(providedPrisma: PrismaClient) {
+    private prisma: PrismaClient = meu_Prisma_Client_Configurado;
+    constructor(providedPrisma: PrismaClient = meu_Prisma_Client_Configurado) {
         this.prisma = providedPrisma;
     }
 
