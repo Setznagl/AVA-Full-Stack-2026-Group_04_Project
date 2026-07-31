@@ -1,7 +1,7 @@
 import {Router} from "express";
 import {unicJogadorControllerInstance} from "./src/controller/JogadorController.ts";
 import {unicReservaController} from "./src/controller/ReservaController.ts"
-import {unicQuadraController} from "./src/controller/quadracontroller.ts";
+import {unicQuadraControllerInstance} from "./src/controller/QuadraController.ts";
 export const router = Router();
 
 router.post("/v1/jogador" , unicJogadorControllerInstance.insertJogador.bind(unicJogadorControllerInstance))
@@ -28,10 +28,10 @@ router.get("/v1/jogador", unicJogadorControllerInstance.findByEmail.bind(unicJog
 router.put("/v1/jogador", unicJogadorControllerInstance.updateJogador.bind(unicJogadorControllerInstance))
 router.delete("/v1/jogador/:id", unicJogadorControllerInstance.deleteJogador.bind(unicJogadorControllerInstance))
 
-router.post("/v1/quadra", unicQuadraController.insertQuadra.bind(unicQuadraController));
-router.get("/v1/quadra/many", unicQuadraController.findAll.bind(unicQuadraController));
-router.get("/v1/quadra/:id", unicQuadraController.findById.bind(unicQuadraController));
-router.get("/v1/quadra/nome/:nome", unicQuadraController.findByNome.bind(unicQuadraController));
-router.get("/v1/quadra/modalidade/:modalidade", unicQuadraController.findByModalidade.bind(unicQuadraController));
-router.put("/v1/quadra", unicQuadraController.updateQuadra.bind(unicQuadraController));
-router.delete("/v1/quadra/:id", unicQuadraController.deleteQuadra.bind(unicQuadraController));
+router.post("/v1/quadra", unicQuadraControllerInstance.insertQuadra.bind(unicQuadraControllerInstance));
+router.get("/v1/quadra/many", unicQuadraControllerInstance.findAll.bind(unicQuadraControllerInstance));
+router.get("/v1/quadra/:id", unicQuadraControllerInstance.findById.bind(unicQuadraControllerInstance));
+router.get("/v1/quadra/nome/:nome", unicQuadraControllerInstance.findByNome.bind(unicQuadraControllerInstance));
+router.get("/v1/quadra/modalidade/:modalidade", unicQuadraControllerInstance.findByModalidade.bind(unicQuadraControllerInstance));
+router.put("/v1/quadra", unicQuadraControllerInstance.updateQuadra.bind(unicQuadraControllerInstance));
+router.delete("/v1/quadra/:id", unicQuadraControllerInstance.deleteQuadra.bind(unicQuadraControllerInstance));
