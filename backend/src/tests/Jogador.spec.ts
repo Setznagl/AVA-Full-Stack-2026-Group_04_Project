@@ -12,8 +12,8 @@ import {JogadorRepository} from "../repository/JogadorRepository.ts"
 import {JogadorService} from "../service/JogadorService.ts"
 import {JogadorController, unicJogadorControllerInstance} from "../controller/JogadorController.ts"
 
-
-beforeAll(async () => {
+beforeAll( async () => {
+    await mock_Prisma_Client_Configurado.reserva.deleteMany()
     await mock_Prisma_Client_Configurado.jogador.deleteMany()
 })
 
@@ -108,7 +108,7 @@ describe("JogadorRepository:", () => {
     })
 
     it("Try to find an existing Jogador using field id" , async () => {
-        const mockFind = await mockJogadorRepository.findByID(mockJogadorID);
+        const mockFind = await mockJogadorRepository.findById(mockJogadorID);
         expect(mockFind).toHaveProperty("id" , mockJogadorID)
         expect(mockFind).toHaveProperty("email" , mockJogadorEmail)
         expect(mockFind).toHaveProperty("telefone" , mockJogadorTelefone)
@@ -117,7 +117,7 @@ describe("JogadorRepository:", () => {
     })
 
     it("Try to find an existing Jogador using field id sending a non-number value", async () => {
-        const mockError = await mockJogadorRepository.findByID("not_a_number" as unknown as number);
+        const mockError = await mockJogadorRepository.findById("not_a_number" as unknown as number);
         expect(mockError).toBeInstanceOf(HttpError);
         if(mockError instanceof HttpError){
             expect(mockError.statusCode).toBe(502);
@@ -134,20 +134,22 @@ describe("JogadorRepository:", () => {
     })
 
     it("Try to find a non-existing Jogador using field id" , async () => {
-        const mockFind = await mockJogadorRepository.findByID(mockJogadorID + 1);
+        const mockFind = await mockJogadorRepository.findById(mockJogadorID + 1);
         expect(mockFind).toBeNull();
     })
 
     it("Try to receive multiple data using findAll", async () => {
         const mockFind = await mockJogadorRepository.findAll();
         expect(Array.isArray(mockFind)).toBe(true);
-        expect(mockFind).toEqual([{
-            "id": mockJogadorID,
-            "nome": mockJogadorNome,
-            "email": mockJogadorEmail,
-            "telefone": mockJogadorTelefone,
-            "senha": mockJogadorSenha
-        }])
+        expect(mockFind).toEqual(expect.arrayContaining([
+            expect.objectContaining({
+                "id": mockJogadorID,
+                "nome": mockJogadorNome,
+                "email": mockJogadorEmail,
+                "telefone": mockJogadorTelefone,
+                "senha": mockJogadorSenha
+            })
+        ]));
     })
 
     it("Try to update sending invalid types for any field", async () => {
@@ -236,7 +238,7 @@ describe("JogadorRepository:", () => {
         //Mocking a Prisma error by not providing Prisma client to the repository, which will cause an error when trying to access the database.
         const undefinedRepository: JogadorRepository = new JogadorRepository(undefined);
 
-        const mockError= await undefinedRepository.findByID(mockJogadorID);
+        const mockError= await undefinedRepository.findById(mockJogadorID);
         if(mockError instanceof HttpError) {
             expect(mockError).toBeInstanceOf(HttpError);
             expect(mockError.statusCode).toBe(500);
@@ -306,7 +308,7 @@ describe("JogadorService:" , () => {
     it("Should insert and return a new Jogador (From Service layer)", async () => {
         const mockInsert = await mockJogadorService.insertJogador(
             "Jogador Mock",
-            "jogador_mock@example.com",
+            "jogador_mock_2@example.com",
             "1234567890",
             "1234567890"
         )
@@ -315,7 +317,7 @@ describe("JogadorService:" , () => {
 
         expect(mockInsert).toHaveProperty("id");
         expect(mockInsert).toHaveProperty("nome", "Jogador Mock");
-        expect(mockInsert).toHaveProperty("email", "jogador_mock@example.com");
+        expect(mockInsert).toHaveProperty("email", "jogador_mock_2@example.com");
         expect(mockInsert).toHaveProperty("telefone", "1234567890");
         expect(mockInsert).toHaveProperty("senha", "1234567890");
 
@@ -359,13 +361,15 @@ describe("JogadorService:" , () => {
     it("Try to receive multiple data using findAll (From Service layer)", async () => {
         const mockFind = await mockJogadorService.findAll();
         expect(Array.isArray(mockFind)).toBe(true);
-        expect(mockFind).toEqual([{
-            "id": mockJogadorID,
-            "nome": mockJogadorNome,
-            "email": mockJogadorEmail,
-            "telefone": mockJogadorTelefone,
-            "senha": mockJogadorSenha
-        }])
+        expect(mockFind).toEqual(expect.arrayContaining([
+            expect.objectContaining({
+                "id": mockJogadorID,
+                "nome": mockJogadorNome,
+                "email": mockJogadorEmail,
+                "telefone": mockJogadorTelefone,
+                "senha": mockJogadorSenha
+            })
+        ]));
     })
 
     it("Try to update an existing Jogador using field id (From Service layer)", async () => {
@@ -536,8 +540,8 @@ describe("JogadorController:" , () => {
 
     it("Try to find an existing Jogador using field email (From Controller layer)", async () => {
         const mockRequest = {
-            body: {
-                "email": mockJogadorEmail,
+            params: {
+                email: mockJogadorEmail,
             }
         } as unknown as Request;
 
@@ -713,7 +717,7 @@ describe("JogadorController:" , () => {
         expect(response.json).toHaveBeenCalled();
     })
 
-    it("Try to find an existing Jogador using field 'id' but sending a non-number value" , async () => {
+    it("Try to find an existing Jogador using field 'id' but sending a non-number value (From Controller layer)" , async () => {
         // @ts-expect-error
         const mockRequest = {
             params: {
@@ -729,7 +733,7 @@ describe("JogadorController:" , () => {
         }
     })
 
-    it("Try to find an existing Jogador using field 'email' but sending a non-string value" , async () => {
+    it("Try to find an existing Jogador using field 'email' but sending a non-string value (From Controller layer)" , async () => {
         // @ts-expect-error
         const mockRequest = {
             params: {
@@ -745,7 +749,7 @@ describe("JogadorController:" , () => {
         }
     })
 
-    it("Try to update an existing Jogador using field id but sending a non-number value" , async () => {
+    it("Try to update an existing Jogador using field id but sending a non-number value (From Controller layer)" , async () => {
         // @ts-expect-error
         const mockRequest = {
             params: {
@@ -765,7 +769,7 @@ describe("JogadorController:" , () => {
         }
     })
 
-    it("Try to delete an existing Jogador using field id but sending a non-number value" , async () => {
+    it("Try to delete an existing Jogador using field id but sending a non-number value (From Controller layer)" , async () => {
         // @ts-expect-error
         const mockRequest = {
             params: {

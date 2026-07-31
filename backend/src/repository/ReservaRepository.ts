@@ -1,32 +1,13 @@
 import meu_Prisma_Client_Configurado from "../database/PrismaClient.ts";
-import {PrismaClient} from "@prisma/client/extension";
-import type {reserva} from "../generated/prisma/client.ts";
-import {exceptionHandler} from "../exception/ExceptionHandler.ts";
-import {HttpError} from "../exception/HttpError.ts";
-
+import { PrismaClient } from "@prisma/client/extension";
+import type { reserva } from "../generated/prisma/client.ts";
+import { exceptionHandler } from "../exception/ExceptionHandler.ts";
+import { HttpError } from "../exception/HttpError.ts";
 
 export class ReservaRepository {
-    private prisma: PrismaClient = meu_Prisma_Client_Configurado;
-    constructor(providedPrisma: PrismaClient = meu_Prisma_Client_Configurado) {
+    private prisma: PrismaClient;
+    constructor(providedPrisma: PrismaClient ) {
         this.prisma = providedPrisma;
-    }
-
-    async jogadorExiste(id: number): Promise<boolean | HttpError> {
-        try {
-            return (await this.prisma.jogador.findUnique({ where: { id }, select: { id: true } })) !== null;
-        } catch (exception: any) {
-            console.error(exception);
-            return exceptionHandler.handle(exception, "repository");
-        }
-    }
-
-    async quadraExiste(id: number): Promise<boolean | HttpError> {
-        try {
-            return (await this.prisma.quadra.findUnique({ where: { id }, select: { id: true } })) !== null;
-        } catch (exception: any) {
-            console.error(exception);
-            return exceptionHandler.handle(exception, "repository");
-        }
     }
 
     async insertReserva(provided_jogador_id: number, provided_quadra_id: number, provided_data: Date, provided_horario_inicio: Date, provided_horario_fim: Date): Promise<reserva | HttpError> {
@@ -125,10 +106,9 @@ export class ReservaRepository {
             return exceptionHandler.handle(exception, "repository");
         }
     }
+}
 
-    }
-
-    export const unicReservaRepositoryInstance = new ReservaRepository(meu_Prisma_Client_Configurado);
+export const unicReservaRepositoryInstance = new ReservaRepository(meu_Prisma_Client_Configurado);
 
 
         

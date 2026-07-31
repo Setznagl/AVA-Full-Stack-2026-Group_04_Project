@@ -46,7 +46,7 @@ export class JogadorRepository {
 
     }
 
-    async findByID(provided_id: number)
+    async findById(provided_id: number)
         :Promise<jogador | HttpError | null > {
 
         if(typeof provided_id !== "number"){  return new HttpError(502, "Invalid provided type for 'id'", "repository");  }

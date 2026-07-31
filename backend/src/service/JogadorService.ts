@@ -22,7 +22,7 @@ export class JogadorService {
     }
 
     async findByID(provided_id: number):Promise<jogador | HttpError | null  > {
-        return await this.jogadorRepository.findByID(provided_id);
+        return await this.jogadorRepository.findById(provided_id);
     }
 
     async findByEmail(email: string): Promise<jogador | HttpError | null> {
@@ -36,7 +36,7 @@ export class JogadorService {
     async updateJogador(provided_id: number, provided_nome: string, provided_email: string, provided_telefone: string, provided_senha: string):
         Promise<jogador | HttpError> {
 
-        const oldData: jogador | HttpError | null = await this.jogadorRepository.findByID(provided_id);
+        const oldData: jogador | HttpError | null = await this.jogadorRepository.findById(provided_id);
 
             if (oldData instanceof HttpError) {  return  oldData  }
             if (oldData === null) {

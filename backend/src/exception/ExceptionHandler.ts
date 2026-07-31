@@ -18,9 +18,6 @@ class ExceptionHandler {
                 case 'P2003':
                     treatedException = new HttpError(404, `Register not found.`, layer);
                     break;
-                case 'P2004':
-                    treatedException = new HttpError(400, `Database rule violation`, layer);
-                    break;
             }
         }
 

@@ -7,9 +7,18 @@ export const router = Router();
 router.post("/v1/jogador" , unicJogadorControllerInstance.insertJogador.bind(unicJogadorControllerInstance))
 router.get("/v1/jogador/many" , unicJogadorControllerInstance.findAll.bind(unicJogadorControllerInstance))
 router.get("/v1/jogador/:id", unicJogadorControllerInstance.findByID.bind(unicJogadorControllerInstance))
-router.get("/v1/jogador", unicJogadorControllerInstance.findByEmail.bind(unicJogadorControllerInstance))
-router.put("/v1/jogador", unicJogadorControllerInstance.updateJogador.bind(unicJogadorControllerInstance))
+router.get("/v1/jogador/:email", unicJogadorControllerInstance.findByEmail.bind(unicJogadorControllerInstance))
+router.put("/v1/jogador/:id", unicJogadorControllerInstance.updateJogador.bind(unicJogadorControllerInstance))
 router.delete("/v1/jogador/:id", unicJogadorControllerInstance.deleteJogador.bind(unicJogadorControllerInstance))
+
+
+router.post("/v1/quadra", unicQuadraController.insertQuadra.bind(unicQuadraController));
+router.get("/v1/quadra/many", unicQuadraController.findAll.bind(unicQuadraController));
+router.get("/v1/quadra/:id", unicQuadraController.findById.bind(unicQuadraController));
+router.get("/v1/quadra/nome/:nome", unicQuadraController.findByNome.bind(unicQuadraController));
+router.get("/v1/quadra/modalidade/:modalidade", unicQuadraController.findByModalidade.bind(unicQuadraController));
+router.put("/v1/quadra/:id", unicQuadraController.updateQuadra.bind(unicQuadraController));
+router.delete("/v1/quadra/:id", unicQuadraController.deleteQuadra.bind(unicQuadraController));
 
 
 router.post("/v1/reserva", unicReservaController.insertReserva.bind(unicReservaController))
@@ -21,17 +30,4 @@ router.get("/v1/reserva/:id", unicReservaController.findByID.bind(unicReservaCon
 router.put("/v1/reserva/:id", unicReservaController.updateReserva.bind(unicReservaController))
 router.delete("/v1/reserva/:id", unicReservaController.deleteReserva.bind(unicReservaController))
 
-router.post("/v1/jogador" , unicJogadorControllerInstance.insertJogador.bind(unicJogadorControllerInstance))
-router.get("/v1/jogador/many" , unicJogadorControllerInstance.findAll.bind(unicJogadorControllerInstance))
-router.get("/v1/jogador/:id", unicJogadorControllerInstance.findByID.bind(unicJogadorControllerInstance))
-router.get("/v1/jogador", unicJogadorControllerInstance.findByEmail.bind(unicJogadorControllerInstance))
-router.put("/v1/jogador", unicJogadorControllerInstance.updateJogador.bind(unicJogadorControllerInstance))
-router.delete("/v1/jogador/:id", unicJogadorControllerInstance.deleteJogador.bind(unicJogadorControllerInstance))
 
-router.post("/v1/quadra", unicQuadraController.insertQuadra.bind(unicQuadraController));
-router.get("/v1/quadra/many", unicQuadraController.findAll.bind(unicQuadraController));
-router.get("/v1/quadra/:id", unicQuadraController.findById.bind(unicQuadraController));
-router.get("/v1/quadra/nome/:nome", unicQuadraController.findByNome.bind(unicQuadraController));
-router.get("/v1/quadra/modalidade/:modalidade", unicQuadraController.findByModalidade.bind(unicQuadraController));
-router.put("/v1/quadra", unicQuadraController.updateQuadra.bind(unicQuadraController));
-router.delete("/v1/quadra/:id", unicQuadraController.deleteQuadra.bind(unicQuadraController));

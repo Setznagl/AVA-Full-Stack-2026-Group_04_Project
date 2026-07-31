@@ -12,7 +12,6 @@ const mock_Prisma_Client_Configurado = new PrismaClient(
     {
         //Carregando o Driver PostgreSQL no PrismaClient, e passando a string de conexao do banco de dados
         adapter: adapter,
-        log: ["error"]
         // log:["query" , "info" , "warn" , "error"] //Consultas SQL serao listadas no console em tempo real
     }
 );
