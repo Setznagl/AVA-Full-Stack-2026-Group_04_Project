@@ -539,10 +539,7 @@ describe("QuadraController:", () => {
             }
         } as unknown as Request
 
-        const mockError:any = await mockQuadraController.insertQuadra(mockRequest, response)
-        if (mockError instanceof HttpError) {
-            throw mockError
-        }
+        await mockQuadraController.insertQuadra(mockRequest, response)
 
         expect(response.status).toHaveBeenCalledWith(201);
         expect(response.body).toHaveProperty("id");
@@ -577,7 +574,7 @@ describe("QuadraController:", () => {
             params: {
                 id: mockQuadraID,
             }
-        } as any as Request;
+        } as unknown as Request;    
 
         await mockQuadraController.findById(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(200);
@@ -592,7 +589,8 @@ describe("QuadraController:", () => {
             params: {
                 nome: mockQuadraNome,
             }
-        } as any as Request;
+
+        } as unknown as Request;
 
         await mockQuadraController.findByNome(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(200);
@@ -608,7 +606,8 @@ describe("QuadraController:", () => {
             params: {
                 modalidade: mockQuadraModalidade,
             }
-        } as any as Request
+
+        } as unknown as Request
 
         await mockQuadraController.findByModalidade(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(200);
@@ -692,7 +691,8 @@ describe("QuadraController:", () => {
             params: {
                 id: mockQuadraID,
             }
-        } as any as Request;
+
+        } as unknown as Request;
 
         await mockQuadraController.findById(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(500);
@@ -706,7 +706,8 @@ describe("QuadraController:", () => {
             params: {
                 nome: mockQuadraNome,
             }
-        } as any as Request;
+
+        } as unknown as Request;
 
         await mockQuadraController.findByNome(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(500);
@@ -720,7 +721,8 @@ describe("QuadraController:", () => {
             params: {
                 modalidade: mockQuadraModalidade,
             }
-        } as any as Request;
+
+        } as unknown as Request;
 
         await mockQuadraController.findByModalidade(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(500);
@@ -750,7 +752,8 @@ describe("QuadraController:", () => {
                 modalidade: mockQuadraModalidade,
                 localizacao: mockQuadraLocalizacao,
             }
-        } as any as Request;
+
+        } as unknown as Request;
 
         await mockQuadraController.updateQuadra(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(500);
@@ -765,7 +768,8 @@ describe("QuadraController:", () => {
             params: {
                 id: mockQuadraID,
             }
-        } as any as Request;
+
+        } as unknown as Request;
 
         await mockQuadraController.deleteQuadra(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(500);
@@ -780,12 +784,10 @@ describe("QuadraController:", () => {
             }
         } as Request;
 
-        const mockError = await mockQuadraController.findById(mockRequest, response)
-        expect(mockError instanceof HttpError).toBe(true);
-        if(mockError instanceof HttpError){
-            expect(mockError.statusCode).toBe(400);
-            expect(mockError.message).toBe("Invalid path parameter");
-        }
+        await mockQuadraController.findById(mockRequest, response)
+        expect(response.status).toHaveBeenCalledWith(400);
+        expect(response.body).toHaveProperty("statusCode", 400);
+        expect(response.body).toHaveProperty("message", "Invalid path parameter");
     })
 
     it("Try to find an existing Quadra using field 'nome' but sending a non-string value" , async () => {
@@ -832,12 +834,10 @@ describe("QuadraController:", () => {
             }
         } as Request;
 
-        const mockError = await mockQuadraController.updateQuadra(mockRequest, response)
-        expect(mockError instanceof HttpError).toBe(true);
-        if(mockError instanceof HttpError){
-            expect(mockError.statusCode).toBe(400);
-            expect(mockError.message).toBe("Invalid path parameter");
-        }
+        await mockQuadraController.updateQuadra(mockRequest, response)
+        expect(response.status).toHaveBeenCalledWith(400);
+        expect(response.body).toHaveProperty("statusCode", 400);
+        expect(response.body).toHaveProperty("message", "Invalid path parameter");
     })
 
     it("Try to delete an existing Quadra using field id but sending a non-number value" , async () => {
@@ -848,12 +848,10 @@ describe("QuadraController:", () => {
             }
         } as Request;
 
-        const mockError = await mockQuadraController.deleteQuadra(mockRequest, response)
-        expect(mockError instanceof HttpError).toBe(true);
-        if(mockError instanceof HttpError){
-            expect(mockError.statusCode).toBe(400);
-            expect(mockError.message).toBe("Invalid path parameter");
-        }
+        await mockQuadraController.deleteQuadra(mockRequest, response)
+        expect(response.status).toHaveBeenCalledWith(400);
+        expect(response.body).toHaveProperty("statusCode", 400);
+        expect(response.body).toHaveProperty("message", "Invalid path parameter");
     })
 
 

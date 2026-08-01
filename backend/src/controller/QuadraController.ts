@@ -21,15 +21,17 @@ export class QuadraController {
             : response.status(201).json(requestOutput);
     }
 
-    async findById(request: express.Request, response: express.Response): Promise<HttpError | void> {
+    async findById(request: express.Request, response: express.Response): Promise<void> {
         const { id } = request.params;
+        const idNumero = Number(id);
 
-        if(typeof id !== "number" || Array.isArray(id)) {
-            return new HttpError(400, 'Invalid path parameter', "controller");
+        if (Array.isArray(id) || Number.isNaN(idNumero)) {
+            response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
+            return;
         }
 
         const requestOutput = await this.quadraService
-            .findById(Number(id));
+            .findById(idNumero);
 
         requestOutput instanceof HttpError
             ? response.status(requestOutput.statusCode).json(requestOutput)
@@ -73,29 +75,33 @@ export class QuadraController {
             : response.status(200).json(requestOutput);
     }
 
-    async updateQuadra(request: express.Request, response: express.Response): Promise<HttpError | void> {
+    async updateQuadra(request: express.Request, response: express.Response): Promise<void> {
         const {id} = request.params;
         const {nome, modalidade, localizacao} = request.body;
+        const idNumero = Number(id);
 
-        if(typeof id !== "number" || Array.isArray(id)) {
-            return new HttpError(400, 'Invalid path parameter', "controller");
+        if (Array.isArray(id) || Number.isNaN(idNumero)) {
+            response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
+            return;
         }
 
-        const requestOutput = await this.quadraService.updateQuadra(id, nome, modalidade, localizacao);
+        const requestOutput = await this.quadraService.updateQuadra(idNumero, nome, modalidade, localizacao);
 
         requestOutput instanceof HttpError
             ? response.status(requestOutput.statusCode).json(requestOutput)
             : response.status(202).json(requestOutput);
     }
 
-    async deleteQuadra(request: express.Request, response: express.Response): Promise<HttpError | void> {
+    async deleteQuadra(request: express.Request, response: express.Response): Promise<void> {
         const {id} = request.params;
+        const idNumero = Number(id);
 
-        if(typeof id !== "number" || Array.isArray(id)) {
-            return new HttpError(400, 'Invalid path parameter', "controller");
+        if (Array.isArray(id) || Number.isNaN(idNumero)) {
+            response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
+            return;
         }
 
-        const requestOutput = await this.quadraService.deleteQuadra(id);
+        const requestOutput = await this.quadraService.deleteQuadra(idNumero);
 
         requestOutput instanceof HttpError
             ? response.status(requestOutput.statusCode).json(requestOutput)

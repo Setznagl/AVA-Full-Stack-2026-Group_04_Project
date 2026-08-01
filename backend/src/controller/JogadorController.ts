@@ -16,24 +16,32 @@ export class JogadorController {
         const requestOutput: jogador | HttpError = await this.jogadorService
             .insertJogador(nome, email, telefone, senha);
 
-        requestOutput instanceof HttpError
-            ? response.status(requestOutput.statusCode).json(requestOutput)
-            : response.status(201).json(requestOutput);
+        if (requestOutput instanceof HttpError) {
+            response.status(requestOutput.statusCode).json(requestOutput);
+        } else {
+            const { senha, ...jogadorSemSenha } = requestOutput;
+            response.status(201).json(jogadorSemSenha);
+        }
     }
 
-    async findByID(request: express.Request, response: express.Response):Promise<HttpError | void> {
+    async findByID(request: express.Request, response: express.Response):Promise<void> {
         const { id } = request.params;
+        const idNumero = Number(id);
 
-        if(typeof id !== "number" || Array.isArray(id)) {
-            return new HttpError(400, 'Invalid path parameter', "controller");
+        if (Array.isArray(id) || Number.isNaN(idNumero)) {
+            response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
+            return;
         }
 
         const requestOutput: jogador | HttpError | null = await this.jogadorService
-            .findByID(id);
+            .findByID(idNumero);
 
-        requestOutput instanceof HttpError
-            ? response.status(requestOutput.statusCode).json(requestOutput)
-            : response.status(200).json(requestOutput);
+        if (requestOutput instanceof HttpError || requestOutput === null) {
+            response.status(requestOutput instanceof HttpError ? requestOutput.statusCode : 404).json(requestOutput);
+        } else {
+            const { senha, ...jogadorSemSenha } = requestOutput;
+            response.status(200).json(jogadorSemSenha);
+        }
     }
 
     async findByEmail(request: express.Request, response: express.Response):Promise<HttpError | void> {
@@ -46,44 +54,57 @@ export class JogadorController {
         const requestOutput: jogador | HttpError | null = await this.jogadorService
             .findByEmail(email);
 
-        requestOutput instanceof HttpError
-            ? response.status(requestOutput.statusCode).json(requestOutput)
-            : response.status(200).json(requestOutput);
+        if (requestOutput instanceof HttpError || requestOutput === null) {
+            response.status(requestOutput instanceof HttpError ? requestOutput.statusCode : 404).json(requestOutput);
+        } else {
+            const { senha, ...jogadorSemSenha } = requestOutput;
+            response.status(200).json(jogadorSemSenha);
+        }
     }
 
     async findAll(_request: express.Request, response: express.Response):Promise<void> {
         const requestOutput: jogador[] | HttpError | null = await this.jogadorService.findAll();
 
-        requestOutput instanceof HttpError
-            ? response.status(requestOutput.statusCode).json(requestOutput)
-            : response.status(200).json(requestOutput);
+        if (requestOutput instanceof HttpError || requestOutput === null) {
+            response.status(requestOutput instanceof HttpError ? requestOutput.statusCode : 404).json(requestOutput);
+        } else {
+            const listaSemSenha = requestOutput.map(({ senha, ...jogadorSemSenha }) => jogadorSemSenha);
+            response.status(200).json(listaSemSenha);
+        }
     }
 
-    async updateJogador(request: express.Request, response: express.Response):Promise<HttpError | void> {
+    async updateJogador(request: express.Request, response: express.Response):Promise<void> {
         const { id } = request.params;
         const { nome, email, telefone, senha } = request.body;
+        const idNumero = Number(id);
 
-        if(typeof id !== "number" || Array.isArray(id)) {
-            return new HttpError(400, 'Invalid path parameter', "controller");
+        if (Array.isArray(id) || Number.isNaN(idNumero)) {
+            response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
+            return;
         }
 
         const requestOutput: jogador | HttpError = await this.jogadorService
-            .updateJogador(Number(id), nome, email, telefone, senha);
+            .updateJogador(idNumero, nome, email, telefone, senha);
 
-        requestOutput instanceof HttpError
-            ? response.status(requestOutput.statusCode).json(requestOutput)
-            : response.status(202).json(requestOutput);
+        if (requestOutput instanceof HttpError) {
+            response.status(requestOutput.statusCode).json(requestOutput);
+        } else {
+            const { senha: _senha, ...jogadorSemSenha } = requestOutput;
+            response.status(202).json(jogadorSemSenha);
+        }
     }
 
-    async deleteJogador(request: express.Request, response: express.Response):Promise<HttpError | void> {
+    async deleteJogador(request: express.Request, response: express.Response):Promise<void> {
         const { id } = request.params;
+        const idNumero = Number(id);
 
-        if(typeof id !== "number" || Array.isArray(id)) {
-            return new HttpError(400, 'Invalid path parameter', "controller");
+        if (Array.isArray(id) || Number.isNaN(idNumero)) {
+            response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
+            return;
         }
 
         const requestOutput: jogador | HttpError = await this.jogadorService
-            .deleteJogador(id);
+            .deleteJogador(idNumero);
 
         requestOutput instanceof HttpError
             ? response.status(requestOutput.statusCode).json(requestOutput)

@@ -4,10 +4,11 @@
 // IT or TEST -> Define um teste específico (test case)
 // EXPECT -> Asserções sobre o resultado esperado
 
+import bcrypt from "bcryptjs";
 import type {Request} from "express";
 import {HttpError} from "../exception/HttpError.ts"
 import mock_Prisma_Client_Configurado from "../../src/tests/mock/mock_PrismaClient.ts"
-import type {jogador} from "../generated/prisma/client.ts"
+import type { jogador } from "../generated/prisma/client.ts"
 import {JogadorRepository} from "../repository/JogadorRepository.ts"
 import {JogadorService} from "../service/JogadorService.ts"
 import {JogadorController, unicJogadorControllerInstance} from "../controller/JogadorController.ts"
@@ -40,7 +41,8 @@ describe("JogadorRepository:", () => {
         expect(mockInsert).toHaveProperty("nome", "Jogador Mock");
         expect(mockInsert).toHaveProperty("email", "jogador_mock@example.com");
         expect(mockInsert).toHaveProperty("telefone", "1234567890");
-        expect(mockInsert).toHaveProperty("senha", "1234567890");
+        const senhaConfere = await bcrypt.compare("1234567890", mockInsert.senha);
+        expect(senhaConfere).toBe(true);
 
         mockJogadorID = mockInsert.id;
         mockJogadorNome = mockInsert.nome;
@@ -88,10 +90,12 @@ describe("JogadorRepository:", () => {
 
     it("Try to find an existing Jogador using field email", async () => {
         const mockFind = await mockJogadorRepository.findByEmail(mockJogadorEmail);
+        if(mockFind instanceof HttpError || mockFind === null){ throw mockFind; }
         expect(mockFind).toHaveProperty("email" , mockJogadorEmail)
         expect(mockFind).toHaveProperty("id" , mockJogadorID)
         expect(mockFind).toHaveProperty("telefone" , mockJogadorTelefone)
-        expect(mockFind).toHaveProperty("senha" , mockJogadorSenha)
+        const senhaConfere = await bcrypt.compare(mockJogadorSenha, mockFind.senha);
+        expect(senhaConfere).toBe(true);
         expect(mockFind).toHaveProperty("nome" , mockJogadorNome)
     });
 
@@ -112,7 +116,8 @@ describe("JogadorRepository:", () => {
         expect(mockFind).toHaveProperty("id" , mockJogadorID)
         expect(mockFind).toHaveProperty("email" , mockJogadorEmail)
         expect(mockFind).toHaveProperty("telefone" , mockJogadorTelefone)
-        expect(mockFind).toHaveProperty("senha" , mockJogadorSenha)
+        const senhaConfere = await bcrypt.compare(mockJogadorSenha, mockFind.senha);
+        expect(senhaConfere).toBe(true);
         expect(mockFind).toHaveProperty("nome" , mockJogadorNome)
     })
 
@@ -140,16 +145,19 @@ describe("JogadorRepository:", () => {
 
     it("Try to receive multiple data using findAll", async () => {
         const mockFind = await mockJogadorRepository.findAll();
+        if(mockFind instanceof HttpError){ throw mockFind; }
         expect(Array.isArray(mockFind)).toBe(true);
-        expect(mockFind).toEqual(expect.arrayContaining([
-            expect.objectContaining({
-                "id": mockJogadorID,
-                "nome": mockJogadorNome,
-                "email": mockJogadorEmail,
-                "telefone": mockJogadorTelefone,
-                "senha": mockJogadorSenha
-            })
-        ]));
+        expect(mockFind).toHaveLength(1);
+        const primeiroJogador = mockFind[0];
+        if(primeiroJogador === undefined){ throw new Error("mockFind[0] is undefined"); }
+        expect(primeiroJogador).toMatchObject({
+            "id": mockJogadorID,
+            "nome": mockJogadorNome,
+            "email": mockJogadorEmail,
+            "telefone": mockJogadorTelefone,
+        });
+        const senhaConfere = await bcrypt.compare(mockJogadorSenha, primeiroJogador.senha);
+        expect(senhaConfere).toBe(true);
     })
 
     it("Try to update sending invalid types for any field", async () => {
@@ -198,7 +206,8 @@ describe("JogadorRepository:", () => {
         expect(mockFind).toHaveProperty("nome" , "Jogador Mock Updated")
         expect(mockFind).toHaveProperty("email" , "updated_mock_jogador@example.com")
         expect(mockFind).toHaveProperty("telefone" , "21341434")
-        expect(mockFind).toHaveProperty("senha" , "21893183129")
+        const senhaConfere = await bcrypt.compare("21893183129", mockFind.senha);
+        expect(senhaConfere).toBe(true);
         mockJogadorNome = "Jogador Mock Updated"
         mockJogadorEmail = "updated_mock_jogador@example.com"
         mockJogadorTelefone = "21341434"
@@ -214,11 +223,13 @@ describe("JogadorRepository:", () => {
 
     it("Try to delete an existing Jogador using field id" , async () => {
         const mockError = await mockJogadorRepository.deleteJogador(mockJogadorID);
+        if(mockError instanceof HttpError){ throw mockError; }
         expect(mockError).toHaveProperty("id" , mockJogadorID) // O Prisma devolve o objeto para confirmar a deleção
         expect(mockError).toHaveProperty("nome" , mockJogadorNome)
         expect(mockError).toHaveProperty("email" , mockJogadorEmail)
         expect(mockError).toHaveProperty("telefone" , mockJogadorTelefone)
-        expect(mockError).toHaveProperty("senha" , mockJogadorSenha)
+        const senhaConfere = await bcrypt.compare(mockJogadorSenha, mockError.senha);
+        expect(senhaConfere).toBe(true);
 
     })
 
@@ -319,7 +330,8 @@ describe("JogadorService:" , () => {
         expect(mockInsert).toHaveProperty("nome", "Jogador Mock");
         expect(mockInsert).toHaveProperty("email", "jogador_mock_2@example.com");
         expect(mockInsert).toHaveProperty("telefone", "1234567890");
-        expect(mockInsert).toHaveProperty("senha", "1234567890");
+        const senhaConfere = await bcrypt.compare("1234567890", mockInsert.senha);
+        expect(senhaConfere).toBe(true);
 
         mockJogadorID = mockInsert.id;
         mockJogadorNome = mockInsert.nome;
@@ -360,16 +372,19 @@ describe("JogadorService:" , () => {
 
     it("Try to receive multiple data using findAll (From Service layer)", async () => {
         const mockFind = await mockJogadorService.findAll();
+        if(mockFind instanceof HttpError || mockFind === null){ throw mockFind; }
         expect(Array.isArray(mockFind)).toBe(true);
-        expect(mockFind).toEqual(expect.arrayContaining([
-            expect.objectContaining({
-                "id": mockJogadorID,
-                "nome": mockJogadorNome,
-                "email": mockJogadorEmail,
-                "telefone": mockJogadorTelefone,
-                "senha": mockJogadorSenha
-            })
-        ]));
+        expect(mockFind).toHaveLength(1);
+        const primeiroJogador = mockFind[0];
+        if(primeiroJogador === undefined){ throw new Error("mockFind[0] is undefined"); }
+        expect(primeiroJogador).toMatchObject({
+            "id": mockJogadorID,
+            "nome": mockJogadorNome,
+            "email": mockJogadorEmail,
+            "telefone": mockJogadorTelefone,
+        });
+        const senhaConfere = await bcrypt.compare(mockJogadorSenha, primeiroJogador.senha);
+        expect(senhaConfere).toBe(true);
     })
 
     it("Try to update an existing Jogador using field id (From Service layer)", async () => {
@@ -380,10 +395,12 @@ describe("JogadorService:" , () => {
             "21341434",
             "21893183129"
         )
+        if(mockFind instanceof HttpError){ throw mockFind; }
         expect(mockFind).toHaveProperty("nome" , "Jogador Mock Updated")
         expect(mockFind).toHaveProperty("email" , "updated_mock_jogador@example.com")
         expect(mockFind).toHaveProperty("telefone" , "21341434")
-        expect(mockFind).toHaveProperty("senha" , "21893183129")
+        const senhaConfere = await bcrypt.compare("21893183129", mockFind.senha);
+        expect(senhaConfere).toBe(true);
         mockJogadorNome = "Jogador Mock Updated"
         mockJogadorEmail = "updated_mock_jogador@example.com"
         mockJogadorTelefone = "21341434"
@@ -398,11 +415,13 @@ describe("JogadorService:" , () => {
             mockJogadorTelefone,
             mockJogadorSenha
         )
+        if(mockFind instanceof HttpError){ throw mockFind; }
         expect(mockFind).toHaveProperty("id" , mockJogadorID)
         expect(mockFind).toHaveProperty("nome" , mockJogadorNome)
         expect(mockFind).toHaveProperty("email" , mockJogadorEmail)
         expect(mockFind).toHaveProperty("telefone" , mockJogadorTelefone)
-        expect(mockFind).toHaveProperty("senha" , mockJogadorSenha)
+        const senhaConfere = await bcrypt.compare(mockJogadorSenha, mockFind.senha);
+        expect(senhaConfere).toBe(true);
 
     })
 
@@ -552,7 +571,7 @@ describe("JogadorController:" , () => {
         expect(response.body.email).toBe(mockJogadorEmail);
         expect(response.body.nome).toBe(mockJogadorNome);
         expect(response.body.telefone).toBe(mockJogadorTelefone);
-        expect(response.body.senha).toBe(mockJogadorSenha);
+        expect(response.body.senha).toBeUndefined();
     })
 
     it("Try to find an existing Jogador using field id (From Controller layer)", async () => {
@@ -569,7 +588,7 @@ describe("JogadorController:" , () => {
         expect(response.body.email).toBe(mockJogadorEmail);
         expect(response.body.nome).toBe(mockJogadorNome);
         expect(response.body.telefone).toBe(mockJogadorTelefone);
-        expect(response.body.senha).toBe(mockJogadorSenha);
+        expect(response.body.senha).toBeUndefined();
     })
 
     it("Try to receive multiple data using findAll (From Controller layer)", async () => {
@@ -588,11 +607,11 @@ describe("JogadorController:" , () => {
                     id: mockJogadorID,
                     nome: mockJogadorNome,
                     email: mockJogadorEmail,
-                    telefone: mockJogadorTelefone,
-                    senha: mockJogadorSenha
+                    telefone: mockJogadorTelefone
                 })
             ])
         )
+        expect(response.body[0].senha).toBeUndefined();
     })
 
     it("Try to update an existing Jogador using field id (From Controller layer)", async () => {
@@ -615,13 +634,13 @@ describe("JogadorController:" , () => {
         expect(response.body.email).toBe("novoemail@example.com");
         expect(response.body.nome).toBe("Jogador Mock Novo Nome");
         expect(response.body.telefone).toBe("999999999");
-        expect(response.body.senha).toBe("novasenha");
+        expect(response.body.senha).toBeUndefined();
 
         // Atualizar variáveis se o teste foi bem sucedido
         mockJogadorNome = response.body.nome;
         mockJogadorEmail = response.body.email;
         mockJogadorTelefone = response.body.telefone;
-        mockJogadorSenha = response.body.senha;
+        mockJogadorSenha = "novasenha";
     })
 
     it("Try to delete an existing Jogador using field id (From Controller layer)", async () => {
@@ -725,12 +744,10 @@ describe("JogadorController:" , () => {
             }
         } as Request;
 
-        const mockError = await mockJogadorController.findByID(mockRequest, response)
-        expect(mockError instanceof HttpError).toBe(true);
-        if(mockError instanceof HttpError){
-            expect(mockError.statusCode).toBe(400);
-            expect(mockError.message).toBe("Invalid path parameter");
-        }
+        await mockJogadorController.findByID(mockRequest, response)
+        expect(response.status).toHaveBeenCalledWith(400);
+        expect(response.body).toHaveProperty("statusCode", 400);
+        expect(response.body).toHaveProperty("message", "Invalid path parameter");
     })
 
     it("Try to find an existing Jogador using field 'email' but sending a non-string value (From Controller layer)" , async () => {
@@ -761,12 +778,10 @@ describe("JogadorController:" , () => {
             }
         } as Request;
 
-        const mockError = await mockJogadorController.updateJogador(mockRequest, response)
-        expect(mockError instanceof HttpError).toBe(true);
-        if(mockError instanceof HttpError){
-            expect(mockError.statusCode).toBe(400);
-            expect(mockError.message).toBe("Invalid path parameter");
-        }
+        await mockJogadorController.updateJogador(mockRequest, response)
+        expect(response.status).toHaveBeenCalledWith(400);
+        expect(response.body).toHaveProperty("statusCode", 400);
+        expect(response.body).toHaveProperty("message", "Invalid path parameter");
     })
 
     it("Try to delete an existing Jogador using field id but sending a non-number value (From Controller layer)" , async () => {
@@ -777,12 +792,10 @@ describe("JogadorController:" , () => {
             }
         } as Request;
 
-        const mockError = await mockJogadorController.deleteJogador(mockRequest, response)
-        expect(mockError instanceof HttpError).toBe(true);
-        if(mockError instanceof HttpError){
-            expect(mockError.statusCode).toBe(400);
-            expect(mockError.message).toBe("Invalid path parameter");
-        }
+        await mockJogadorController.deleteJogador(mockRequest, response)
+        expect(response.status).toHaveBeenCalledWith(400);
+        expect(response.body).toHaveProperty("statusCode", 400);
+        expect(response.body).toHaveProperty("message", "Invalid path parameter");
     })
 
 
