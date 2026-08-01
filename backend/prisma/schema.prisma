@@ -18,7 +18,7 @@ model jogador {
 
 model quadra {
   id          Int       @id @default(autoincrement())
-  nome        String    @db.VarChar(150)
+  nome        String    @unique @db.VarChar(150)
   modalidade  String    @db.VarChar(50)
   localizacao String    @db.VarChar(150)
   reserva     reserva[]
@@ -30,8 +30,8 @@ model reserva {
   jogador_id     Int
   quadra_id      Int
   data           DateTime @db.Date
-  horario_inicio DateTime @db.Time(6)
-  horario_fim    DateTime @db.Time(6)
-  jogador        jogador  @relation(fields: [jogador_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_reserva_jogador")
-  quadra         quadra   @relation(fields: [quadra_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_reserva_quadra")
+  horario_inicio DateTime @db.Timestamptz(6)
+  horario_fim    DateTime @db.Timestamptz(6)
+  jogador        jogador  @relation(fields: [jogador_id], references: [id], onDelete: Cascade, map: "fk_reserva_jogador")
+  quadra         quadra   @relation(fields: [quadra_id], references: [id], onDelete: Cascade, map: "fk_reserva_quadra")
 }

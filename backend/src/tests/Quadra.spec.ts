@@ -4,12 +4,12 @@ import type {Request} from "express";
 import {HttpError} from "../exception/HttpError.ts"
 import mock_Prisma_Client_Configurado from "../../src/tests/mock/mock_PrismaClient.ts"
 import {unicQuadraControllerInstance} from "../controller/QuadraController.ts";
-import type {quadra} from "../generated/prisma/client.ts"
 import {QuadraRepository} from "../repository/QuadraRepository.ts";
 import {QuadraService} from "../service/QuadraService.ts";
 import {QuadraController} from "../controller/QuadraController.ts";
 
-beforeAll(async () => {
+beforeAll( async () => {
+    await mock_Prisma_Client_Configurado.reserva.deleteMany()
     await mock_Prisma_Client_Configurado.quadra.deleteMany()
 })
 
@@ -539,7 +539,7 @@ describe("QuadraController:", () => {
             }
         } as unknown as Request
 
-        const mockError = await mockQuadraController.insertQuadra(mockRequest, response)
+        const mockError:any = await mockQuadraController.insertQuadra(mockRequest, response)
         if (mockError instanceof HttpError) {
             throw mockError
         }
@@ -577,7 +577,7 @@ describe("QuadraController:", () => {
             params: {
                 id: mockQuadraID,
             }
-        } as Request;
+        } as any as Request;
 
         await mockQuadraController.findById(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(200);
@@ -592,7 +592,7 @@ describe("QuadraController:", () => {
             params: {
                 nome: mockQuadraNome,
             }
-        } as Request;
+        } as any as Request;
 
         await mockQuadraController.findByNome(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(200);
@@ -608,7 +608,7 @@ describe("QuadraController:", () => {
             params: {
                 modalidade: mockQuadraModalidade,
             }
-        } as Request
+        } as any as Request
 
         await mockQuadraController.findByModalidade(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(200);
@@ -692,7 +692,7 @@ describe("QuadraController:", () => {
             params: {
                 id: mockQuadraID,
             }
-        } as Request;
+        } as any as Request;
 
         await mockQuadraController.findById(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(500);
@@ -706,7 +706,7 @@ describe("QuadraController:", () => {
             params: {
                 nome: mockQuadraNome,
             }
-        } as Request;
+        } as any as Request;
 
         await mockQuadraController.findByNome(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(500);
@@ -720,7 +720,7 @@ describe("QuadraController:", () => {
             params: {
                 modalidade: mockQuadraModalidade,
             }
-        } as Request;
+        } as any as Request;
 
         await mockQuadraController.findByModalidade(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(500);
@@ -750,7 +750,7 @@ describe("QuadraController:", () => {
                 modalidade: mockQuadraModalidade,
                 localizacao: mockQuadraLocalizacao,
             }
-        } as Request;
+        } as any as Request;
 
         await mockQuadraController.updateQuadra(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(500);
@@ -765,7 +765,7 @@ describe("QuadraController:", () => {
             params: {
                 id: mockQuadraID,
             }
-        } as Request;
+        } as any as Request;
 
         await mockQuadraController.deleteQuadra(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(500);

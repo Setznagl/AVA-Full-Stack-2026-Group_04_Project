@@ -43,6 +43,7 @@
     "allowSyntheticDefaultImports": true,
     "allowImportingTsExtensions": true,
     "rewriteRelativeImportExtensions": true,
-    "noEmit": true
+    "noEmit": true,
+
   }
 }

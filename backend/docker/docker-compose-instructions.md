@@ -27,7 +27,7 @@ avanti-fullstack-2026-g4-db-image:a1b2c3d
 Para construir (caso necessário) e iniciar os containers:
 
 ```bash
-IMAGE_TAG=$(git rev-parse --short HEAD) docker compose up -d --build
+IMAGE_TAG=$(git rev-parse --short HEAD) docker compose up --build -d
 ```
 
 ## Observações
