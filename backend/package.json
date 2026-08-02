@@ -26,6 +26,7 @@
     "install": "^0.13.0",
     "jest": "^30.4.2",
     "prisma": "^7.8.0",
+    "ts-node": "^10.9.2",
     "tsx": "^4.23.1"
   },
   "dependencies": {
