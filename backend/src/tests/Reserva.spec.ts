@@ -1,15 +1,15 @@
 // noinspection DuplicatedCode
 
-import { HttpError } from "../exception/HttpError.ts";
-import mock_Prisma_Client_Configurado from "./mock/mock_PrismaClient.ts";
-import { ReservaRepository} from "../repository/ReservaRepository.ts";
-import { ReservaService } from "../service/ReservaService.ts";
-import { ReservaController } from "../controller/ReservaController.ts";
-import { JogadorRepository } from "../repository/JogadorRepository.ts";
-import { QuadraRepository } from "../repository/QuadraRepository.ts";
+import { HttpError } from "../exception/HttpError.js";
+import mock_Prisma_Client_Configurado from "./mock/mock_PrismaClient.js";
+import { ReservaRepository} from "../repository/ReservaRepository.js";
+import { ReservaService } from "../service/ReservaService.js";
+import { ReservaController } from "../controller/ReservaController.js";
+import { JogadorRepository } from "../repository/JogadorRepository.js";
+import { QuadraRepository } from "../repository/QuadraRepository.js";
 
-let mockJogadorID: number;
-let mockQuadraID: number;
+let mockJogadorID = 0;
+let mockQuadraID = 0;
 
 beforeAll(async () => {
     await mock_Prisma_Client_Configurado.reserva.deleteMany()
@@ -28,7 +28,7 @@ beforeAll(async () => {
 describe("ReservaRepository:", () => {
     const mockReservaRepository = new ReservaRepository(mock_Prisma_Client_Configurado);
 
-    let mockReservaID: number;
+    let mockReservaID = 0;
 
     const mockData = new Date("2026-05-10");
     const mockHorarioInicio = new Date("2026-05-10T14:00:00Z");
@@ -68,7 +68,8 @@ describe("ReservaRepository:", () => {
     });
 
     it("Try to find an existing Reserva sending non-number ID", async () => {
-        const mockError = await mockReservaRepository.findByID("invalid_id" as unknown as number);
+        // @ts-ignore
+        const mockError = await mockReservaRepository.findByID("invalid_id");
         expect(mockError).toBeInstanceOf(HttpError);
     });
 
@@ -158,7 +159,8 @@ describe("ReservaRepository:", () => {
     });
 
     it("Receiving an unexpected error during findByID operation, should return HttpError 500", async () => {
-        const undefinedRepository = new ReservaRepository({} as any);
+        // @ts-ignore
+        const undefinedRepository = new ReservaRepository({});
         const mockError = await undefinedRepository.findByID(mockReservaID);
         expect(mockError).toBeInstanceOf(HttpError);
     });
@@ -277,7 +279,7 @@ describe("ReservaService:" , () => {
         new QuadraRepository(mock_Prisma_Client_Configurado),
     )
 
-    let mockReservaID: number;
+    let mockReservaID = 0;
 
     const mockData = new Date("2026-05-12");
     const mockHorarioInicio = new Date("1970-01-01T16:00:00Z");
@@ -355,9 +357,10 @@ describe("ReservaService:" , () => {
     });
 
     it("Retry insert: Should return HttpError 409 due unique constraint violation (From Service layer)", async () => {
-        const secQuadra: any = await mockReservaService.quadraRepository.insertQuadra("Quadra Secundária Reserva", "Futebol", "Bloco C");
+        const secQuadra = await mockReservaService.quadraRepository.insertQuadra("Quadra Secundária Reserva", "Futebol", "Bloco C");
 
-        let secQuadraId: number = secQuadra.id;
+        // @ts-ignore
+        let secQuadraId = secQuadra.id;
 
         const mockError = await mockReservaService.insertReserva(
             mockJogadorID,
@@ -385,7 +388,8 @@ describe("ReservaService:" , () => {
     });
 
     it("Try to find an existing Reserva using field id sending a non-number value (From Service layer)", async () => {
-        const mockError = await mockReservaService.findById("invalid_id" as unknown as number);
+        // @ts-ignore
+        const mockError = await mockReservaService.findById("invalid_id");
         expect(mockError).toBeInstanceOf(HttpError);
     });
 
@@ -395,7 +399,7 @@ describe("ReservaService:" , () => {
     });
 
     it("Try to find an existing Reserva by jogador_id (From Service layer)", async () => {
-        const mockFind: any = await mockReservaService.findByJogadorId(mockJogadorID);
+        const mockFind = await mockReservaService.findByJogadorId(mockJogadorID);
         if (mockFind instanceof HttpError || mockFind === null) {throw mockFind;}
         expect(mockFind).toEqual(expect.arrayContaining([
             expect.objectContaining({
@@ -410,7 +414,7 @@ describe("ReservaService:" , () => {
     });
 
     it("Try to find an existing Reserva by quadra_id (From Service layer)", async () => {
-        const mockFind: any = await mockReservaService.findByQuadraId(mockQuadraID);
+        const mockFind = await mockReservaService.findByQuadraId(mockQuadraID);
         if (mockFind instanceof HttpError || mockFind === null) {throw mockFind;}
         expect(mockFind).toEqual(expect.arrayContaining([
             expect.objectContaining({
@@ -425,7 +429,7 @@ describe("ReservaService:" , () => {
     });
 
     it("Try to receive multiple data using findByData (From Service layer)" , async () => {
-        const mockFind: any = await mockReservaService.findByData(mockData);
+        const mockFind = await mockReservaService.findByData(mockData);
         if (mockFind instanceof HttpError || mockFind === null) {throw mockFind;}
         expect(mockFind).toEqual(expect.arrayContaining([
             expect.objectContaining({
@@ -440,7 +444,7 @@ describe("ReservaService:" , () => {
     })
 
     it("Try to receive multiple data using findAll (From Service layer)", async () => {
-        const mockFind: any = await mockReservaService.findAll();
+        const mockFind = await mockReservaService.findAll();
         if (mockFind instanceof HttpError || mockFind === null) {throw mockFind;}
         expect(Array.isArray(mockFind)).toBe(true);
         expect(mockFind).toEqual(expect.arrayContaining([
@@ -617,7 +621,7 @@ describe("ReservaService:" , () => {
     });
 
     it("Receiving an unexpected error during findByID operation, should return HttpError 500 (From Service layer)", async () => {
-        const undefinedService: ReservaService = new ReservaService(new ReservaRepository(undefined), new JogadorRepository(undefined), new QuadraRepository(undefined));
+        const undefinedService = new ReservaService(new ReservaRepository(undefined), new JogadorRepository(undefined), new QuadraRepository(undefined));
         const mockError = await undefinedService.findById(mockReservaID);
         expect(mockError).toBeInstanceOf(HttpError);
         if (mockError instanceof HttpError) {
@@ -626,7 +630,7 @@ describe("ReservaService:" , () => {
     });
 
     it("Receiving an unexpected error during findAll operation, should return HttpError 500 (From Service layer)", async () => {
-        const undefinedService: ReservaService = new ReservaService(new ReservaRepository(undefined), new JogadorRepository(undefined), new QuadraRepository(undefined));
+        const undefinedService = new ReservaService(new ReservaRepository(undefined), new JogadorRepository(undefined), new QuadraRepository(undefined));
         const mockError = await undefinedService.findAll();
         expect(mockError).toBeInstanceOf(HttpError);
         if (mockError instanceof HttpError) {
@@ -635,7 +639,7 @@ describe("ReservaService:" , () => {
     });
 
     it("Receiving an unexpected error during updateReserva operation, should return HttpError 500 (From Service layer)", async () => {
-        const undefinedService: ReservaService =
+        const undefinedService =
             new ReservaService(
                 new ReservaRepository(undefined),
                 new JogadorRepository(undefined),
@@ -654,7 +658,7 @@ describe("ReservaService:" , () => {
     });
 
     it("Receiving an unexpected error during deleteReserva operation, should return HttpError 500 (From Service layer)", async () => {
-        const undefinedService: ReservaService = new ReservaService(new ReservaRepository(undefined), new JogadorRepository(undefined), new QuadraRepository(undefined));
+        const undefinedService = new ReservaService(new ReservaRepository(undefined), new JogadorRepository(undefined), new QuadraRepository(undefined));
         const mockError = await undefinedService.deleteReserva(mockReservaID);
         expect(mockError).toBeInstanceOf(HttpError);
         if (mockError instanceof HttpError) {
@@ -672,7 +676,7 @@ describe("ReservaController:", () => {
         )
     );
 
-    let mockReservaID: number;
+    let mockReservaID = 0;
 
     const response = {
         body: undefined,
@@ -681,7 +685,7 @@ describe("ReservaController:", () => {
             this.body = data;
             return this;
         })
-    } as any;
+    };
 
     it("Should insert and return a new Reserva (From Controller layer)" , async () => {
         const mockRequest = {
@@ -692,11 +696,11 @@ describe("ReservaController:", () => {
                 "horarioInicio": new Date("2026-05-14T18:00:00Z"),
                 "horarioFim": new Date("2026-05-14T19:00:00Z"),
             }
-        } as any as Request;
+        };
 
-        await mockReservaController.insertReserva(mockRequest, response);
+        await mockReservaController.insertReserva(mockRequest as any, response as any);
 
-        mockReservaID = response.body.id;
+        mockReservaID = (response.body as any).id;
 
         expect(response.status).toHaveBeenCalledWith(201);
 
@@ -707,7 +711,7 @@ describe("ReservaController:", () => {
             params: {
                 id: mockReservaID
             }
-        } as any as Request
+        } as any
 
         await mockReservaController.findById(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(200);
@@ -719,7 +723,7 @@ describe("ReservaController:", () => {
             params: {
                 jogador_id: mockJogadorID
             }
-        } as any as Request;
+        } as any;
 
          await mockReservaController.findByJogadorId(mockRequest, response);
          expect(response.status).toHaveBeenCalledWith(200);
@@ -735,7 +739,7 @@ describe("ReservaController:", () => {
             params: {
                 quadra_id: mockQuadraID
             }
-        } as any as Request;
+        } as any;
 
         await mockReservaController.findByQuadraId(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(200);
@@ -751,7 +755,7 @@ describe("ReservaController:", () => {
             params: {
                 data: "2026-05-14"
             }
-        } as any as Request;
+        } as any;
 
         await mockReservaController.findByData(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(200);
@@ -763,7 +767,7 @@ describe("ReservaController:", () => {
     })
 
     it("Try to find an existing Reserva[] using field 'findAll' (From Controller layer)" , async () => {
-        const mockRequest = {} as any as Request;
+        const mockRequest = {} as any;
 
         await mockReservaController.findAll(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(200);
@@ -779,9 +783,9 @@ describe("ReservaController:", () => {
                 horario_inicio: new Date("2026-05-10T09:00:00Z"),
                 horario_fim: new Date("2026-05-10T09:10:00Z"),
             }
-        } as Request;
+        } as any;
 
-        await mockReservaController.updateReserva(mockRequest, response);
+        await mockReservaController.updateReserva(mockRequest as any, response as any);
         expect(response.status).toHaveBeenCalledWith(202);
 
 
@@ -792,79 +796,76 @@ describe("ReservaController:", () => {
             params:{
                 id: mockReservaID
             }
-        } as Request;
+        } as any;
 
         await mockReservaController.deleteReserva(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(204);
     })
 
     it("Sending an invalid path parameter for Reserva 'findById (From Controller layer)" , async () => {
-        // @ts-expect-error
         const mockRequest = {
             params:{
                 id: "invalid_id",
             }
-        } as Request;
+        } as any;
 
-        const mockError = await mockReservaController.findById(mockRequest, response);
-        expect(mockError instanceof HttpError).toBe(true);
-        if(mockError instanceof HttpError){
-            expect(mockError.statusCode).toBe(400);
-            expect(mockError.message).toBe("Invalid path parameter");
-        }
+        await mockReservaController.findByJogadorId(mockRequest, response);
+        expect(response.status).toHaveBeenCalledWith(400);
+        expect(response.json).toHaveBeenCalledWith(
+            expect.objectContaining({ message: "Invalid path parameter" })
+        );
     })
 
     it("Sending an invalid path parameter for Reserva 'findByJogadorId (From Controller layer)" , async () => {
-        // @ts-expect-error
+
         const mockRequest = {
             params:{
                 jogador_id: "invalid_id",
             }
-        } as Request;
+        } as any;
 
         const mockError =await mockReservaController.findByJogadorId(mockRequest, response);
-        expect(mockError instanceof HttpError).toBe(true);
-        if(mockError instanceof HttpError){
-            expect(mockError.statusCode).toBe(400);
-            expect(mockError.message).toBe("Invalid path parameter");
-        }
+        expect(mockError).toBeInstanceOf(HttpError);
+        // @ts-ignore
+        expect(mockError.statusCode).toBe(400);
+        // @ts-ignore
+        expect(mockError.message).toBe("Invalid path parameter");
     })
 
     it("Sending an invalid path parameter for Reserva 'findByQuadraId (From Controller layer)" , async () => {
-        // @ts-expect-error
         const mockRequest = {
             params:{
                 quadra_id: "invalid_id",
             }
-        } as Request;
+        } as any;
 
         const mockError = await mockReservaController.findByQuadraId(mockRequest, response);
-        expect(mockError instanceof HttpError).toBe(true);
-        if(mockError instanceof HttpError){
-            expect(mockError.statusCode).toBe(400);
-            expect(mockError.message).toBe("Invalid path parameter");
-        }
+        expect(mockError).toBeInstanceOf(HttpError);
+        // @ts-ignore
+        expect(mockError.statusCode).toBe(400);
+        // @ts-ignore
+        expect(mockError.message).toBe("Invalid path parameter");
     })
 
     it("Sending an invalid path parameter for Reserva 'findByData (From Controller layer)" , async () => {
-        // @ts-expect-error
+
         const mockRequest = {
             params:{
                 data: 9023.2,
             }
-        } as Request;
+        } as any;
 
         const mockError = await mockReservaController.findByData(mockRequest, response);
-        expect(mockError instanceof HttpError).toBe(true);
-        if(mockError instanceof HttpError){
-            expect(mockError.statusCode).toBe(400);
-            expect(mockError.message).toBe("Invalid path parameter");
-        }
+        expect(mockError).toBeInstanceOf(HttpError);
+        // @ts-ignore
+        expect(mockError.statusCode).toBe(400);
+        // @ts-ignore
+        expect(mockError.message).toBe("Invalid path parameter");
 
     })
 
     it("Sending an invalid path parameter for Reserva 'updateReserva (From Controller layer)" , async () => {
-        // @ts-expect-error
+
         const mockRequest = {
             params: {
                 id: "invalid_id",
@@ -874,14 +875,14 @@ describe("ReservaController:", () => {
                 horario_inicio: new Date("2026-05-10T14:00:00Z"),
                 horario_fim: new Date("2026-05-10T16:00:00Z")
             }
-        } as Request;
+        } as any;
 
-        await mockReservaController.updateReserva(mockRequest, response);
+        await mockReservaController.updateReserva(mockRequest as any, response as any);
         expect(response.status).toHaveBeenCalledWith(400);
     })
 
     it("Sending an invalid body parameter for Reserva 'updateReserva (From Controller layer)" , async () => {
-        // @ts-expect-error
+
         const mockRequest = {
             params: {
                 id: mockReservaID,
@@ -891,26 +892,26 @@ describe("ReservaController:", () => {
                 horario_inicio: new Date("2026-05-10T14:00:00Z"),
                 horario_fim: new Date("2026-05-10T16:00:00Z")
             }
-        } as Request;
+        } as any;
 
-        await mockReservaController.updateReserva(mockRequest, response);
+        await mockReservaController.updateReserva(mockRequest as any, response as any);
         expect(response.status).toHaveBeenCalledWith(400);
     })
 
     it("Sending an invalid path parameter for Reserva 'deleteReserva (From Controller layer)" , async () => {
-        // @ts-expect-error
+
         const mockRequest = {
             params: {
                 id: "invalid_id"
             }
-        } as Request;
+        } as any;
 
         const mockError = await mockReservaController.deleteReserva(mockRequest, response);
-        expect(mockError instanceof HttpError).toBe(true);
-        if(mockError instanceof HttpError){
-            expect(mockError.statusCode).toBe(400);
-            expect(mockError.message).toBe("Invalid path parameter");
-        }
+        expect(mockError).toBeInstanceOf(HttpError);
+        // @ts-ignore
+        expect(mockError.statusCode).toBe(400);
+        // @ts-ignore
+        (mockError.message).toBe("Invalid path parameter");
     })
 
     it("Receiving an unexpected error during insertReserva operation, should return HttpError 404 (From Controller layer)" , async () => {
@@ -922,9 +923,9 @@ describe("ReservaController:", () => {
                 "horarioInicio": new Date("2026-05-14T18:00:00Z"),
                 "horarioFim": new Date("2026-05-14T19:00:00Z"),
             }
-        } as Request;
+        } as any;
 
-        await mockReservaController.insertReserva(mockRequest, response);
+        await mockReservaController.insertReserva(mockRequest as any, response as any);
         expect(response.status).toHaveBeenCalledWith(404);
         expect(response.body).toBeInstanceOf(HttpError);
 
@@ -938,12 +939,11 @@ describe("ReservaController:", () => {
                 new QuadraRepository(undefined)
             ));
 
-        // @ts-expect-error
         const mockRequest = {
             params:{
                 id: mockReservaID + 1,
             }
-        } as Request;
+        } as any;
 
         await undefinedReservaControler.findById(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(500);
@@ -957,12 +957,11 @@ describe("ReservaController:", () => {
                 new QuadraRepository(undefined)
             ));
 
-        // @ts-expect-error
         const mockRequest = {
             params:{
                 jogador_id: mockJogadorID + 1,
             }
-        } as Request;
+        } as any;
 
         await undefinedReservaControler.findByJogadorId(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(500);
@@ -976,12 +975,11 @@ describe("ReservaController:", () => {
                 new QuadraRepository(undefined)
             ));
 
-        // @ts-expect-error
         const mockRequest = {
             params:{
                 quadra_id: mockQuadraID + 1,
             }
-        } as Request;
+        } as any;
 
         await undefinedReservaControler.findByQuadraId(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(500);
@@ -995,12 +993,11 @@ describe("ReservaController:", () => {
                 new QuadraRepository(undefined)
             ));
 
-        // @ts-expect-error
         const mockRequest = {
             params:{
                 data: "2026-05-14",
             }
-        } as Request;
+        } as any;
 
         await undefinedReservaControler.findByData(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(500);
@@ -1014,8 +1011,7 @@ describe("ReservaController:", () => {
                 new QuadraRepository(undefined)
             ));
 
-        // @ts-expect-error
-        const mockRequest = {} as Request;
+        const mockRequest = {} as any;
 
         await undefinedReservaControler.findAll(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(500);
@@ -1029,7 +1025,6 @@ describe("ReservaController:", () => {
                 new QuadraRepository(undefined)
             ));
 
-        // @ts-expect-error
         const mockRequest = {
             params:{
                 id: mockReservaID,
@@ -1038,9 +1033,9 @@ describe("ReservaController:", () => {
                 horario_inicio: new Date("2026-05-10T14:00:00Z"),
                 horario_fim: new Date("2026-05-10T16:00:00Z")
             }
-        } as Request;
+        } as any;
 
-        await undefinedReservaControler.updateReserva(mockRequest, response);
+        await undefinedReservaControler.updateReserva(mockRequest as any, response as any);
         expect(response.status).toHaveBeenCalledWith(500);
     })
 
@@ -1052,12 +1047,11 @@ describe("ReservaController:", () => {
                 new QuadraRepository(undefined)
             ));
 
-        // @ts-expect-error
         const mockRequest = {
             params:{
                 id: mockReservaID + 1
             }
-        } as Request;
+        } as any;
 
         await undefinedReservaControler.deleteReserva(mockRequest, response);
         expect(response.status).toHaveBeenCalledWith(500);

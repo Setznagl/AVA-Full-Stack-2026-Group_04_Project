@@ -1,12 +1,11 @@
 // noinspection DuplicatedCode
 
-import type {Request} from "express";
-import {HttpError} from "../exception/HttpError.ts"
-import mock_Prisma_Client_Configurado from "../../src/tests/mock/mock_PrismaClient.ts"
-import {unicQuadraControllerInstance} from "../controller/QuadraController.ts";
-import {QuadraRepository} from "../repository/QuadraRepository.ts";
-import {QuadraService} from "../service/QuadraService.ts";
-import {QuadraController} from "../controller/QuadraController.ts";
+import {HttpError} from "../exception/HttpError.js"
+import mock_Prisma_Client_Configurado from "../../src/tests/mock/mock_PrismaClient.js"
+import {unicQuadraControllerInstance} from "../controller/QuadraController.js";
+import {QuadraRepository} from "../repository/QuadraRepository.js";
+import {QuadraService} from "../service/QuadraService.js";
+import {QuadraController} from "../controller/QuadraController.js";
 
 beforeAll( async () => {
     await mock_Prisma_Client_Configurado.reserva.deleteMany()
@@ -17,10 +16,10 @@ describe("QuadraRepository:", () => {
 
     const mockQuadraRepository = new QuadraRepository(mock_Prisma_Client_Configurado);
 
-    let mockQuadraID: number;
-    let mockQuadraNome: string;
-    let mockQuadraModalidade: string;
-    let mockQuadraLocalizacao: string;
+    let mockQuadraID = 0;
+    let mockQuadraNome = "";
+    let mockQuadraModalidade = "";
+    let mockQuadraLocalizacao= "";
 
     it("Should insert and return a new Quadra", async () => {
         let mockInsert = await mockQuadraRepository.insertQuadra(
@@ -315,12 +314,12 @@ describe("QuadraRepository:", () => {
 
 describe("QuadraService:", () => {
 
-    const mockQuadraService: QuadraService = new QuadraService(new QuadraRepository(mock_Prisma_Client_Configurado));
+    const mockQuadraService = new QuadraService(new QuadraRepository(mock_Prisma_Client_Configurado));
 
-    let mockQuadraID: number;
-    let mockQuadraNome: string;
-    let mockQuadraModalidade: string;
-    let mockQuadraLocalizacao: string;
+    let mockQuadraID = 0;
+    let mockQuadraNome = "";
+    let mockQuadraModalidade = "";
+    let mockQuadraLocalizacao = "";
 
     it("Should insert and return a new Quadra (From Service layer)", async () => {
         const mockInsert = await mockQuadraService.insertQuadra(
@@ -494,7 +493,7 @@ describe("QuadraService:", () => {
     })
 
     it("Receiving an unexpected error during updateQuadra operation, should return HttpError 500 (From Service layer)", async () => {
-        const mockQuadraService: QuadraService = new QuadraService(new QuadraRepository(undefined));
+        const mockQuadraService = new QuadraService(new QuadraRepository(undefined));
 
         const mockFind = await mockQuadraService.updateQuadra(
             mockQuadraID,
@@ -512,12 +511,12 @@ describe("QuadraService:", () => {
 
 describe("QuadraController:", () => {
 
-    const mockQuadraController: QuadraController = unicQuadraControllerInstance;
+    const mockQuadraController = unicQuadraControllerInstance;
 
-    let mockQuadraID: number;
-    let mockQuadraNome: string;
-    let mockQuadraModalidade: string;
-    let mockQuadraLocalizacao: string;
+    let mockQuadraID = 0;
+    let mockQuadraNome = "";
+    let mockQuadraModalidade = "";
+    let mockQuadraLocalizacao = "";
 
     //Usei a IA pra me ajudar a simular o comportamento do Response do Express pros testes
     const response = {
@@ -527,7 +526,7 @@ describe("QuadraController:", () => {
             this.body = data;
             return this;
         })
-    } as any
+    } as any;
 
     it("Should insert and return a new Quadra (From Controller layer)", async () => {
 
@@ -537,7 +536,7 @@ describe("QuadraController:", () => {
                 modalidade: "Futebol",
                 localizacao: "Centro"
             }
-        } as unknown as Request
+        } as any;
 
         await mockQuadraController.insertQuadra(mockRequest, response)
 
@@ -561,7 +560,7 @@ describe("QuadraController:", () => {
                 modalidade: mockQuadraModalidade,
                 localizacao: mockQuadraLocalizacao,
             }
-        } as unknown as Request
+        } as any
 
         await mockQuadraController.insertQuadra(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(423);
@@ -574,7 +573,7 @@ describe("QuadraController:", () => {
             params: {
                 id: mockQuadraID,
             }
-        } as unknown as Request;    
+        } as any;    
 
         await mockQuadraController.findById(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(200);
@@ -590,7 +589,7 @@ describe("QuadraController:", () => {
                 nome: mockQuadraNome,
             }
 
-        } as unknown as Request;
+        } as any;
 
         await mockQuadraController.findByNome(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(200);
@@ -607,7 +606,7 @@ describe("QuadraController:", () => {
                 modalidade: mockQuadraModalidade,
             }
 
-        } as unknown as Request
+        } as any
 
         await mockQuadraController.findByModalidade(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(200);
@@ -625,7 +624,7 @@ describe("QuadraController:", () => {
     it("Try to receive multiple data using findAll", async () =>{
         const mockRequest = {
             body: {}
-        } as Request
+        } as any
 
         await mockQuadraController.findAll(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(200);
@@ -641,7 +640,7 @@ describe("QuadraController:", () => {
                 modalidade: mockQuadraModalidade,
                 localizacao: mockQuadraLocalizacao,
             }
-        } as unknown as Request
+        } as any
 
         await mockQuadraController.updateQuadra(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(202);
@@ -658,7 +657,7 @@ describe("QuadraController:", () => {
             params: {
                 id: mockQuadraID,
             }
-        } as unknown as Request
+        } as any
 
         await mockQuadraController.deleteQuadra(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(204);
@@ -677,7 +676,7 @@ describe("QuadraController:", () => {
                 modalidade: "Futebol",
                 localizacao: "Centro"
             }
-        } as unknown as Request
+        } as any;
 
         await mockQuadraController.insertQuadra(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(500);
@@ -685,14 +684,14 @@ describe("QuadraController:", () => {
     })
 
     it("Receiving an unexpected error during findById operation, should return HttpError 500 (From Controller layer)", async () => {
-        const mockQuadraController: QuadraController = new QuadraController(new QuadraService(new QuadraRepository(undefined)));
+        const mockQuadraController = new QuadraController(new QuadraService(new QuadraRepository(undefined)));
 
         const mockRequest = {
             params: {
                 id: mockQuadraID,
             }
 
-        } as unknown as Request;
+        } as any;
 
         await mockQuadraController.findById(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(500);
@@ -707,7 +706,7 @@ describe("QuadraController:", () => {
                 nome: mockQuadraNome,
             }
 
-        } as unknown as Request;
+        } as any;
 
         await mockQuadraController.findByNome(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(500);
@@ -722,7 +721,7 @@ describe("QuadraController:", () => {
                 modalidade: mockQuadraModalidade,
             }
 
-        } as unknown as Request;
+        } as any;
 
         await mockQuadraController.findByModalidade(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(500);
@@ -734,7 +733,7 @@ describe("QuadraController:", () => {
 
         const mockRequest = {
             body: {}
-        } as Request;
+        } as any;
 
         await mockQuadraController.findAll(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(500);
@@ -753,7 +752,7 @@ describe("QuadraController:", () => {
                 localizacao: mockQuadraLocalizacao,
             }
 
-        } as unknown as Request;
+        } as any;
 
         await mockQuadraController.updateQuadra(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(500);
@@ -769,7 +768,7 @@ describe("QuadraController:", () => {
                 id: mockQuadraID,
             }
 
-        } as unknown as Request;
+        } as any;
 
         await mockQuadraController.deleteQuadra(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(500);
@@ -777,12 +776,11 @@ describe("QuadraController:", () => {
     })
 
     it("Try to find an existing Quadra using field 'id' but sending a non-number value" , async () => {
-        // @ts-expect-error
         const mockRequest = {
             params: {
                 id: "not_a_number",
             }
-        } as Request;
+        } as any;
 
         await mockQuadraController.findById(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(400);
@@ -791,12 +789,11 @@ describe("QuadraController:", () => {
     })
 
     it("Try to find an existing Quadra using field 'nome' but sending a non-string value" , async () => {
-        // @ts-expect-error
         const mockRequest = {
             params: {
                 nome: 123.21,
             }
-        } as Request;
+        } as any;
 
         const mockError = await mockQuadraController.findByNome(mockRequest, response)
         expect(mockError instanceof HttpError).toBe(true);
@@ -807,12 +804,11 @@ describe("QuadraController:", () => {
     })
 
     it("Try to find an existing Quadra using field 'modalidade' but sending a non-string value" , async () => {
-        // @ts-expect-error
         const mockRequest = {
             params: {
                 modalidade: 123.21,
             }
-        } as Request;
+        } as any;
 
         const mockError = await mockQuadraController.findByModalidade(mockRequest, response)
         expect(mockError instanceof HttpError).toBe(true);
@@ -823,7 +819,6 @@ describe("QuadraController:", () => {
     })
 
     it("Try to update an existing Quadra using field id but sending a non-number value" , async () => {
-        // @ts-expect-error
         const mockRequest = {
             params: {
                 id: "not_a_number",
@@ -832,7 +827,7 @@ describe("QuadraController:", () => {
                 modalidade: mockQuadraModalidade,
                 localizacao: mockQuadraLocalizacao,
             }
-        } as Request;
+        } as any;
 
         await mockQuadraController.updateQuadra(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(400);
@@ -841,12 +836,11 @@ describe("QuadraController:", () => {
     })
 
     it("Try to delete an existing Quadra using field id but sending a non-number value" , async () => {
-        // @ts-expect-error
         const mockRequest = {
             params: {
                 id: "not_a_number",
             }
-        } as Request;
+        } as any;
 
         await mockQuadraController.deleteQuadra(mockRequest, response)
         expect(response.status).toHaveBeenCalledWith(400);

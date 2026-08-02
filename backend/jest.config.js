@@ -1,7 +1,5 @@
-import type {Config} from 'jest';
-
-const config: Config = {
-
+/** @type {import('jest').Config} */
+const config = {
   collectCoverage: true,
   coverageDirectory: "coverage",
   coverageProvider: "v8",
@@ -15,6 +13,9 @@ const config: Config = {
   },
 
   transformIgnorePatterns: ["node_modules/(?!@prisma/client|@prisma/internals)"],
+  moduleNameMapper: {
+    "^(\\.{1,2}/.*)\\.js$": "$1"
+  },
   extensionsToTreatAsEsm: [".ts"],
   moduleFileExtensions: [
     "ts",
@@ -32,7 +33,6 @@ const config: Config = {
   roots: [
     "<rootDir>"
   ]
-
 };
 
 export default config;
