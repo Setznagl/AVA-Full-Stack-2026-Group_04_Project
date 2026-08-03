@@ -5,8 +5,10 @@
   "main": "server.ts",
   "type": "module",
   "scripts": {
-    "start": "node --watch server.ts",
-    "test": "jest --passWithNoTests"
+    "dev": "tsx watch server.ts",
+    "start": "tsx server.ts",
+    "test": "jest --runInBand",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "license": "MIT",
@@ -17,6 +19,8 @@
     "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
     "@types/node": "^26.1.1",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "dotenv": "^17.4.2",
     "install": "^0.13.0",
     "jest": "^30.4.2",
@@ -26,8 +30,10 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
+    "cors": "^2.8.6",
     "express": "^5.2.1",
-    "ts-node": "^10.9.2",
+    "swagger-jsdoc": "^6.3.0",
+    "swagger-ui-express": "^5.0.1",
     "typescript": "^7.0.2"
   }
 }

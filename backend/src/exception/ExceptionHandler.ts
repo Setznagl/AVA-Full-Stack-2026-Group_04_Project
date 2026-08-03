@@ -16,10 +16,7 @@ class ExceptionHandler {
                     treatedException = new HttpError(404, `Register not found.`, layer);
                     break;
                 case 'P2003':
-                    treatedException = new HttpError(404, `Registro relacionado não encontrado.`, layer);
-                    break;
-                case 'P2004':
-                    treatedException = new HttpError(400, `Os dados informados violam uma regra do banco.`, layer);
+                    treatedException = new HttpError(404, `Register not found.`, layer);
                     break;
             }
         }

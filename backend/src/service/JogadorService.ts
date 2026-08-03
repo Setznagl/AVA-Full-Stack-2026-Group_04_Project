@@ -1,10 +1,9 @@
 import {JogadorRepository, unicJogadorRepositoryInstance} from "../repository/JogadorRepository.ts";
-import type {jogador} from "../../src/generated/prisma/client.ts";
-import {HttpError} from "../../src/exception/HttpError.ts";
+import type {jogador} from "../generated/prisma/client.ts";
+import {HttpError} from "../exception/HttpError.ts";
 
 export class JogadorService {
 
-    //Injetando a dependência: Service depende das funções de operação no banco em Repository
     private jogadorRepository: JogadorRepository;
     constructor(providedRepository: JogadorRepository) {
         this.jogadorRepository = providedRepository;
@@ -22,39 +21,27 @@ export class JogadorService {
 
     }
 
-    async findByEmail(email: string): Promise<jogador | HttpError | null> {
-        return await this.jogadorRepository.findByEmail(email);
+    async findByID(provided_id: number):Promise<jogador | HttpError | null  > {
+        return await this.jogadorRepository.findById(provided_id);
     }
 
-    async findByID(provided_id: number):Promise<jogador | HttpError | null  > {
-        return await this.jogadorRepository.findByID(provided_id);
+    async findByEmail(email: string): Promise<jogador | HttpError | null> {
+        return await this.jogadorRepository.findByEmail(email);
     }
 
     async findAll():Promise<jogador[] | HttpError | null > {
         return await this.jogadorRepository.findAll();
     }
 
-    async updateJogador(
-        provided_id: number,
-        provided_nome: string,
-        provided_email: string,
-        provided_telefone: string,
-        provided_senha: string
-    ):Promise<jogador | HttpError> {
+    async updateJogador(provided_id: number, provided_nome: string, provided_email: string, provided_telefone: string, provided_senha: string):
+        Promise<jogador | HttpError> {
 
-        //Confirmando se os dados que recebemos são iguais aos do registro no banco, se forem não precisamos mudar
-        const oldData: jogador | HttpError | null = await this.jogadorRepository.findByID(provided_id);
+        const oldData: jogador | HttpError | null = await this.jogadorRepository.findById(provided_id);
 
             if (oldData instanceof HttpError) {  return  oldData  }
-
             if (oldData === null) {
-                return new HttpError(400, "Impossível atualizar os dados do jogador porque o registro informado não existe" , "service");
-            }else{
-                /*
-                confirmamos que o dado a ser atualizado não é nulo (registro ativo) e que o banco efetuou a consulta sem erros,
-                agora precisamos confirmar quais dados do usuário foram enviados para alteração comparando com os dados antigos
-                que o banco trouxe
-                */
+                return new HttpError(404, "Impossível atualizar os dados do jogador porque o registro informado não existe" , "service");
+            } else{
                 let checked_nome: string = oldData.nome
                 checked_nome !== provided_nome && provided_nome !== null ? checked_nome = provided_nome : checked_nome;
                 let checked_email: string = oldData.email
