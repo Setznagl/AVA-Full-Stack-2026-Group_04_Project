@@ -1,0 +1,35 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 28px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn--primary {
+  background-color: var(--color-orange-500);
+  color: var(--color-white);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-orange-600);
+}
+
+.btn--outline {
+  background-color: transparent;
+  color: var(--color-navy-900);
+  border: 1.5px solid var(--color-navy-900);
+}
+
+.btn--outline:hover {
+  background-color: var(--color-navy-900);
+  color: var(--color-white);
+}

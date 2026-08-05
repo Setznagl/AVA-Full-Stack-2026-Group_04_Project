@@ -1,0 +1,26 @@
+:root {
+  /* Cores principais */
+  --color-navy-900: #0b2a54;   /* fundo do hero, footer e seção "Relatos" */
+  --color-navy-800: #123869;   /* cards dentro da seção navy (depoimentos) */
+  --color-orange-500: #f2782e; /* cor de destaque (botões, sublinhado) */
+  --color-orange-600: #dd6a24; /* hover dos botões */
+
+  /* Neutros */
+  --color-bg: #f5f6f8;         /* fundo geral das seções claras */
+  --color-white: #ffffff;
+  --color-text-dark: #16233c;  /* títulos */
+  --color-text-body: #4a5568;  /* parágrafos */
+  --color-text-light: #dfe6f2; /* texto claro sobre fundo navy */
+  --color-border: #e4e7ec;
+
+  /* Tipografia */
+  --font-heading: "Poppins", "Segoe UI", sans-serif;
+  --font-body: "Inter", "Segoe UI", sans-serif;
+
+  /* Espaçamentos e formas */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-full: 999px;
+  --shadow-card: 0 10px 30px rgba(11, 42, 84, 0.08);
+  --container-width: 1200px;
+}
