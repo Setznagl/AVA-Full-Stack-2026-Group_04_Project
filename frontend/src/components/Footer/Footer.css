@@ -1,0 +1,45 @@
+.footer {
+  background-color: var(--color-navy-900);
+  padding: 28px 0;
+}
+
+.footer__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer__brand {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--color-white);
+}
+
+.footer__links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer__links a {
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+}
+
+.footer__links a:hover {
+  color: var(--color-orange-500);
+}
+
+.footer__copy {
+  color: var(--color-text-light);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 640px) {
+  .footer__content {
+    flex-direction: column;
+    text-align: center;
+  }
+}
