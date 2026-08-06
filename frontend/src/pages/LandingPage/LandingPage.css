@@ -95,9 +95,11 @@
 }
 
 .feature-card__image {
+  width: 100%;
   height: 140px;
   border-radius: var(--radius-sm);
   background: linear-gradient(135deg, #dfe6f2, #c3cfe2);
+  object-fit: cover;
 }
 
 /* ---------- Relatos (depoimentos) ---------- */
@@ -154,6 +156,7 @@
   height: 36px;
   border-radius: 50%;
   border: 2px solid var(--color-orange-500);
+  object-fit: cover;
 }
 
 /* ---------- CTA final ---------- */
