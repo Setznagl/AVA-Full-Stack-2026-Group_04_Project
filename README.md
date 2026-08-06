@@ -98,7 +98,7 @@ Antes de começar, você vai precisar ter instalado:
    npm install
    ```
 
-3. Crie o arquivo `.env` na pasta `backend` (baseado no `.env.example`) com as variáveis de conexão do banco:
+3. Crie o arquivo `backend/.env` na pasta `backend` (baseado no `.env.example`) com as variáveis de conexão do banco:
 
    ```env
    DATABASE_URL="postgresql://admin:admin_da_senha_segura@localhost:5432/pqsl-db"
