@@ -2,6 +2,16 @@ import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import Button from "../../components/Button/Button";
 import "./LandingPage.css";
+import voleiFoto from "../../assets/images/istockphoto-volei.jpg";
+import marcandoFoto from "../../assets/images/istockphoto-marcando.jpg";
+import calendarioFoto from "../../assets/images/istockphoto-calendario.jpg";
+import camilaFoto from "../../assets/images/camila_vitoria.jpg";
+import carlosFoto from "../../assets/images/carlos_leoneollo.jpg";
+import claraFoto from "../../assets/images/clara_vianna.jpg";
+import dennisFoto from "../../assets/images/dennis_eduardo.jpg";
+import gabrielFoto from "../../assets/images/gabriel_mendonca.jpg";
+import igorFoto from "../../assets/images/emoji_temp.jpg";
+import vitorFoto from "../../assets/images/vitor_pantoja.jpeg";
 
 const diferenciais = [
   {
@@ -9,18 +19,21 @@ const diferenciais = [
     titulo: "Reserva Rápida",
     descricao:
       "Escolha a quadra, o dia e o horário disponível e confirme sua reserva em menos de um minuto, sem ligações ou grupos de mensagens.",
+    imagem: marcandoFoto,
   },
   {
     icon: "🤝",
     titulo: "Comunidade Ativa",
     descricao:
       "Conecte-se com outros jogadores da sua região, monte suas partidas e mantenha a quadra sempre em uso.",
+    imagem: voleiFoto,
   },
   {
     icon: "📊",
     titulo: "Gestão Simples",
     descricao:
       "Acompanhe a agenda de cada quadra em tempo real e evite conflitos de horário com validação automática.",
+    imagem: calendarioFoto,
   },
 ];
 
@@ -29,31 +42,43 @@ const depoimentos = [
     texto:
       "Antes a gente combinava tudo por grupo de WhatsApp e sempre dava confusão de horário. Com o AVAFS Quadras isso acabou.",
     nome: "Camila Vitória",
+    foto: camilaFoto,
   },
   {
     texto:
       "Consigo ver a agenda da quadra de vôlei em segundos e já reservo o horário livre direto pelo celular.",
     nome: "Carlos Leonello",
+    foto: carlosFoto,
   },
   {
     texto:
       "Uso para organizar as partidas de tênis do condomínio. Simples, rápido e sem conflito de reservas.",
     nome: "Clara Vianna",
+    foto: claraFoto,
   },
   {
     texto:
-      "Antes a gente combinava tudo por grupo de WhatsApp e sempre dava confusão de horário. Com o AVAFS Quadras isso acabou.",
+      "Consigo reservar com antecedencia pelo celular, é super fácil de usar.",
+    nome: "Gabriel de Mendonça",
+    foto: gabrielFoto,
+  },
+  {
+    texto:
+      "Nunca mais tivemos que ir correndo de manhã para pegar a quadra de basquete primeiro.",
     nome: "Dennis Eduardo Araújo",
+    foto: dennisFoto,
   },
   {
     texto:
-      "Consigo ver a agenda da quadra de vôlei em segundos e já reservo o horário livre direto pelo celular.",
+      "Jogar futebol com o pessoal do trabalho ficou muito mais fácil.",
     nome: "Igor Ezequiel Barreto",
+    foto: igorFoto
   },
   {
     texto:
-      "Uso para organizar as partidas de tênis do condomínio. Simples, rápido e sem conflito de reservas.",
+      "Eu reservo a quadra para jogar bola com minha filha. É muito prático.",
     nome: "Vitor Pantoja",
+    foto: vitorFoto,
   },
 ];
 
@@ -89,9 +114,11 @@ function LandingPage() {
                 <div className="feature-card__icon">{item.icon}</div>
                 <h3 className="feature-card__title">{item.titulo}</h3>
                 <p className="feature-card__text">{item.descricao}</p>
-                {/* TODO: trocar pelo card__image por uma foto real do time
-                    (ex.: pasta src/assets/images) quando estiver disponível */}
-                <div className="feature-card__image" />
+                <img
+                  src={item.imagem}
+                  alt={item.titulo}
+                  className="feature-card__image"
+              />
               </article>
             ))}
           </div>
@@ -115,7 +142,11 @@ function LandingPage() {
               <article className="testimonial-card" key={depoimento.nome}>
                 <p className="testimonial-card__text">{depoimento.texto}</p>
                 <div className="testimonial-card__author">
-                  <span className="testimonial-card__avatar" />
+                  <img
+                    src={depoimento.foto}
+                    alt={depoimento.nome}
+                    className="testimonial-card__avatar"
+                  />
                   <span>{depoimento.nome}</span>
                 </div>
               </article>
