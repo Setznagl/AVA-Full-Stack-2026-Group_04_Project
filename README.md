@@ -66,9 +66,9 @@ O projeto está dividido em **Back-End** (API REST) e **Front-End** (interface w
 - ✅ Bloqueio automático de **conflitos de agendamento** na mesma quadra
 - ✅ Conteinerização do banco de dados principal (`postgres`) via Docker Compose
 - ✅ Banco de dados isolado para testes automatizados (`postgres-mock`), sem impactar os dados de produção
-- 🔜 Testes unitários com **Jest** com cobertura de código de (100% Jogador, 100% Quadra, 0% Reserva)
-- 🔜 Interface web (front-end em React) em desenvolvimento
-- 🔜 Documentação da API via Swagger (em desenvolvimento)
+- ✅ Testes unitários com **Jest** com cobertura de código de (100% Jogador, 100% Quadra, 100% Reserva)
+- 🔜 Interface web (front-end em React com Axios) em desenvolvimento
+- ✅ Documentação da API via Swagger Open API 3.0
 - 🔜 Autenticação e autorização de usuários com JWT (em desenvolvimento)
 
 ---
@@ -171,7 +171,8 @@ Os testes usam um banco **separado** (`postgres-mock`, definido no `docker-compo
         <br />
       </a>
         <p align="center"><b>Vitor Alencastro Pantoja</b></p>
-        <b align="center">🎨 Front-End</b> <br><br>
+        <b align="center">🎨 Front-End</b> <br>
+        <b align="center">☕ Back-End</b> <br><br> 
         <b align="center">Gerenciamento do repositório GitHub, README e início do front-end<br></b>
         <br /> 
     </td> 

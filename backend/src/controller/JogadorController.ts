@@ -2,6 +2,7 @@ import express from "express";
 import {JogadorService, unicJogadorServiceInstance} from "../service/JogadorService.ts";
 import type {jogador} from "../generated/prisma/client.ts";
 import {HttpError} from "../exception/HttpError.ts";
+import bcrypt from "bcryptjs";
 
 export class JogadorController {
 
@@ -12,9 +13,10 @@ export class JogadorController {
 
     async insertJogador(request: express.Request, response: express.Response):Promise<void> {
         const { nome, email, telefone, senha } = request.body;
+        const senhaHash = await bcrypt.hash(senha, 10);
 
         const requestOutput: jogador | HttpError = await this.jogadorService
-            .insertJogador(nome, email, telefone, senha);
+            .insertJogador(nome, email, telefone, senhaHash);
 
         if (requestOutput instanceof HttpError) {
             response.status(requestOutput.statusCode).json(requestOutput);
@@ -82,9 +84,10 @@ export class JogadorController {
             response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
             return;
         }
+        const senhaHash = await bcrypt.hash(senha, 10);
 
         const requestOutput: jogador | HttpError = await this.jogadorService
-            .updateJogador(idNumero, nome, email, telefone, senha);
+            .updateJogador(idNumero, nome, email, telefone, senhaHash);
 
         if (requestOutput instanceof HttpError) {
             response.status(requestOutput.statusCode).json(requestOutput);
