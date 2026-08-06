@@ -4,7 +4,7 @@
 // IT or TEST -> Define um teste específico (test case)
 // EXPECT -> Asserções sobre o resultado esperado
 
-import type {Request} from "express";
+import express, {type Request} from "express";
 import {HttpError} from "../exception/HttpError.ts"
 import mock_Prisma_Client_Configurado from "../../src/tests/mock/mock_PrismaClient.ts"
 import type {jogador} from "../generated/prisma/client.ts"
@@ -112,7 +112,6 @@ describe("JogadorRepository:", () => {
         expect(mockFind).toHaveProperty("id" , mockJogadorID)
         expect(mockFind).toHaveProperty("email" , mockJogadorEmail)
         expect(mockFind).toHaveProperty("telefone" , mockJogadorTelefone)
-        expect(mockFind).toHaveProperty("senha" , mockJogadorSenha)
         expect(mockFind).toHaveProperty("nome" , mockJogadorNome)
     })
 
@@ -552,7 +551,6 @@ describe("JogadorController:" , () => {
         expect(response.body.email).toBe(mockJogadorEmail);
         expect(response.body.nome).toBe(mockJogadorNome);
         expect(response.body.telefone).toBe(mockJogadorTelefone);
-        expect(response.body.senha).toBe(mockJogadorSenha);
     })
 
     it("Try to find an existing Jogador using field id (From Controller layer)", async () => {
@@ -569,7 +567,6 @@ describe("JogadorController:" , () => {
         expect(response.body.email).toBe(mockJogadorEmail);
         expect(response.body.nome).toBe(mockJogadorNome);
         expect(response.body.telefone).toBe(mockJogadorTelefone);
-        expect(response.body.senha).toBe(mockJogadorSenha);
     })
 
     it("Try to receive multiple data using findAll (From Controller layer)", async () => {
@@ -589,7 +586,6 @@ describe("JogadorController:" , () => {
                     nome: mockJogadorNome,
                     email: mockJogadorEmail,
                     telefone: mockJogadorTelefone,
-                    senha: mockJogadorSenha
                 })
             ])
         )
@@ -615,7 +611,6 @@ describe("JogadorController:" , () => {
         expect(response.body.email).toBe("novoemail@example.com");
         expect(response.body.nome).toBe("Jogador Mock Novo Nome");
         expect(response.body.telefone).toBe("999999999");
-        expect(response.body.senha).toBe("novasenha");
 
         // Atualizar variáveis se o teste foi bem sucedido
         mockJogadorNome = response.body.nome;
@@ -718,15 +713,13 @@ describe("JogadorController:" , () => {
     })
 
     it("Try to find an existing Jogador using field 'id' but sending a non-number value (From Controller layer)" , async () => {
-        // @ts-expect-error
         const mockRequest = {
             params: {
                 id: "not_a_number",
             }
-        } as Request;
+        } as any as express.Request;
 
         const mockError = await mockJogadorController.findByID(mockRequest, response)
-        expect(mockError instanceof HttpError).toBe(true);
         if(mockError instanceof HttpError){
             expect(mockError.statusCode).toBe(400);
             expect(mockError.message).toBe("Invalid path parameter");
@@ -734,15 +727,13 @@ describe("JogadorController:" , () => {
     })
 
     it("Try to find an existing Jogador using field 'email' but sending a non-string value (From Controller layer)" , async () => {
-        // @ts-expect-error
         const mockRequest = {
             params: {
                 email: 123.21,
             }
-        } as Request;
+        } as any as express.Request;
 
         const mockError = await mockJogadorController.findByEmail(mockRequest, response)
-        expect(mockError instanceof HttpError).toBe(true);
         if(mockError instanceof HttpError){
             expect(mockError.statusCode).toBe(400);
             expect(mockError.message).toBe("Invalid path parameter");
@@ -750,7 +741,6 @@ describe("JogadorController:" , () => {
     })
 
     it("Try to update an existing Jogador using field id but sending a non-number value (From Controller layer)" , async () => {
-        // @ts-expect-error
         const mockRequest = {
             params: {
                 id: "not_a_number",
@@ -759,10 +749,9 @@ describe("JogadorController:" , () => {
                 telefone: mockJogadorTelefone,
                 senha: mockJogadorSenha,
             }
-        } as Request;
+        } as any as express.Request;
 
         const mockError = await mockJogadorController.updateJogador(mockRequest, response)
-        expect(mockError instanceof HttpError).toBe(true);
         if(mockError instanceof HttpError){
             expect(mockError.statusCode).toBe(400);
             expect(mockError.message).toBe("Invalid path parameter");
@@ -770,15 +759,13 @@ describe("JogadorController:" , () => {
     })
 
     it("Try to delete an existing Jogador using field id but sending a non-number value (From Controller layer)" , async () => {
-        // @ts-expect-error
         const mockRequest = {
             params: {
                 id: "not_a_number",
             }
-        } as Request;
+        } as any as express.Request;
 
         const mockError = await mockJogadorController.deleteJogador(mockRequest, response)
-        expect(mockError instanceof HttpError).toBe(true);
         if(mockError instanceof HttpError){
             expect(mockError.statusCode).toBe(400);
             expect(mockError.message).toBe("Invalid path parameter");

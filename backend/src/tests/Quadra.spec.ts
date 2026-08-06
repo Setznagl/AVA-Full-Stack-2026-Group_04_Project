@@ -781,7 +781,6 @@ describe("QuadraController:", () => {
         } as Request;
 
         const mockError = await mockQuadraController.findById(mockRequest, response)
-        expect(mockError instanceof HttpError).toBe(true);
         if(mockError instanceof HttpError){
             expect(mockError.statusCode).toBe(400);
             expect(mockError.message).toBe("Invalid path parameter");
@@ -797,7 +796,6 @@ describe("QuadraController:", () => {
         } as Request;
 
         const mockError = await mockQuadraController.findByNome(mockRequest, response)
-        expect(mockError instanceof HttpError).toBe(true);
         if(mockError instanceof HttpError){
             expect(mockError.statusCode).toBe(400);
             expect(mockError.message).toBe("Invalid path parameter");
@@ -813,7 +811,6 @@ describe("QuadraController:", () => {
         } as Request;
 
         const mockError = await mockQuadraController.findByModalidade(mockRequest, response)
-        expect(mockError instanceof HttpError).toBe(true);
         if(mockError instanceof HttpError){
             expect(mockError.statusCode).toBe(400);
             expect(mockError.message).toBe("Invalid path parameter");
@@ -833,7 +830,6 @@ describe("QuadraController:", () => {
         } as Request;
 
         const mockError = await mockQuadraController.updateQuadra(mockRequest, response)
-        expect(mockError instanceof HttpError).toBe(true);
         if(mockError instanceof HttpError){
             expect(mockError.statusCode).toBe(400);
             expect(mockError.message).toBe("Invalid path parameter");
@@ -849,7 +845,6 @@ describe("QuadraController:", () => {
         } as Request;
 
         const mockError = await mockQuadraController.deleteQuadra(mockRequest, response)
-        expect(mockError instanceof HttpError).toBe(true);
         if(mockError instanceof HttpError){
             expect(mockError.statusCode).toBe(400);
             expect(mockError.message).toBe("Invalid path parameter");

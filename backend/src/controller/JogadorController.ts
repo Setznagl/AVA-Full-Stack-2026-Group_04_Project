@@ -1,4 +1,5 @@
 import express from "express";
+import bcrypt from 'bcryptjs';
 import {JogadorService, unicJogadorServiceInstance} from "../service/JogadorService.ts";
 import type {jogador} from "../generated/prisma/client.ts";
 import {HttpError} from "../exception/HttpError.ts";
@@ -12,9 +13,10 @@ export class JogadorController {
 
     async insertJogador(request: express.Request, response: express.Response):Promise<void> {
         const { nome, email, telefone, senha } = request.body;
+        const hashSenha = await bcrypt.hash(senha, 10);
 
         const requestOutput: jogador | HttpError = await this.jogadorService
-            .insertJogador(nome, email, telefone, senha);
+            .insertJogador(nome, email, telefone, hashSenha);
 
         requestOutput instanceof HttpError
             ? response.status(requestOutput.statusCode).json(requestOutput)
@@ -24,12 +26,13 @@ export class JogadorController {
     async findByID(request: express.Request, response: express.Response):Promise<HttpError | void> {
         const { id } = request.params;
 
-        if(typeof id !== "number" || Array.isArray(id)) {
-            return new HttpError(400, 'Invalid path parameter', "controller");
+        if(!id || isNaN(Number(id)) || Array.isArray(id)) {
+            response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
+            return;
         }
 
         const requestOutput: jogador | HttpError | null = await this.jogadorService
-            .findByID(id);
+            .findByID(Number(id));
 
         requestOutput instanceof HttpError
             ? response.status(requestOutput.statusCode).json(requestOutput)
@@ -39,8 +42,9 @@ export class JogadorController {
     async findByEmail(request: express.Request, response: express.Response):Promise<HttpError | void> {
         const { email } = request.params;
 
-        if(typeof email !== "string" || Array.isArray(email) ){
-            return new HttpError(400, 'Invalid path parameter', "controller");
+        if(!email || typeof email !== "string" || Array.isArray(email) ){
+            response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
+            return;
         }
 
         const requestOutput: jogador | HttpError | null = await this.jogadorService
@@ -63,12 +67,14 @@ export class JogadorController {
         const { id } = request.params;
         const { nome, email, telefone, senha } = request.body;
 
-        if(typeof id !== "number" || Array.isArray(id)) {
-            return new HttpError(400, 'Invalid path parameter', "controller");
+        if(!id || isNaN(Number(id)) || Array.isArray(id)) {
+            response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
+            return;
         }
+        const hashSenha = await bcrypt.hash(senha, 10);
 
         const requestOutput: jogador | HttpError = await this.jogadorService
-            .updateJogador(Number(id), nome, email, telefone, senha);
+            .updateJogador(Number(id), nome, email, telefone, hashSenha);
 
         requestOutput instanceof HttpError
             ? response.status(requestOutput.statusCode).json(requestOutput)
@@ -78,12 +84,13 @@ export class JogadorController {
     async deleteJogador(request: express.Request, response: express.Response):Promise<HttpError | void> {
         const { id } = request.params;
 
-        if(typeof id !== "number" || Array.isArray(id)) {
-            return new HttpError(400, 'Invalid path parameter', "controller");
+        if(!id || isNaN(Number(id)) || Array.isArray(id)) {
+            response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
+            return;
         }
 
         const requestOutput: jogador | HttpError = await this.jogadorService
-            .deleteJogador(id);
+            .deleteJogador(Number(id));
 
         requestOutput instanceof HttpError
             ? response.status(requestOutput.statusCode).json(requestOutput)

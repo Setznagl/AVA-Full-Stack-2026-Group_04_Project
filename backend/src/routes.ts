@@ -120,7 +120,7 @@ router.get('/v1/jogador/:email', unicJogadorControllerInstance.findByEmail.bind(
 
 /**
  * @swagger
- * /v1/jogador/many:
+ * /v1/jogador-many:
  *   get:
  *     summary: Obtém todos os jogadores
  *     tags: [Jogadores]
@@ -134,7 +134,7 @@ router.get('/v1/jogador/:email', unicJogadorControllerInstance.findByEmail.bind(
  *               items:
  *                 $ref: '#/components/schemas/Jogador'
  */
-router.get('/v1/jogador/many', unicJogadorControllerInstance.findAll.bind(unicJogadorControllerInstance));
+router.get('/v1/jogador-many', unicJogadorControllerInstance.findAll.bind(unicJogadorControllerInstance));
 
 /**
  * @swagger
@@ -370,7 +370,7 @@ router.get('/v1/quadra/modalidade/:modalidade', unicQuadraControllerInstance.fin
 
 /**
  * @swagger
- * /v1/quadra/many:
+ * /v1/quadra-many:
  *   get:
  *     summary: Obtém todas as quadras
  *     tags: [Quadras]
@@ -384,7 +384,7 @@ router.get('/v1/quadra/modalidade/:modalidade', unicQuadraControllerInstance.fin
  *               items:
  *                 $ref: '#/components/schemas/Quadra'
  */
-router.get('/v1/quadra/many', unicQuadraControllerInstance.findAll.bind(unicQuadraControllerInstance));
+router.get('/v1/quadra-many', unicQuadraControllerInstance.findAll.bind(unicQuadraControllerInstance));
 
 /**
  * @swagger
@@ -665,7 +665,7 @@ router.get('/v1/reserva/data/:data', unicReservaControllerInstance.findByData.bi
 
 /**
  * @swagger
- * /v1/reserva/many:
+ * /v1/reserva-many:
  *   get:
  *     summary: Obtém todas as reservas
  *     tags: [Reservas]
@@ -679,7 +679,7 @@ router.get('/v1/reserva/data/:data', unicReservaControllerInstance.findByData.bi
  *               items:
  *                 $ref: '#/components/schemas/Reserva'
  */
-router.get('/v1/reserva/many', unicReservaControllerInstance.findAll.bind(unicReservaControllerInstance));
+router.get('/v1/reserva-many', unicReservaControllerInstance.findAll.bind(unicReservaControllerInstance));
 
 /**
  * @swagger

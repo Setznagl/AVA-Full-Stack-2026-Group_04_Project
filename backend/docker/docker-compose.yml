@@ -10,9 +10,9 @@ services:
       - "5432:5432"
 
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-pqsl_db}
+      POSTGRES_DB: ${POSTGRES_DB:-psql_db}
       POSTGRES_USER: ${POSTGRES_USER:-admin}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin_da_senha_segura}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin}
 
     restart: unless-stopped
 
@@ -27,7 +27,7 @@ services:
       - "5433:5432"
 
     environment:
-      POSTGRES_DB: pqsl_mock_db
+      POSTGRES_DB: psql_mock_db
       POSTGRES_USER: mock_user
       POSTGRES_PASSWORD: mock_password
 

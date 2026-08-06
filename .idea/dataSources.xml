@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="psql-mock-db@localhost" uuid="fccaabd1-9ca0-494e-9827-b627512b7087">
+    <data-source source="LOCAL" name="psql_db@localhost" uuid="eddbd54e-3076-45e1-b3ec-ec6d354e7487">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5433/psql-mock-db</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5432/psql_db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

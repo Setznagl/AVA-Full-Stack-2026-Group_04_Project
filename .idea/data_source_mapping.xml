@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="DataSourcePerFileMappings">
-    <file url="file://$PROJECT_DIR$/backend/docker/banco.sql" value="fccaabd1-9ca0-494e-9827-b627512b7087" />
-  </component>
-</project>

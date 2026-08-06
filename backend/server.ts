@@ -3,15 +3,17 @@ import {router} from "./src/routes.ts";
 
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './src/swagger.ts';
-import cors from "cors";
 
 const port = process.env.PORT || 3000;
 export const app = express();
 
-app.use(cors());
 app.use(express.json());
 app.use("/", router);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    next();
+});
 app.listen(port, () => {  console.log("Server started on port", port);  });
 
 //URL para testar se a API está rodando corretamente na porta 3000

@@ -3,9 +3,6 @@ import { ReservaService, unicReservaServiceInstance } from "../service/ReservaSe
 import type { reserva } from "../generated/prisma/client.ts";
 import { HttpError } from "../exception/HttpError.ts";
 
-type DadosHorarioReserva = { data: Date; horarioInicio: Date; horarioFim: Date };
-type DadosReserva = DadosHorarioReserva & { jogadorId: number; quadraId: number };
-
 export class ReservaController {
 
   private reservaService: ReservaService;
@@ -13,7 +10,7 @@ export class ReservaController {
     this.reservaService = providedService;
   }
 
-    async insertReserva(request: express.Request, response: express.Response): Promise<void> {
+    async insertReserva(request: express.Request, response: express.Response): Promise<HttpError | void> {
         const { jogador_id, quadra_id, data, horarioInicio, horarioFim } = request.body;
 
         const requestOutput: reserva | HttpError = await this.reservaService
@@ -24,71 +21,73 @@ export class ReservaController {
             : response.status(201).json(requestOutput);
     }
 
-    async findById (request: express.Request, response: Express.Response): Promise<void> {
+    async findById (request: express.Request, response: express.Response): Promise<HttpError | void> {
         const { id } = request.params;
 
-        if(typeof id !== "number" || Array.isArray(id)) {
+        if(!id || isNaN(Number(id)) || Array.isArray(id)) {
           return new HttpError(400, 'Invalid path parameter', "controller");
         }
 
-        const requestOutput: reserva | HttpError = await this.reservaService.findById(id);
+        const requestOutput: reserva | HttpError | null = await this.reservaService.findById(Number(id));
 
         requestOutput instanceof HttpError
             ? response.status(requestOutput.statusCode).json(requestOutput)
             : response.status(200).json(requestOutput);
     }
 
-    async findByJogadorId (request: express.Request, response: Express.Response): Promise<void> {
+    async findByJogadorId (request: express.Request, response: express.Response): Promise<HttpError | void> {
         const { jogador_id } = request.params;
 
-        if(typeof jogador_id !== "number" || Array.isArray(jogador_id)) {
+        if(!jogador_id || isNaN(Number(jogador_id)) || Array.isArray(jogador_id)) {
           return new HttpError(400, 'Invalid path parameter', "controller");
         }
 
-        const requestOutput: reserva[] | HttpError = await this.reservaService.findByJogadorId(jogador_id);
+        const requestOutput: reserva[] | HttpError | null = await this.reservaService.findByJogadorId(Number(jogador_id));
 
         requestOutput instanceof HttpError
             ? response.status(requestOutput.statusCode).json(requestOutput)
             : response.status(200).json(requestOutput);
     }
 
-    async findByQuadraId (request: express.Request, response: Express.Response): Promise<void> {
+    async findByQuadraId (request: express.Request, response: express.Response): Promise<HttpError | void> {
         const { quadra_id } = request.params;
 
         if(typeof quadra_id !== "number" || Array.isArray(quadra_id)) {
-          return new HttpError(400, 'Invalid path parameter', "controller");
+          response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
+          return;
         }
 
-        const requestOutput: reserva[] | HttpError = await this.reservaService.findByQuadraId(quadra_id);
+        const requestOutput: reserva[] | null | HttpError = await this.reservaService.findByQuadraId(quadra_id);
 
         requestOutput instanceof HttpError
             ? response.status(requestOutput.statusCode).json(requestOutput)
             : response.status(200).json(requestOutput);
     }
 
-    async findByData (request: express.Request, response: Express.Response): Promise<void> {
+    async findByData (request: express.Request, response: express.Response): Promise<HttpError | void> {
         const { data } = request.params;
 
         if (typeof data !== "string" || Array.isArray(data)) {
-            return new HttpError(400, 'Invalid path parameter', "controller");
+            response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
+            return;
         }
 
-        const requestOutput: reserva[] | HttpError = await this.reservaService.findByData(new Date(data));
+        const requestOutput: reserva[] | HttpError | null = await this.reservaService.findByData(new Date(data));
 
         requestOutput instanceof HttpError
             ? response.status(requestOutput.statusCode).json(requestOutput)
             : response.status(200).json(requestOutput);
     }
 
-    async findAll (request: express.Request, response: Express.Response): Promise<void> {
-        const requestOutput: reserva[] | HttpError = await this.reservaService.findAll();
+    async findAll (_request: express.Request, response: express.Response): Promise<HttpError | void> {
+        const requestOutput: reserva[] | HttpError | null = await this.reservaService.findAll();
 
         requestOutput instanceof HttpError
             ? response.status(requestOutput.statusCode).json(requestOutput)
             : response.status(200).json(requestOutput);
     }
 
-    async updateReserva(request: express.Request, response: express.Response): Promise<void> {
+    async updateReserva(request: express.Request, response: express.Response): Promise<HttpError | void> {
         const { id } = request.params;
         const { data, horario_inicio, horario_fim } = request.body;
 
@@ -119,11 +118,12 @@ export class ReservaController {
             : response.status(202).json(requestOutput);
     }
 
-    async deleteReserva (request: express.Request, response: Express.Response): Promise<void> {
+    async deleteReserva (request: express.Request, response: express.Response): Promise<HttpError | void> {
         const { id } = request.params;
 
         if(typeof id !== "number" || Array.isArray(id)) {
-          return new HttpError(400, 'Invalid path parameter', "controller");
+          response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
+          return;
         }
 
         const requestOutput: reserva | HttpError = await this.reservaService.deleteReserva(id);
