@@ -31,7 +31,7 @@ describe("JogadorRepository:", () => {
         let mockInsert = await mockJogadorRepository.insertJogador(
             "Jogador Mock",
             "jogador_mock@example.com",
-            "1234567890",
+            await bcrypt.hash("1234567890", 10),
             "1234567890"
         )
         if(mockInsert instanceof HttpError){throw mockInsert}

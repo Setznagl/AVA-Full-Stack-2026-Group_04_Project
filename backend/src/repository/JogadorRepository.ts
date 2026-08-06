@@ -1,4 +1,3 @@
-import bcrypt from "bcryptjs";
 import meu_Prisma_Client_Configurado from "../database/PrismaClient.ts";
 import {PrismaClient} from "@prisma/client/extension";
 import type {jogador} from "../generated/prisma/client.ts";
@@ -22,14 +21,13 @@ export class JogadorRepository {
             typeof provided_senha !== "string"
         ){  return new HttpError(502, "Invalid provided type for one or more parameters", "repository");  }
 
-        try{ 
-            const senhaHasheada = await bcrypt.hash(provided_senha, 10);
+        try{
             return await this.prisma.jogador.create({
             data: {
                 nome: provided_nome,
                 email: provided_email,
                 telefone: provided_telefone,
-                senha: senhaHasheada
+                senha: provided_senha
             }})
         }catch(exception: any){
             return exceptionHandler.handle(exception, "repository");
@@ -82,14 +80,13 @@ export class JogadorRepository {
             typeof provided_senha !== "string"
         ){  return new HttpError(502, "Invalid provided type for one or more parameters", "repository");  }
 
-        try{  
-            const senhaHasheada = await bcrypt.hash(provided_senha, 10);
+        try{
             return await this.prisma.jogador.update({  where: { id: provided_id },
                 data: {
                     nome: provided_nome,
                     email: provided_email,
                     telefone: provided_telefone,
-                    senha: senhaHasheada
+                    senha: provided_senha
                 }})
         }catch (exception: any){
             return exceptionHandler.handle(exception, "repository");
