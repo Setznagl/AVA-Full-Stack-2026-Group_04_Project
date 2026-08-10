@@ -1,8 +1,8 @@
 export class HttpError extends Error {
     statusCode: number;
-    layer: "controller" | "service" | "repository";
+    layer: "middleware" | "controller" | "service" | "repository";
     message: string;
-    constructor(statusCode: number, message: string, layer: "controller" | "service" | "repository") {
+    constructor(statusCode: number, message: string, layer: "middleware" | "controller" | "service" | "repository") {
         super(message);
 
         this.message = message;

@@ -8,12 +8,13 @@ datasource db {
 }
 
 model jogador {
-  id       Int       @id @default(autoincrement())
-  nome     String    @db.VarChar(150)
-  senha    String    @db.VarChar(150)
-  telefone String    @db.VarChar(20)
-  email    String    @unique @db.VarChar(150)
-  reserva  reserva[]
+  id            Int            @id @default(autoincrement())
+  nome          String         @db.VarChar(150)
+  senha         String         @db.VarChar(150)
+  telefone      String         @db.VarChar(20)
+  email         String         @unique @db.VarChar(150)
+  reserva       reserva[]
+  refreshTokens RefreshToken[]
 }
 
 model quadra {
@@ -34,4 +35,13 @@ model reserva {
   horario_fim    DateTime @db.Timestamptz(6)
   jogador        jogador  @relation(fields: [jogador_id], references: [id], onDelete: Cascade, map: "fk_reserva_jogador")
   quadra         quadra   @relation(fields: [quadra_id], references: [id], onDelete: Cascade, map: "fk_reserva_quadra")
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  jogador   jogador  @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

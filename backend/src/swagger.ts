@@ -8,11 +8,22 @@ const options: swaggerJsdoc.Options = {
             title: 'API de Reservas',
             version: '1.0.0',
             description: 'Documentação da API de reservas de quadras',
+            contact:{
+                name: 'Equipe de Desenvolvimento',
+                email: 'desenvolvimento@example.com'
+            }
         },
         servers: [
             { url: 'http://localhost:3000', description: 'Ambiente local' },
         ],
         components: {
+            securitySchemes: {
+                AccessToken: {
+                    type: "http",
+                    scheme: "bearer",
+                    bearerFormat: "JWT"
+                },
+            },
             schemas: {
                 Reserva: {
                     type: 'object',

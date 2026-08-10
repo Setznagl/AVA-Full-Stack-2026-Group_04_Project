@@ -13,7 +13,7 @@ export class JogadorController {
 
     async insertJogador(request: express.Request, response: express.Response):Promise<void> {
         const { nome, email, telefone, senha } = request.body;
-        const hashSenha = await bcrypt.hash(senha, 10);
+        const hashSenha = bcrypt.hashSync(senha, 10);
 
         const requestOutput: jogador | HttpError = await this.jogadorService
             .insertJogador(nome, email, telefone, hashSenha);
@@ -71,7 +71,7 @@ export class JogadorController {
             response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
             return;
         }
-        const hashSenha = await bcrypt.hash(senha, 10);
+        const hashSenha = bcrypt.hashSync(senha, 10);
 
         const requestOutput: jogador | HttpError = await this.jogadorService
             .updateJogador(Number(id), nome, email, telefone, hashSenha);

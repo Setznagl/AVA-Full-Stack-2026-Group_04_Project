@@ -2,6 +2,8 @@ import {Router} from "express";
 import {unicJogadorControllerInstance} from "./controller/JogadorController.ts";
 import {unicReservaControllerInstance} from "./controller/ReservaController.ts";
 import {unicQuadraControllerInstance} from "./controller/QuadraController.ts";
+import {unicLoginControllerInstance} from "./security/auth/LoginController.ts";
+import {authMiddleware} from "./security/middleware/TokenValidator.ts";
 export const router = Router();
 
 /**
@@ -46,7 +48,7 @@ export const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/HttpError'
  */
-router.post('/v1/jogador', unicJogadorControllerInstance.insertJogador.bind(unicJogadorControllerInstance));
+router.post('/v1/jogador' , unicJogadorControllerInstance.insertJogador.bind(unicJogadorControllerInstance));
 
 /**
  * @swagger
@@ -54,6 +56,8 @@ router.post('/v1/jogador', unicJogadorControllerInstance.insertJogador.bind(unic
  *   get:
  *     summary: Obtém um jogador por ID
  *     tags: [Jogadores]
+ *     security:
+ *       - AccessToken: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -81,14 +85,16 @@ router.post('/v1/jogador', unicJogadorControllerInstance.insertJogador.bind(unic
  *             schema:
  *               $ref: '#/components/schemas/NotFound'
  */
-router.get('/v1/jogador/:id', unicJogadorControllerInstance.findByID.bind(unicJogadorControllerInstance));
+router.get('/v1/jogador/:id', authMiddleware , unicJogadorControllerInstance.findByID.bind(unicJogadorControllerInstance));
 
 /**
  * @swagger
- * /v1/jogador/{email}:
+ * /v1/jogador/email/{email}:
  *   get:
  *     summary: Obtém um jogador por email
  *     tags: [Jogadores]
+ *     security:
+ *       - AccessToken: []
  *     parameters:
  *       - in: path
  *         name: email
@@ -116,7 +122,7 @@ router.get('/v1/jogador/:id', unicJogadorControllerInstance.findByID.bind(unicJo
  *             schema:
  *               $ref: '#/components/schemas/NotFound'
  */
-router.get('/v1/jogador/:email', unicJogadorControllerInstance.findByEmail.bind(unicJogadorControllerInstance));
+router.get('/v1/jogador/email/:email', authMiddleware, unicJogadorControllerInstance.findByEmail.bind(unicJogadorControllerInstance));
 
 /**
  * @swagger
@@ -124,6 +130,8 @@ router.get('/v1/jogador/:email', unicJogadorControllerInstance.findByEmail.bind(
  *   get:
  *     summary: Obtém todos os jogadores
  *     tags: [Jogadores]
+ *     security:
+ *       - AccessToken: []
  *     responses:
  *       200:
  *         description: Lista de jogadores
@@ -134,7 +142,7 @@ router.get('/v1/jogador/:email', unicJogadorControllerInstance.findByEmail.bind(
  *               items:
  *                 $ref: '#/components/schemas/Jogador'
  */
-router.get('/v1/jogador-many', unicJogadorControllerInstance.findAll.bind(unicJogadorControllerInstance));
+router.get('/v1/jogador-many', authMiddleware, unicJogadorControllerInstance.findAll.bind(unicJogadorControllerInstance));
 
 /**
  * @swagger
@@ -142,6 +150,8 @@ router.get('/v1/jogador-many', unicJogadorControllerInstance.findAll.bind(unicJo
  *   put:
  *     summary: Atualiza um jogador existente
  *     tags: [Jogadores]
+ *     security:
+ *       - AccessToken: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -184,7 +194,7 @@ router.get('/v1/jogador-many', unicJogadorControllerInstance.findAll.bind(unicJo
  *             schema:
  *               $ref: '#/components/schemas/HttpError'
  */
-router.put('/v1/jogador/:id', unicJogadorControllerInstance.updateJogador.bind(unicJogadorControllerInstance));
+router.put('/v1/jogador/:id', authMiddleware ,unicJogadorControllerInstance.updateJogador.bind(unicJogadorControllerInstance));
 
 /**
  * @swagger
@@ -192,6 +202,8 @@ router.put('/v1/jogador/:id', unicJogadorControllerInstance.updateJogador.bind(u
  *   delete:
  *     summary: Deleta um jogador
  *     tags: [Jogadores]
+ *     security:
+ *       - AccessToken: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -215,7 +227,7 @@ router.put('/v1/jogador/:id', unicJogadorControllerInstance.updateJogador.bind(u
  *             schema:
  *               $ref: '#/components/schemas/HttpError'
  */
-router.delete('/v1/jogador/:id', unicJogadorControllerInstance.deleteJogador.bind(unicJogadorControllerInstance));
+router.delete('/v1/jogador/:id', authMiddleware, unicJogadorControllerInstance.deleteJogador.bind(unicJogadorControllerInstance));
 
 
 
@@ -225,6 +237,8 @@ router.delete('/v1/jogador/:id', unicJogadorControllerInstance.deleteJogador.bin
  *   post:
  *     summary: Cria uma nova quadra
  *     tags: [Quadras]
+ *     security:
+ *       - AccessToken: []
  *     requestBody:
  *       required: true
  *       content:
@@ -259,7 +273,7 @@ router.delete('/v1/jogador/:id', unicJogadorControllerInstance.deleteJogador.bin
  *             schema:
  *               $ref: '#/components/schemas/HttpError'
  */
-router.post('/v1/quadra', unicQuadraControllerInstance.insertQuadra.bind(unicQuadraControllerInstance));
+router.post('/v1/quadra', authMiddleware, unicQuadraControllerInstance.insertQuadra.bind(unicQuadraControllerInstance));
 
 /**
  * @swagger
@@ -267,6 +281,8 @@ router.post('/v1/quadra', unicQuadraControllerInstance.insertQuadra.bind(unicQua
  *   get:
  *     summary: Obtém uma quadra por ID
  *     tags: [Quadras]
+ *     security:
+ *       - AccessToken: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -294,14 +310,16 @@ router.post('/v1/quadra', unicQuadraControllerInstance.insertQuadra.bind(unicQua
  *             schema:
  *               $ref: '#/components/schemas/NotFound'
  */
-router.get('/v1/quadra/:id', unicQuadraControllerInstance.findById.bind(unicQuadraControllerInstance));
+router.get('/v1/quadra/:id', authMiddleware , unicQuadraControllerInstance.findById.bind(unicQuadraControllerInstance));
 
 /**
  * @swagger
- * /v1/quadra/{nome}:
+ * /v1/quadra/nome/{nome}:
  *   get:
  *     summary: Obtém uma quadra por nome
  *     tags: [Quadras]
+ *     security:
+ *       - AccessToken: []
  *     parameters:
  *       - in: path
  *         name: nome
@@ -329,7 +347,7 @@ router.get('/v1/quadra/:id', unicQuadraControllerInstance.findById.bind(unicQuad
  *             schema:
  *               $ref: '#/components/schemas/NotFound'
  */
-router.get('/v1/quadra/:nome', unicQuadraControllerInstance.findByNome.bind(unicQuadraControllerInstance));
+router.get('/v1/quadra/nome/:nome', authMiddleware ,unicQuadraControllerInstance.findByNome.bind(unicQuadraControllerInstance));
 
 /**
  * @swagger
@@ -337,6 +355,8 @@ router.get('/v1/quadra/:nome', unicQuadraControllerInstance.findByNome.bind(unic
  *   get:
  *     summary: Obtém quadras por modalidade
  *     tags: [Quadras]
+ *     security:
+ *       - AccessToken: []
  *     parameters:
  *       - in: path
  *         name: modalidade
@@ -366,7 +386,7 @@ router.get('/v1/quadra/:nome', unicQuadraControllerInstance.findByNome.bind(unic
  *             schema:
  *               $ref: '#/components/schemas/NotFound'
  */
-router.get('/v1/quadra/modalidade/:modalidade', unicQuadraControllerInstance.findByModalidade.bind(unicQuadraControllerInstance));
+router.get('/v1/quadra/modalidade/:modalidade', authMiddleware , unicQuadraControllerInstance.findByModalidade.bind(unicQuadraControllerInstance));
 
 /**
  * @swagger
@@ -374,6 +394,8 @@ router.get('/v1/quadra/modalidade/:modalidade', unicQuadraControllerInstance.fin
  *   get:
  *     summary: Obtém todas as quadras
  *     tags: [Quadras]
+ *     security:
+ *       - AccessToken: []
  *     responses:
  *       200:
  *         description: Lista de quadras
@@ -384,7 +406,7 @@ router.get('/v1/quadra/modalidade/:modalidade', unicQuadraControllerInstance.fin
  *               items:
  *                 $ref: '#/components/schemas/Quadra'
  */
-router.get('/v1/quadra-many', unicQuadraControllerInstance.findAll.bind(unicQuadraControllerInstance));
+router.get('/v1/quadra-many', authMiddleware , unicQuadraControllerInstance.findAll.bind(unicQuadraControllerInstance));
 
 /**
  * @swagger
@@ -392,6 +414,8 @@ router.get('/v1/quadra-many', unicQuadraControllerInstance.findAll.bind(unicQuad
  *   put:
  *     summary: Atualiza uma quadra existente
  *     tags: [Quadras]
+ *     security:
+ *       - AccessToken: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -432,7 +456,7 @@ router.get('/v1/quadra-many', unicQuadraControllerInstance.findAll.bind(unicQuad
  *             schema:
  *               $ref: '#/components/schemas/HttpError'
  */
-router.put('/v1/quadra/:id', unicQuadraControllerInstance.updateQuadra.bind(unicQuadraControllerInstance));
+router.put('/v1/quadra/:id', authMiddleware , unicQuadraControllerInstance.updateQuadra.bind(unicQuadraControllerInstance));
 
 /**
  * @swagger
@@ -440,6 +464,8 @@ router.put('/v1/quadra/:id', unicQuadraControllerInstance.updateQuadra.bind(unic
  *   delete:
  *     summary: Deleta uma quadra
  *     tags: [Quadras]
+ *     security:
+ *       - AccessToken: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -463,7 +489,7 @@ router.put('/v1/quadra/:id', unicQuadraControllerInstance.updateQuadra.bind(unic
  *             schema:
  *               $ref: '#/components/schemas/HttpError'
  */
-router.delete('/v1/quadra/:id', unicQuadraControllerInstance.deleteQuadra.bind(unicQuadraControllerInstance));
+router.delete('/v1/quadra/:id', authMiddleware , unicQuadraControllerInstance.deleteQuadra.bind(unicQuadraControllerInstance));
 
 
 
@@ -473,6 +499,8 @@ router.delete('/v1/quadra/:id', unicQuadraControllerInstance.deleteQuadra.bind(u
  *   post:
  *     summary: Cria uma nova reserva
  *     tags: [Reservas]
+ *     security:
+ *       - AccessToken: []
  *     requestBody:
  *       required: true
  *       content:
@@ -514,7 +542,7 @@ router.delete('/v1/quadra/:id', unicQuadraControllerInstance.deleteQuadra.bind(u
  *             schema:
  *               $ref: '#/components/schemas/HttpError'
  */
-router.post('/v1/reserva', unicReservaControllerInstance.insertReserva.bind(unicReservaControllerInstance));
+router.post('/v1/reserva', authMiddleware , unicReservaControllerInstance.insertReserva.bind(unicReservaControllerInstance));
 
 /**
  * @swagger
@@ -522,6 +550,8 @@ router.post('/v1/reserva', unicReservaControllerInstance.insertReserva.bind(unic
  *   get:
  *     summary: Obtém uma reserva por ID
  *     tags: [Reservas]
+ *     security:
+ *       - AccessToken: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -549,7 +579,7 @@ router.post('/v1/reserva', unicReservaControllerInstance.insertReserva.bind(unic
  *             schema:
  *               $ref: '#/components/schemas/NotFound'
  */
-router.get('/v1/reserva/:id', unicReservaControllerInstance.findById.bind(unicReservaControllerInstance));
+router.get('/v1/reserva/:id', authMiddleware , unicReservaControllerInstance.findById.bind(unicReservaControllerInstance));
 
 /**
  * @swagger
@@ -557,6 +587,8 @@ router.get('/v1/reserva/:id', unicReservaControllerInstance.findById.bind(unicRe
  *   get:
  *     summary: Obtém reservas por jogador ID
  *     tags: [Reservas]
+ *     security:
+ *       - AccessToken: []
  *     parameters:
  *       - in: path
  *         name: jogador_id
@@ -586,7 +618,7 @@ router.get('/v1/reserva/:id', unicReservaControllerInstance.findById.bind(unicRe
  *             schema:
  *               $ref: '#/components/schemas/NotFound'
  */
-router.get('/v1/reserva/jogador/:jogador_id', unicReservaControllerInstance.findByJogadorId.bind(unicReservaControllerInstance));
+router.get('/v1/reserva/jogador/:jogador_id', authMiddleware , unicReservaControllerInstance.findByJogadorId.bind(unicReservaControllerInstance));
 
 /**
  * @swagger
@@ -594,6 +626,8 @@ router.get('/v1/reserva/jogador/:jogador_id', unicReservaControllerInstance.find
  *   get:
  *     summary: Obtém reservas por quadra ID
  *     tags: [Reservas]
+ *     security:
+ *       - AccessToken: []
  *     parameters:
  *       - in: path
  *         name: quadra_id
@@ -623,7 +657,7 @@ router.get('/v1/reserva/jogador/:jogador_id', unicReservaControllerInstance.find
  *             schema:
  *               $ref: '#/components/schemas/NotFound'
  */
-router.get('/v1/reserva/quadra/:quadra_id', unicReservaControllerInstance.findByQuadraId.bind(unicReservaControllerInstance));
+router.get('/v1/reserva/quadra/:quadra_id', authMiddleware , unicReservaControllerInstance.findByQuadraId.bind(unicReservaControllerInstance));
 
 /**
  * @swagger
@@ -631,6 +665,8 @@ router.get('/v1/reserva/quadra/:quadra_id', unicReservaControllerInstance.findBy
  *   get:
  *     summary: Obtém reservas por data
  *     tags: [Reservas]
+ *     security:
+ *       - AccessToken: []
  *     parameters:
  *       - in: path
  *         name: data
@@ -661,7 +697,7 @@ router.get('/v1/reserva/quadra/:quadra_id', unicReservaControllerInstance.findBy
  *             schema:
  *               $ref: '#/components/schemas/NotFound'
  */
-router.get('/v1/reserva/data/:data', unicReservaControllerInstance.findByData.bind(unicReservaControllerInstance));
+router.get('/v1/reserva/data/:data', authMiddleware , unicReservaControllerInstance.findByData.bind(unicReservaControllerInstance));
 
 /**
  * @swagger
@@ -669,6 +705,8 @@ router.get('/v1/reserva/data/:data', unicReservaControllerInstance.findByData.bi
  *   get:
  *     summary: Obtém todas as reservas
  *     tags: [Reservas]
+ *     security:
+ *       - AccessToken: []
  *     responses:
  *       200:
  *         description: Lista de reservas
@@ -679,7 +717,7 @@ router.get('/v1/reserva/data/:data', unicReservaControllerInstance.findByData.bi
  *               items:
  *                 $ref: '#/components/schemas/Reserva'
  */
-router.get('/v1/reserva-many', unicReservaControllerInstance.findAll.bind(unicReservaControllerInstance));
+router.get('/v1/reserva-many', authMiddleware , unicReservaControllerInstance.findAll.bind(unicReservaControllerInstance));
 
 /**
  * @swagger
@@ -687,6 +725,8 @@ router.get('/v1/reserva-many', unicReservaControllerInstance.findAll.bind(unicRe
  *   put:
  *     summary: Atualiza uma reserva existente
  *     tags: [Reservas]
+ *     security:
+ *       - AccessToken: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -737,7 +777,7 @@ router.get('/v1/reserva-many', unicReservaControllerInstance.findAll.bind(unicRe
  *             schema:
  *               $ref: '#/components/schemas/HttpError'
  */
-router.put('/v1/reserva/:id', unicReservaControllerInstance.updateReserva.bind(unicReservaControllerInstance));
+router.put('/v1/reserva/:id', authMiddleware , unicReservaControllerInstance.updateReserva.bind(unicReservaControllerInstance));
 
 /**
  * @swagger
@@ -745,6 +785,8 @@ router.put('/v1/reserva/:id', unicReservaControllerInstance.updateReserva.bind(u
  *   delete:
  *     summary: Deleta uma reserva
  *     tags: [Reservas]
+ *     security:
+ *       - AccessToken: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -768,7 +810,84 @@ router.put('/v1/reserva/:id', unicReservaControllerInstance.updateReserva.bind(u
  *             schema:
  *               $ref: '#/components/schemas/HttpError'
  */
-router.delete('/v1/reserva/:id', unicReservaControllerInstance.deleteReserva.bind(unicReservaControllerInstance));
+router.delete('/v1/reserva/:id', authMiddleware , unicReservaControllerInstance.deleteReserva.bind(unicReservaControllerInstance));
 
 
+/**
+ * @swagger
+ * /v1/login:
+ *   post:
+ *     summary: Autentica um jogador e gera tokens de acesso
+ *     tags: [Login]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [email, senha]
+ *             properties:
+ *               email:
+ *                 type: string
+ *               senha:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login realizado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 accessToken:
+ *                   type: string
+ *         headers:
+ *           Set-Cookie:
+ *             description: Refresh token enviado em cookie HttpOnly
+ *             schema:
+ *               type: string
+ *       401:
+ *         description: Email ou senha inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/HttpError'
+ *       500:
+ *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/HttpError'
+ */
+router.post('/v1/login', unicLoginControllerInstance.sign.bind(unicLoginControllerInstance));
 
+/**
+ * @swagger
+ * /v1/refresh:
+ *   post:
+ *     summary: Gera um novo access token a partir do refresh token
+ *     description: Requer o cookie HttpOnly `refreshToken`.
+ *     tags: [Login]
+ *     responses:
+ *       200:
+ *         description: Novo access token gerado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 accessToken:
+ *                   type: string
+ *         headers:
+ *           Set-Cookie:
+ *             description: Novo refresh token enviado em cookie HttpOnly.
+ *             schema:
+ *               type: string
+ *       401:
+ *         description: Refresh token ausente, inválido ou expirado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/HttpError'
+ */
+router.post('/v1/refresh', unicLoginControllerInstance.refresh.bind(unicLoginControllerInstance));
