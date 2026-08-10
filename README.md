@@ -69,7 +69,7 @@ O projeto está dividido em **Back-End** (API REST) e **Front-End** (interface w
 - ✅ Testes unitários com **Jest** com cobertura de código de (100% Jogador, 100% Quadra, 100% Reserva)
 - 🔜 Interface web (front-end em React com Axios) em desenvolvimento
 - ✅ Documentação da API via Swagger Open API 3.0
-- 🔜 Autenticação e autorização de usuários com JWT (em desenvolvimento)
+- ✅ Autenticação e autorização de usuários com JWT
 
 ---
 
