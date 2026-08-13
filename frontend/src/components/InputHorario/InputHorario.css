@@ -1,0 +1,139 @@
+.input-horario-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.input-horario-container label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-muted, #475569);
+}
+
+.input-horario-field {
+  min-height: 48px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border, #cbd5e1);
+  border-radius: var(--radius-md, 10px);
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.input-horario-field:hover {
+  background-color: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.input-horario-field.ativo,
+.input-horario-field:focus {
+  outline: none;
+  background-color: #ffffff;
+  border-color: var(--color-navy-900, #0b2a54);
+  box-shadow: 0 0 0 3px rgba(11, 42, 84, 0.12);
+}
+
+.valor-texto {
+  font-family: var(--font-heading, sans-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-navy-900, #0b2a54);
+}
+
+.placeholder-texto {
+  font-size: 0.95rem;
+  color: #94a3b8;
+}
+
+.icone-relogio {
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+.horario-dropdown-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  background: #ffffff;
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 0.85rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.popover-coluna {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.popover-titulo {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-text-muted, #94a3b8);
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.horas-grid,
+.minutos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.35rem;
+  max-height: 160px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.horas-grid::-webkit-scrollbar,
+.minutos-grid::-webkit-scrollbar {
+  width: 5px;
+}
+
+.horas-grid::-webkit-scrollbar-thumb,
+.minutos-grid::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 999px;
+}
+
+.btn-opcao-hora,
+.btn-opcao-minuto {
+  padding: 0.45rem 0.2rem;
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: 999px;
+  background-color: #f8fafc;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text, #1e293b);
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-opcao-hora:hover,
+.btn-opcao-minuto:hover {
+  background-color: #f1f5f9;
+}
+
+.btn-opcao-hora.selecionado-azul {
+  background-color: var(--color-navy-900, #0b2a54) !important;
+  color: #ffffff !important;
+  border-color: var(--color-navy-900, #0b2a54) !important;
+  font-weight: 700;
+}
+
+.btn-opcao-minuto.selecionado-laranja {
+  background-color: var(--color-primary, #ff6b00) !important;
+  color: #ffffff !important;
+  border-color: var(--color-primary, #ff6b00) !important;
+  font-weight: 700;
+}
