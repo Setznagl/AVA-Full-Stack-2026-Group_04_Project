@@ -1,0 +1,94 @@
+.quadras-page {
+  /* Adicione o padding/margin geral da página se necessário */
+  padding-bottom: 40px; 
+}
+
+.quadras-page__conteudo {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* --- NOVO: Deixa o título e o botão lado a lado --- */
+.quadras-page__header {
+  display: flex;
+  justify-content: space-between; /* Empurra um pra cada lado */
+  align-items: center; /* Centraliza na vertical */
+  margin-bottom: 24px;
+}
+
+.quadras-page__titulo {
+  margin: 0;
+  color: #333;
+}
+
+/* --- O Grid usando a sua classe atualizada --- */
+.quadras-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* Responsividade para não quebrar no celular */
+@media (max-width: 992px) {
+  .quadras-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .quadras-page__header {
+    flex-direction: column; /* No celular, empilha o título e o botão */
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .quadras-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.select-filtro {
+  padding: 10px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  outline: none;
+}
+
+.select-filtro:focus {
+  border-color: #0056b3;
+}
+
+/* Adicione isso no seu QuadrasPage.css */
+
+.barra-filtros {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap; /* Pra não quebrar no celular */
+}
+
+.input-filtro {
+  padding: 10px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 16px;
+  outline: none;
+}
+
+.input-filtro:focus {
+  border-color: #0056b3;
+}
+
+@media (max-width: 600px) {
+  .barra-filtros {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+}
