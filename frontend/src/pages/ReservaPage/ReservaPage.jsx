@@ -5,7 +5,7 @@ import Footer from "../../components/Footer/Footer";
 import Button from "../../components/Button/Button";
 import CalendarioCustom from "../../components/CalendarioCustom/CalendarioCustom";
 import InputHorario from "../../components/InputHorario/InputHorario";
-import { criarReserva } from "../../services/reservaService";
+import { criarReserva } from "../../services/ReservaService";
 import "./ReservaPage.css";
 
 const getHoje = () => {
