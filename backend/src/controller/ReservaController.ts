@@ -25,7 +25,8 @@ export class ReservaController {
         const { id } = request.params;
 
         if(!id || isNaN(Number(id)) || Array.isArray(id)) {
-          return new HttpError(400, 'Invalid path parameter', "controller");
+          response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
+          return;
         }
 
         const requestOutput: reserva | HttpError | null = await this.reservaService.findById(Number(id));
@@ -39,7 +40,8 @@ export class ReservaController {
         const { jogador_id } = request.params;
 
         if(!jogador_id || isNaN(Number(jogador_id)) || Array.isArray(jogador_id)) {
-          return new HttpError(400, 'Invalid path parameter', "controller");
+          response.status(400).json(new HttpError(400, 'Invalid path parameter', "Controller"));
+          return;
         }
 
         const requestOutput: reserva[] | HttpError | null = await this.reservaService.findByJogadorId(Number(jogador_id));
@@ -52,12 +54,12 @@ export class ReservaController {
     async findByQuadraId (request: express.Request, response: express.Response): Promise<HttpError | void> {
         const { quadra_id } = request.params;
 
-        if(typeof quadra_id !== "number" || Array.isArray(quadra_id)) {
+        if(!quadra_id || isNaN(Number(quadra_id)) || Array.isArray(quadra_id)) {
           response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
           return;
         }
 
-        const requestOutput: reserva[] | null | HttpError = await this.reservaService.findByQuadraId(quadra_id);
+        const requestOutput: reserva[] | null | HttpError = await this.reservaService.findByQuadraId(Number(quadra_id));
 
         requestOutput instanceof HttpError
             ? response.status(requestOutput.statusCode).json(requestOutput)
@@ -121,12 +123,12 @@ export class ReservaController {
     async deleteReserva (request: express.Request, response: express.Response): Promise<HttpError | void> {
         const { id } = request.params;
 
-        if(typeof id !== "number" || Array.isArray(id)) {
+        if(!id || isNaN(Number(id)) || Array.isArray(id)) {
           response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
           return;
         }
 
-        const requestOutput: reserva | HttpError = await this.reservaService.deleteReserva(id);
+        const requestOutput: reserva | HttpError = await this.reservaService.deleteReserva(Number(id));
 
         requestOutput instanceof HttpError
             ? response.status(requestOutput.statusCode).json(requestOutput)
