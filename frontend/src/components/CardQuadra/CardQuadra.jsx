@@ -11,7 +11,7 @@ function CardQuadra({ id, imagem, modalidade, nome, localizacao }) {
         quadra: { id, nome, modalidade, localizacao, imagem },
       },
     });
-  });
+  };
   
   return (
     <div className="card-quadra">
