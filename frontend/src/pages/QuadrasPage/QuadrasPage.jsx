@@ -158,7 +158,8 @@ function QuadrasPage() {
             {quadras.length > 0 ? (
               quadras.map((quadra) => (
                 <CardQuadra 
-                  key={quadra.id} 
+                  key={quadra.id}
+                  id={quadra.id}
                   imagem={getImagemPorModalidade(quadra.modalidade, quadra.id)}
                   modalidade={quadra.modalidade}
                   nome={quadra.nome}
