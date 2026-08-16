@@ -48,12 +48,12 @@ function QuadrasPage() {
     setQuadras([]);
 
     try {
-      let url = "http://localhost:3000/v1/quadra-many"; 
+      let url = `${import.meta.env.VITE_API_URL}/v1/quadra-many`; 
 
       if (tipo === "MODALIDADE" && valor) {
-        url = `http://localhost:3000/v1/quadra/modalidade/${valor}`; 
+        url = `${import.meta.env.VITE_API_URL}/v1/quadra/modalidade/${valor}`; 
       } else if (tipo === "NOME" && valor) {
-        url = `http://localhost:3000/v1/quadra/nome/${valor}`; 
+        url = `${import.meta.env.VITE_API_URL}/v1/quadra/nome/${valor}`; 
       } 
 
       // MUDANÇA AQUI: Adicionado as credenciais para enviar o token (cookie) nas rotas protegidas!
