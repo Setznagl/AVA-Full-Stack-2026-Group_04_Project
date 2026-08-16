@@ -46,7 +46,7 @@ export class LoginController {
             return response.status(200)
                 .cookie('refreshToken', refreshToken, {
                     httpOnly: true, //previne acesso via JS
-                    secure: false, //com "true" envia apenas com HTTPS ( "secure: process.env.NODE_ENV === "production"" )
+                    secure: process.env.NODE_ENV === "production",
                     sameSite: "lax",
                     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 dias
                 })
@@ -99,7 +99,7 @@ export class LoginController {
             return response.status(200)
                 .cookie('refreshToken', newRefreshToken, {
                     httpOnly: true,
-                    secure: false,
+                    secure: process.env.NODE_ENV === "production",
                     sameSite: "lax",
                     maxAge: 7 * 24 * 60 * 60 * 1000
                 })
