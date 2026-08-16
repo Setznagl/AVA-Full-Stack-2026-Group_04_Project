@@ -1,7 +1,18 @@
+import { useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
 import "./CardQuadra.css";
 
-function CardQuadra({ imagem, modalidade, nome, localizacao }) {
+function CardQuadra({ id, imagem, modalidade, nome, localizacao }) {
+  const navigate = useNavigate();
+
+  const handleReservar = () => {
+    navigate("/reservar", {
+      state: {
+        quadra: { id, nome, modalidade, localizacao, imagem },
+      },
+    });
+  });
+  
   return (
     <div className="card-quadra">
       {/* Imagem do topo */}
@@ -24,7 +35,7 @@ function CardQuadra({ imagem, modalidade, nome, localizacao }) {
 
         {/* Linha separadora e Botão */}
         <div className="card-quadra__acao">
-          <Button variant="primary">Reservar</Button>
+          <Button as="button" variant="primary" onClick={handleReservar}>Reservar</Button>
         </div>
       </div>
     </div>
