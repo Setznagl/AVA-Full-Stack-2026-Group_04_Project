@@ -1,18 +1,110 @@
-.navbar {
-  background-color: var(--color-white);
-  border-bottom: 1px solid var(--color-border);
+.navbar-header {
+  width: 100%;
+  background-color: var(--color-surface, #ffffff);
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
 }
 
-.navbar__content {
-  height: 80px;
+.navbar-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 72px;
 }
 
-.navbar__logo {
-  font-family: var(--font-heading);
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.navbar-logo {
+  font-family: var(--font-heading, sans-serif);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--color-navy-900, #0b2a54);
+  text-decoration: none;
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.navbar-link {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-text-muted, #64748b);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.navbar-link:hover {
+  color: var(--color-navy-900, #0b2a54);
+}
+
+.navbar-link.ativo {
   font-weight: 700;
-  font-size: 1.4rem;
-  color: var(--color-navy-900);
+  color: var(--color-navy-900, #0b2a54);
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-perfil-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar-divisor {
+  width: 1px;
+  height: 28px;
+  background-color: var(--color-border, #e2e8f0);
+}
+
+.usuario-perfil-link {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.usuario-perfil-link:hover {
+  opacity: 0.8;
+}
+
+.usuario-nome {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-navy-900, #0b2a54);
+  white-space: nowrap;
+}
+
+.usuario-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.usuario-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-iniciais {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #475569;
 }

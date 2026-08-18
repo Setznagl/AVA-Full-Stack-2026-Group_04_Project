@@ -1,0 +1,249 @@
+.reserva-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-bg, #f4f6f8);
+}
+
+.reserva-main {
+  flex: 1;
+  padding-block: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.quadra-card {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.25rem;
+  background: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: var(--radius-lg, 16px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.quadra-imagem-container {
+  width: 160px;
+  height: 110px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md, 12px);
+  overflow: hidden;
+}
+
+.quadra-imagem {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.quadra-detalhes {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.quadra-titulo {
+  margin: 0;
+  font-family: var(--font-heading, sans-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-navy-900, #0b2a54);
+}
+
+.quadra-localizacao {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--color-text-muted, #64748b);
+}
+
+.quadra-badge {
+  width: fit-content;
+  margin-top: 0.25rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: var(--color-bg-alt, #e0f2fe);
+  color: #0284c7;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.reserva-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.reserva-box {
+  background: var(--color-surface, #ffffff);
+  padding: 1.75rem;
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: var(--radius-lg, 16px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.box-titulo {
+  margin: 0;
+  font-family: var(--font-heading, sans-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-navy-900, #0b2a54);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-group label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-muted, #475569);
+}
+
+.input-group input {
+  min-height: 48px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border, #cbd5e1);
+  border-radius: var(--radius-md, 10px);
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--color-text, #1e293b);
+  background-color: #f8fafc;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.input-group input:hover {
+  background-color: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.input-group input:focus {
+  outline: none;
+  background-color: #ffffff;
+  border-color: var(--color-primary, #f97316);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+}
+
+.input-group input[type="date"]::-webkit-calendar-picker-indicator,
+.input-group input[type="time"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: opacity(0.6);
+  transition: filter 0.2s;
+}
+
+.input-group input[type="date"]::-webkit-calendar-picker-indicator:hover,
+.input-group input[type="time"]::-webkit-calendar-picker-indicator:hover {
+  filter: opacity(1);
+}
+
+.alerta-erro {
+  color: #dc2626;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.mensagem-erro-card,
+.mensagem-sucesso-card {
+  padding: 1rem;
+  border-radius: var(--radius-md, 8px);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.mensagem-erro-card {
+  color: #991b1b;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+.mensagem-sucesso-card {
+  color: #166534;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+
+.reserva-resumo-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--color-surface, #ffffff);
+  padding: 1.5rem 2rem;
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: var(--radius-lg, 16px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.reserva-main form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.resumo-detalhes {
+  display: flex;
+  gap: 2.5rem;
+}
+
+.resumo-coluna {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.resumo-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text-muted, #94a3b8);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.resumo-valor {
+  font-family: var(--font-heading, sans-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-navy-900, #0b2a54);
+}
+
+.resumo-acao button {
+  padding: 0.85rem 2rem;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .quadra-card {
+    flex-direction: column;
+  }
+
+  .quadra-imagem-container {
+    width: 100%;
+    height: 160px;
+  }
+
+  .reserva-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reserva-resumo-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .resumo-detalhes {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .resumo-acao button {
+    width: 100%;
+  }
+}

@@ -310,7 +310,7 @@ router.post('/v1/quadra', authMiddleware, unicQuadraControllerInstance.insertQua
  *             schema:
  *               $ref: '#/components/schemas/NotFound'
  */
-router.get('/v1/quadra/:id', authMiddleware , unicQuadraControllerInstance.findById.bind(unicQuadraControllerInstance));
+router.get('/v1/quadra/:id', authMiddleware, unicQuadraControllerInstance.findById.bind(unicQuadraControllerInstance));
 
 /**
  * @swagger
@@ -347,7 +347,7 @@ router.get('/v1/quadra/:id', authMiddleware , unicQuadraControllerInstance.findB
  *             schema:
  *               $ref: '#/components/schemas/NotFound'
  */
-router.get('/v1/quadra/nome/:nome', authMiddleware ,unicQuadraControllerInstance.findByNome.bind(unicQuadraControllerInstance));
+router.get('/v1/quadra/nome/:nome', authMiddleware, unicQuadraControllerInstance.findByNome.bind(unicQuadraControllerInstance));
 
 /**
  * @swagger
@@ -386,7 +386,7 @@ router.get('/v1/quadra/nome/:nome', authMiddleware ,unicQuadraControllerInstance
  *             schema:
  *               $ref: '#/components/schemas/NotFound'
  */
-router.get('/v1/quadra/modalidade/:modalidade', authMiddleware , unicQuadraControllerInstance.findByModalidade.bind(unicQuadraControllerInstance));
+router.get('/v1/quadra/modalidade/:modalidade', authMiddleware, unicQuadraControllerInstance.findByModalidade.bind(unicQuadraControllerInstance));
 
 /**
  * @swagger
@@ -406,7 +406,7 @@ router.get('/v1/quadra/modalidade/:modalidade', authMiddleware , unicQuadraContr
  *               items:
  *                 $ref: '#/components/schemas/Quadra'
  */
-router.get('/v1/quadra-many', authMiddleware , unicQuadraControllerInstance.findAll.bind(unicQuadraControllerInstance));
+router.get('/v1/quadra-many', authMiddleware, unicQuadraControllerInstance.findAll.bind(unicQuadraControllerInstance));
 
 /**
  * @swagger
@@ -456,7 +456,7 @@ router.get('/v1/quadra-many', authMiddleware , unicQuadraControllerInstance.find
  *             schema:
  *               $ref: '#/components/schemas/HttpError'
  */
-router.put('/v1/quadra/:id', authMiddleware , unicQuadraControllerInstance.updateQuadra.bind(unicQuadraControllerInstance));
+router.put('/v1/quadra/:id', authMiddleware, unicQuadraControllerInstance.updateQuadra.bind(unicQuadraControllerInstance));
 
 /**
  * @swagger
@@ -489,7 +489,7 @@ router.put('/v1/quadra/:id', authMiddleware , unicQuadraControllerInstance.updat
  *             schema:
  *               $ref: '#/components/schemas/HttpError'
  */
-router.delete('/v1/quadra/:id', authMiddleware , unicQuadraControllerInstance.deleteQuadra.bind(unicQuadraControllerInstance));
+router.delete('/v1/quadra/:id', authMiddleware,  unicQuadraControllerInstance.deleteQuadra.bind(unicQuadraControllerInstance));
 
 
 

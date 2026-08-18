@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Footer.css";
 
 function Footer() {
@@ -9,9 +10,9 @@ function Footer() {
         <span className="footer__brand">AVAFS Quadras</span>
 
         <nav className="footer__links">
-          <a href="/termos-de-uso">Termos de Uso</a>
-          <a href="/privacidade">Privacidade</a>
-          <a href="/contato">Contato</a>
+          <Link to="/termos">Termos de Uso</Link>
+          <Link to="/privacidade">Privacidade</Link>
+          <Link to="/contato">Contato</Link>
         </nav>
 
         <span className="footer__copy">

@@ -12,7 +12,7 @@ export const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:3000', // Substitua pelo domínio do seu front-end
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
 }))
