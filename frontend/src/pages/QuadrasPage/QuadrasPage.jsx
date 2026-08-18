@@ -3,10 +3,9 @@ import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import CardQuadra from "../../components/CardQuadra/CardQuadra";
 import Button from "../../components/Button/Button";
-import api from "../../services/Api"; // Importação do seu serviço configurado
+import api from "../../services/Api"; 
 import "./QuadrasPage.css";
 
-// Importando TODAS as imagens do seu repositório
 import imgFutebol01 from "../../assets/images/quadra_futebol_01.jpg";
 import imgFutebol02 from "../../assets/images/quadra_futebol_02.jpg";
 import imgTenis01 from "../../assets/images/quadra_tenis_01.jpg";
@@ -28,7 +27,7 @@ function QuadrasPage() {
 
   // Função recebe a modalidade e o ID da quadra
   const getImagemPorModalidade = (modalidade, id) => {
-    // Verifica se o ID é par ou ímpar (retorna true ou false)
+    
     const isPar = id % 2 === 0;
 
     switch (modalidade?.toLowerCase()) {
@@ -58,10 +57,7 @@ function QuadrasPage() {
         rota = `/v1/quadra/nome/${valor}`; 
       } 
 
-      
       const resposta = await api.get(rota);
-      
-      
       const dadosDoBanco = resposta.data;
 
       // Se a busca for "TODAS", descobrimos quais modalidades existem no banco
