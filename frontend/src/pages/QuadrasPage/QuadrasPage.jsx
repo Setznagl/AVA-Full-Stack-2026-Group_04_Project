@@ -3,6 +3,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import CardQuadra from "../../components/CardQuadra/CardQuadra";
 import Button from "../../components/Button/Button";
+import api from "../../services/Api"; // Importação do seu serviço configurado
 import "./QuadrasPage.css";
 
 // Importando TODAS as imagens do seu repositório
@@ -48,26 +49,20 @@ function QuadrasPage() {
     setQuadras([]);
 
     try {
-      let url = `${import.meta.env.VITE_API_URL}/v1/quadra-many`; 
+      
+      let rota = '/v1/quadra-many'; 
 
       if (tipo === "MODALIDADE" && valor) {
-        url = `${import.meta.env.VITE_API_URL}/v1/quadra/modalidade/${valor}`; 
+        rota = `/v1/quadra/modalidade/${valor}`; 
       } else if (tipo === "NOME" && valor) {
-        url = `${import.meta.env.VITE_API_URL}/v1/quadra/nome/${valor}`; 
+        rota = `/v1/quadra/nome/${valor}`; 
       } 
 
-      // MUDANÇA AQUI: Adicionado as credenciais para enviar o token (cookie) nas rotas protegidas!
-      const resposta = await fetch(url, {
-        credentials: 'include'
-      });
       
-      if (!resposta.ok) {
-        if (resposta.status === 404) throw new Error("Nenhuma quadra encontrada com este filtro.");
-        if (resposta.status === 401) throw new Error("Acesso negado. Você precisa fazer login.");
-        throw new Error("Erro na comunicação com o servidor.");
-      }
+      const resposta = await api.get(rota);
       
-      const dadosDoBanco = await resposta.json();
+      
+      const dadosDoBanco = resposta.data;
 
       // Se a busca for "TODAS", descobrimos quais modalidades existem no banco
       if (tipo === "TODAS") {
@@ -82,7 +77,14 @@ function QuadrasPage() {
       }
       
     } catch (err) {
-      setErro(err.message);
+      // Tratamento de erros otimizado para o formato do Axios
+      if (err.response) {
+        if (err.response.status === 404) setErro("Nenhuma quadra encontrada com este filtro.");
+        else if (err.response.status === 401) setErro("Acesso negado. Você precisa fazer login.");
+        else setErro("Erro na comunicação com o servidor.");
+      } else {
+        setErro("Erro ao tentar conectar com o servidor.");
+      }
     } finally {
       setLoading(false);
     }
