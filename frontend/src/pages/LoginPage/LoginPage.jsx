@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../../services/Api";
 import "./LoginPage.css";
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
-  const navigate = usenavigate();
+  const navigate = useNsavigate();
 
   function decodeJwtPayload(token) {
     const payloadBase64 = token.split(".")[1];
