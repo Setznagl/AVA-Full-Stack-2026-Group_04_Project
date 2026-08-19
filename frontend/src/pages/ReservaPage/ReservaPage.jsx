@@ -167,8 +167,10 @@ function ReservaForm({ quadraInfo }) {
         console.error("Erro ao criar reserva:", erro);
         const mensagemApi =
           erro?.response?.data?.message ?? erro?.response?.data?.mensagem;
+        const mensagemSegura =
+          typeof mensagemApi === "string" ? mensagemApi : null;
         setMensagemErro(
-          mensagemApi ||
+          mensagemSegura ||
             "Não foi possível realizar a reserva. Tente novamente mais tarde.",
         );
       } finally {
