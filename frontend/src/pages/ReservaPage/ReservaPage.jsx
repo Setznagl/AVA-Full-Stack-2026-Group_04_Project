@@ -39,8 +39,8 @@ const formatarDataExtenso = (dataIso) => {
   return textoSemPonto.charAt(0).toUpperCase() + textoSemPonto.slice(1);
 };
 
-const criarData = (data) => `${data}T00:00:00`;
-const criarDataHora = (data, horario) => `${data}T${horario}:00`;
+const criarData = (data) => `${data}T00:00:00Z`;
+const criarDataHora = (data, horario) => `${data}T${horario}:00Z`;
 
 const calcularDuracaoEmMinutos = (horarioInicio, horarioFim) => {
   const [inicioHora, inicioMinuto] = horarioInicio.split(":").map(Number);
