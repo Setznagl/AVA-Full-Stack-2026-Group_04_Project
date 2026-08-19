@@ -82,6 +82,28 @@ Antes de começar, você vai precisar ter instalado:
 - [npm](https://www.npmjs.com/)
 
 ---
+## ⚙️ Como executar o front-end
+
+1. Clone o repositório e entre na pasta `frontend`:
+
+   ```bash
+   git clone <url-do-repositorio>
+   cd frontend
+   ```
+
+2. Instale as dependências:
+
+   ```bash
+   npm install
+   ```
+
+3. Inicie o servidor de desenvolvimento:
+
+   ```bash
+   npm run dev
+   ```
+
+   O front-end estará disponível em `http://localhost:5173` por padrão.
 
 ## ⚙️ Como executar o back-end
 
@@ -98,11 +120,14 @@ Antes de começar, você vai precisar ter instalado:
    npm install
    ```
 
-3. Crie o arquivo `backend/.env` na pasta `backend` (baseado no `.env.example`) com as variáveis de conexão do banco:
+3. Crie o arquivo `backend/.env` na pasta `backend` (baseado no `.env.example`) com as variáveis de 
+  conexão do banco e segredos JWT de exemplo.:
 
    ```env
-   DATABASE_URL="postgresql://admin:admin_da_senha_segura@localhost:5432/pqsl-db"
-   MOCK_DATABASE_URL="postgresql://mock_user:mock_password@localhost:5433/pqsl-mock-db"
+   DATABASE_URL="postgresql://admin:admin@localhost:5432/psql_db"
+   MOCK_DATABASE_URL="postgresql://mock_user:mock_password@localhost:5433/psql_mock_db"
+   ACCESS_SECRET_JWT="9CbOXnDO7SSTD|eK@-3C;*(3y3,Y^q@}Y$y!^d/kCZ6"
+   REFRESH_SECRET_JWT="9CbOXnDO7SSTD|eK@-3C;*(3y3,Y^q@}Y$y!^d/kCZ8"
    ```
 
 4. Suba o banco de dados com Docker Compose:
