@@ -1,12 +1,20 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../services/Api";
 import "./LoginPage.css";
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
-  function handleSubmit(event) {
+  function decodeJwtPayload(token) {
+    const payloadBase64 = token.split(".")[1];
+    const decoded = atob(payloadBase64.replace(/-/g, "+").replace(/_/g, "/"));
+    return JSON.parse(decoded);
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const form = event.currentTarget;
@@ -15,7 +23,24 @@ function LoginPage() {
       return;
     }
 
-    setMessage("Dados validados! A autenticação pode ser conectada aqui.");
+    const data = new FormData(form);
+    const email = data.get("email");
+    const senha = data.get("password");
+
+    try {
+      const resposta = await api.post("/v1/login", { email, senha });
+      const { accessToken } = resposta.data;
+      const payload = decodeJwtPayload(accessToken);
+
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("jogadorId", payload.id);
+      localStorage.setItem("jogadorNome", payload.nome);
+
+      navigate("/quadras");
+    } catch (err) {
+      const mensagemErro = err.response?.data?.message || "Não foi possível entrar. Tente novamente.";
+      setMessage(mensagemErro);
+    }
   }
 
   return (

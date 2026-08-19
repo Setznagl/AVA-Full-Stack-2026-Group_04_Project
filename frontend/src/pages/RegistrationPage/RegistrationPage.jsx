@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../services/Api";
 import "./RegistrationPage.css";
 
 function formatPhone(value) {
@@ -13,32 +14,47 @@ function formatPhone(value) {
   return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
 }
 
-function RegistrationPage() {
-  const [phone, setPhone] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [feedback, setFeedback] = useState({ type: "", message: "" });
+  function RegistrationPage() {
+    const [phone, setPhone] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [feedback, setFeedback] = useState({ type: "", message: "" });
+    const navigate = useNavigate();
 
-  function handleSubmit(event) {
-    event.preventDefault();
+    async function handleSubmit(event) {
+      event.preventDefault();
 
-    const form = event.currentTarget;
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      return;
+      const form = event.currentTarget;
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const data = new FormData(form);
+      if (data.get("password") !== data.get("passwordConfirmation")) {
+        setFeedback({ type: "error", message: "As senhas não coincidem." });
+        return;
+      }
+
+      try {
+        await api.post("/v1/jogador", {
+          nome: data.get("fullName"),
+          email: data.get("email"),
+          telefone: data.get("phone"),
+          senha: data.get("password"),
+        });
+
+        setFeedback({
+          type: "success",
+          message: "Conta criada com sucesso! Redirecionando para o login...",
+        });
+
+        setTimeout(() => navigate("/login"), 1500);
+      } catch (err) {
+        const mensagemErro = err.response?.data?.message || "Não foi possível criar a conta. Tente novamente.";
+        setFeedback({ type: "error", message: mensagemErro });
+      }
     }
-
-    const data = new FormData(form);
-    if (data.get("password") !== data.get("passwordConfirmation")) {
-      setFeedback({ type: "error", message: "As senhas não coincidem." });
-      return;
-    }
-
-    setFeedback({
-      type: "success",
-      message: "Dados validados! O cadastro pode ser conectado à API aqui.",
-    });
-  }
 
   return (
     <main className="registration-page">
