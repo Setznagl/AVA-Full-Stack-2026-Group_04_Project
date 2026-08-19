@@ -6,7 +6,7 @@ import "./LoginPage.css";
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
-  const navigate = useNsavigate();
+  const navigate = useNavigate();
 
   function decodeJwtPayload(token) {
     const payloadBase64 = token.split(".")[1];
