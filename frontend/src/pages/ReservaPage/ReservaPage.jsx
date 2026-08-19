@@ -5,7 +5,7 @@ import Footer from "../../components/Footer/Footer";
 import Button from "../../components/Button/Button";
 import CalendarioCustom from "../../components/CalendarioCustom/CalendarioCustom";
 import InputHorario from "../../components/InputHorario/InputHorario";
-import { criarReserva, atualizarReserva } from "../../services/ReservaService";
+import { criarReserva, atualizarReserva, buscarReservasPorQuadra } from "../../services/ReservaService";
 import "./ReservaPage.css";
 
 const getHoje = () => {
@@ -38,8 +38,14 @@ const formatarDataExtenso = (dataIso) => {
   return textoSemPonto.charAt(0).toUpperCase() + textoSemPonto.slice(1);
 };
 
-const criarData = (data) => `${data}T00:00:00`;
-const criarDataHora = (data, horario) => `${data}T${horario}:00`;
+const criarData = (data) => `${data}T00:00:00Z`;
+const criarDataHora = (data, horario) => `${data}T${horario}:00Z`;
+const formatarHorarioUTC = (isoString) => {
+  const data = new Date(isoString);
+  const hora = String(data.getUTCHours()).padStart(2, "0");
+  const minuto = String(data.getUTCMinutes()).padStart(2, "0");
+  return `${hora}:${minuto}`;
+};
 
 const calcularDuracaoEmMinutos = (horarioInicio, horarioFim) => {
   const [inicioHora, inicioMinuto] = horarioInicio.split(":").map(Number);
@@ -79,6 +85,27 @@ function ReservaForm({ quadraInfo, reservaParaEditar }) {
   const [mensagemErro, setMensagemErro] = useState("");
   const [mensagemSucesso, setMensagemSucesso] = useState("");
   const [carregando, setCarregando] = useState(false);
+  const [reservasDoDia, setReservasDoDia] = useState([]);
+
+  useEffect(() => {
+    if (!quadraInfo.id || !dataSelecionada) return;
+
+    async function carregarHorariosOcupados() {
+      try {
+        const todasReservas = await buscarReservasPorQuadra(quadraInfo.id);
+        const doMesmoDia = todasReservas.filter((reserva) => {
+          const d = new Date(reserva.data);
+          const dataFormatada = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
+          return dataFormatada === dataSelecionada;
+        });
+        setReservasDoDia(doMesmoDia);
+      } catch {
+        setReservasDoDia([]);
+      }
+    }
+
+    carregarHorariosOcupados();
+  }, [quadraInfo.id, dataSelecionada]);
 
   const localidade =
     quadraInfo?.localidade ??
@@ -182,9 +209,13 @@ function ReservaForm({ quadraInfo, reservaParaEditar }) {
         console.error("Erro ao salvar reserva:", erro);
         const mensagemApi =
           erro?.response?.data?.message ?? erro?.response?.data?.mensagem;
+        const mensagemSegura =
+          typeof mensagemApi === "string" ? mensagemApi : null;
         setMensagemErro(
           mensagemApi ||
             "Não foi possível salvar a reserva. Tente novamente mais tarde.",
+          mensagemSegura ||
+            "Não foi possível realizar a reserva. Tente novamente mais tarde.",
         );
       } finally {
         setCarregando(false);
@@ -261,6 +292,21 @@ function ReservaForm({ quadraInfo, reservaParaEditar }) {
                   setHorarioFim(novoValor);
                 }}
               />
+
+              {reservasDoDia.length > 0 && (
+                <div className="horarios-ocupados" role="note">
+                  <p className="horarios-ocupados-titulo">
+                    Horários já reservados neste dia:
+                  </p>
+                  <ul>
+                    {reservasDoDia.map((reserva) => (
+                      <li key={reserva.id}>
+                        {formatarHorarioUTC(reserva.horario_inicio)} — {formatarHorarioUTC(reserva.horario_fim)}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               {isHorarioInvalido && (
                 <p className="alerta-erro" role="alert">

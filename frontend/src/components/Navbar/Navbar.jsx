@@ -12,7 +12,7 @@ function Navbar({ usuario: usuarioProp }) {
 
   const usuarioLogado =
     usuarioProp ||
-    (jogadorId && !isLandingPage
+    (jogadorId
       ? { id: jogadorId, nome: jogadorNome || "Usuário" }
       : null);
 
