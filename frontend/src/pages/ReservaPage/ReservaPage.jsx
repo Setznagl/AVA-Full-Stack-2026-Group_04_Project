@@ -5,7 +5,7 @@ import Footer from "../../components/Footer/Footer";
 import Button from "../../components/Button/Button";
 import CalendarioCustom from "../../components/CalendarioCustom/CalendarioCustom";
 import InputHorario from "../../components/InputHorario/InputHorario";
-import { criarReserva, buscarReservasPorQuadra } from "../../services/ReservaService";
+import { criarReserva, atualizarReserva, buscarReservasPorQuadra } from "../../services/ReservaService";
 import "./ReservaPage.css";
 
 const getHoje = () => {
@@ -26,7 +26,7 @@ const getHorarioAtual = () => {
 const formatarDataExtenso = (dataIso) => {
   if (!dataIso) return "";
   const [ano, mes, dia] = dataIso.split("-");
-  const data = new Date(ano, mes - 1, dia);
+  const data = new Date(Number(ano), Number(mes) - 1, Number(dia));
 
   const texto = data.toLocaleDateString("pt-BR", {
     weekday: "short",
@@ -35,7 +35,6 @@ const formatarDataExtenso = (dataIso) => {
   });
 
   const textoSemPonto = texto.replace(".", "");
-
   return textoSemPonto.charAt(0).toUpperCase() + textoSemPonto.slice(1);
 };
 
@@ -58,12 +57,8 @@ const formatarDuracao = (minutos) => {
   if (minutos <= 0) return "";
   const horas = Math.floor(minutos / 60);
   const minutosRestantes = minutos % 60;
-  if (horas === 0) {
-    return `${minutosRestantes}min`;
-  }
-  if (minutosRestantes === 0) {
-    return `${horas}h`;
-  }
+  if (horas === 0) return `${minutosRestantes}min`;
+  if (minutosRestantes === 0) return `${horas}h`;
   return `${horas}h${String(minutosRestantes).padStart(2, "0")}min`;
 };
 
@@ -73,10 +68,20 @@ const getJogadorId = () => {
   return valor !== null && Number.isInteger(id) && id > 0 ? id : null;
 };
 
-function ReservaForm({ quadraInfo }) {
-  const [dataSelecionada, setDataSelecionada] = useState(getHoje());
-  const [horarioInicio, setHorarioInicio] = useState("");
-  const [horarioFim, setHorarioFim] = useState("");
+function ReservaForm({ quadraInfo, reservaParaEditar }) {
+  const isEdicao = Boolean(reservaParaEditar?.id);
+  const quadraId = quadraInfo?.id;
+  const reservaId = reservaParaEditar?.id;
+
+  const [dataSelecionada, setDataSelecionada] = useState(
+    reservaParaEditar?.data || getHoje(),
+  );
+  const [horarioInicio, setHorarioInicio] = useState(
+    reservaParaEditar?.horarioInicio || "",
+  );
+  const [horarioFim, setHorarioFim] = useState(
+    reservaParaEditar?.horarioFim || "",
+  );
   const [mensagemErro, setMensagemErro] = useState("");
   const [mensagemSucesso, setMensagemSucesso] = useState("");
   const [carregando, setCarregando] = useState(false);
@@ -103,8 +108,8 @@ function ReservaForm({ quadraInfo }) {
   }, [quadraInfo.id, dataSelecionada]);
 
   const localidade =
-    quadraInfo.localidade ??
-    quadraInfo.localizacao ??
+    quadraInfo?.localidade ??
+    quadraInfo?.localizacao ??
     "Localização não informada";
 
   const hoje = getHoje();
@@ -161,7 +166,7 @@ function ReservaForm({ quadraInfo }) {
     duracaoEmMinutos,
   ]);
 
-  const handleConfirmarReserva = useCallback(
+  const handleSalvarReserva = useCallback(
     async (event) => {
       event.preventDefault();
       limparMensagens();
@@ -174,29 +179,41 @@ function ReservaForm({ quadraInfo }) {
 
       const jogadorId = getJogadorId();
       if (!jogadorId) {
-        setMensagemErro("Faça login para confirmar uma reserva.");
+        setMensagemErro("Faça login para continuar.");
         return;
       }
 
       try {
         setCarregando(true);
-        await criarReserva({
-          jogador_id: jogadorId,
-          quadra_id: quadraInfo.id,
-          data: criarData(dataSelecionada),
-          horarioInicio: criarDataHora(dataSelecionada, horarioInicio),
-          horarioFim: criarDataHora(dataSelecionada, horarioFim),
-        });
-        setMensagemSucesso("Reserva confirmada com sucesso!");
-        setHorarioInicio("");
-        setHorarioFim("");
+
+        if (isEdicao) {
+          await atualizarReserva(reservaId, {
+            data: criarData(dataSelecionada),
+            horario_inicio: criarDataHora(dataSelecionada, horarioInicio),
+            horario_fim: criarDataHora(dataSelecionada, horarioFim),
+          });
+          setMensagemSucesso("Reserva atualizada com sucesso!");
+        } else {
+          await criarReserva({
+            jogador_id: jogadorId,
+            quadra_id: quadraId,
+            data: criarData(dataSelecionada),
+            horarioInicio: criarDataHora(dataSelecionada, horarioInicio),
+            horarioFim: criarDataHora(dataSelecionada, horarioFim),
+          });
+          setMensagemSucesso("Reserva confirmada com sucesso!");
+          setHorarioInicio("");
+          setHorarioFim("");
+        }
       } catch (erro) {
-        console.error("Erro ao criar reserva:", erro);
+        console.error("Erro ao salvar reserva:", erro);
         const mensagemApi =
           erro?.response?.data?.message ?? erro?.response?.data?.mensagem;
         const mensagemSegura =
           typeof mensagemApi === "string" ? mensagemApi : null;
         setMensagemErro(
+          mensagemApi ||
+            "Não foi possível salvar a reserva. Tente novamente mais tarde.",
           mensagemSegura ||
             "Não foi possível realizar a reserva. Tente novamente mais tarde.",
         );
@@ -207,7 +224,9 @@ function ReservaForm({ quadraInfo }) {
     [
       limparMensagens,
       validarFormulario,
-      quadraInfo.id,
+      isEdicao,
+      reservaId,
+      quadraId,
       dataSelecionada,
       horarioInicio,
       horarioFim,
@@ -228,13 +247,15 @@ function ReservaForm({ quadraInfo }) {
             />
           </div>
           <div className="quadra-detalhes">
-            <h1 className="quadra-titulo">{quadraInfo.nome}</h1>
+            <h1 className="quadra-titulo">
+              {isEdicao ? `Editar Reserva — ${quadraInfo.nome}` : quadraInfo.nome}
+            </h1>
             <p className="quadra-localizacao">{localidade}</p>
             <span className="quadra-badge">{quadraInfo.modalidade}</span>
           </div>
         </section>
 
-        <form onSubmit={handleConfirmarReserva} noValidate>
+        <form onSubmit={handleSalvarReserva} noValidate>
           <div className="reserva-grid">
             <section className="reserva-box" aria-label="Selecione a data">
               <CalendarioCustom
@@ -336,7 +357,13 @@ function ReservaForm({ quadraInfo }) {
                 type="submit"
                 disabled={reservaIncompleta || carregando}
               >
-                {carregando ? "Confirmando..." : "Confirmar reserva →"}
+                {carregando
+                  ? isEdicao
+                    ? "Atualizando..."
+                    : "Confirmando..."
+                  : isEdicao
+                  ? "Atualizar reserva"
+                  : "Confirmar reserva →"}
               </Button>
             </div>
           </section>
@@ -361,7 +388,12 @@ function ReservaPage() {
     return null;
   }
 
-  return <ReservaForm quadraInfo={state.quadra} />;
+  return (
+    <ReservaForm
+      quadraInfo={state.quadra}
+      reservaParaEditar={state?.reservaParaEditar}
+    />
+  );
 }
 
 export default ReservaPage;
