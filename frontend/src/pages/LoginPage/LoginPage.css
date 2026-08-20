@@ -24,12 +24,19 @@
 }
 
 .login-brand {
+  display: inline-flex;
   color: var(--login-blue);
   font-family: var(--font-heading);
   font-size: 28px;
   font-weight: 700;
   line-height: 36px;
   letter-spacing: -1px;
+}
+
+.login-brand__logo {
+  height: 84px;
+  width: auto;
+  object-fit: contain;
 }
 
 .login-card {

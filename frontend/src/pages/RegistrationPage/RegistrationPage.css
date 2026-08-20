@@ -25,12 +25,19 @@
 }
 
 .registration-brand {
+  display: inline-flex;
   color: var(--registration-blue);
   font-family: var(--font-heading);
   font-size: 26px;
   font-weight: 700;
   line-height: 55px;
   letter-spacing: -0.8px;
+}
+
+.registration-brand__logo {
+  height: 72px;
+  width: auto;
+  object-fit: contain;
 }
 
 .registration-card {

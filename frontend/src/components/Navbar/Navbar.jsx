@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import Button from "../Button/Button";
 import "./Navbar.css";
+import avafsIcon from "../../assets/logo/avafs-icon.png";
 
 function Navbar({ usuario: usuarioProp }) {
   const location = useLocation();
@@ -34,7 +35,10 @@ function Navbar({ usuario: usuarioProp }) {
       <div className="container navbar-container">
         <div className="navbar-left">
           <Link to="/" className="navbar-logo">
-            AVAFS Quadras
+            <img src={avafsIcon} alt="AVAFS Quadras" className="navbar-logo__icon" />
+            <span>
+              AVAFS <span className="navbar-logo__accent">Quadras</span>
+            </span>
           </Link>
 
           {!isLandingPage && (

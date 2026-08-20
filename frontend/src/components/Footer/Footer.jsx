@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "./Footer.css";
+import avafsIcon from "../../assets/logo/avafs-icon.png";
 
 function Footer() {
   const anoAtual = new Date().getFullYear();
@@ -7,7 +8,12 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="container footer__content">
-        <span className="footer__brand">AVAFS Quadras</span>
+        <span className="footer__brand">
+          <span className="footer__brand-badge">
+            <img src={avafsIcon} alt="" aria-hidden="true" />
+          </span>
+          AVAFS Quadras
+        </span>
 
         <nav className="footer__links">
           <Link to="/termos">Termos de Uso</Link>

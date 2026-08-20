@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../services/Api";
 import "./RegistrationPage.css";
+import avafsLogo from "../../assets/logo/avafs-logo-full.png";
 
 function formatPhone(value) {
   const digits = value.replace(/\D/g, "").slice(0, 11);
@@ -64,8 +65,12 @@ function formatPhone(value) {
           to="/"
           aria-label="Voltar para a página inicial"
         >
-          AVAFS Quadras
-        </Link>
+          <img
+            src={avafsLogo}
+            alt="AVAFS Quadras"
+            className="registration-brand__logo"
+        />
+      </Link>
 
         <section className="registration-card" aria-labelledby="registration-title">
           <h1 id="registration-title">Criar Conta</h1>

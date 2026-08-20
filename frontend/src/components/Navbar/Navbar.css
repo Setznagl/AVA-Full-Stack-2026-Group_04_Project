@@ -18,11 +18,25 @@
 }
 
 .navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   font-family: var(--font-heading, sans-serif);
   font-size: 1.35rem;
   font-weight: 800;
   color: var(--color-navy-900, #0b2a54);
   text-decoration: none;
+}
+
+.navbar-logo__icon {
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.navbar-logo__accent {
+  color: var(--color-orange-500, #f2782e);
 }
 
 .navbar-menu {

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../services/Api";
 import "./LoginPage.css";
+import avafsLogo from "../../assets/logo/avafs-logo-full.png";
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -47,7 +48,7 @@ function LoginPage() {
     <main className="login-page">
       <div className="login-shell">
         <Link className="login-brand" to="/" aria-label="Voltar para a página inicial">
-          AVAFS Quadras
+          <img src={avafsLogo} alt="AVAFS Quadras" className="login-brand__logo" />
         </Link>
 
         <section className="login-card" aria-labelledby="login-title">
