@@ -4,7 +4,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import RegistrationPage from "./pages/RegistrationPage/RegistrationPage";
 import QuadrasPage from "./pages/QuadrasPage/QuadrasPage";
 import ReservaPage from "./pages/ReservaPage/ReservaPage";
-import PlaceholderPage from "./pages/PlaceholderPage/PlaceholderPage";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import TermosPage from "./pages/TermosPage/TermosPage";
 import PrivacidadePage from "./pages/PrivacidadePage/PrivacidadePage";
 import ContatoPage from "./pages/ContatoPage/ContatoPage";
@@ -19,7 +19,7 @@ function App() {
         <Route path="/cadastro" element={<RegistrationPage />} />
         <Route path="/quadras" element={<QuadrasPage />} />
         <Route path="/reservar" element={<ReservaPage />} />
-        <Route path="/perfil" element={<PlaceholderPage titulo="Meu Perfil" />} />
+        <Route path="/perfil" element={<ProfilePage />} />
         <Route path="/termos" element={<TermosPage />} />
         <Route path="/privacidade" element={<PrivacidadePage />} />
         <Route path="/contato" element={<ContatoPage />} />
