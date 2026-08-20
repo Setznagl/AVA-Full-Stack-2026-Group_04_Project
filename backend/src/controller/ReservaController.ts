@@ -13,12 +13,21 @@ export class ReservaController {
     async insertReserva(request: express.Request, response: express.Response): Promise<HttpError | void> {
         const { jogador_id, quadra_id, data, horarioInicio, horarioFim } = request.body;
 
-        const requestOutput: reserva | HttpError = await this.reservaService
-            .insertReserva(jogador_id, quadra_id, data, horarioInicio, horarioFim);
+        const dataConvertida = new Date(data);
+        const horarioInicioConvertido = new Date(horarioInicio);
+        const horarioFimConvertido = new Date(horarioFim);
 
-        requestOutput instanceof HttpError
-            ? response.status(requestOutput.statusCode).json(requestOutput)
-            : response.status(201).json(requestOutput);
+        if (
+            isNaN(dataConvertida.getTime()) ||
+            isNaN(horarioInicioConvertido.getTime()) ||
+            isNaN(horarioFimConvertido.getTime())
+        ) {
+            response.status(400).json(new HttpError(400, 'Invalid body parameter', "controller"));
+            return;
+        }
+
+        const requestOutput: reserva | HttpError = await this.reservaService
+            .insertReserva(jogador_id, quadra_id, dataConvertida, horarioInicioConvertido, horarioFimConvertido);
     }
 
     async findById (request: express.Request, response: express.Response): Promise<HttpError | void> {
@@ -40,7 +49,7 @@ export class ReservaController {
         const { jogador_id } = request.params;
 
         if(!jogador_id || isNaN(Number(jogador_id)) || Array.isArray(jogador_id)) {
-          response.status(400).json(new HttpError(400, 'Invalid path parameter', "Controller"));
+          response.status(400).json(new HttpError(400, 'Invalid path parameter', "controller"));
           return;
         }
 
@@ -99,10 +108,14 @@ export class ReservaController {
             return;
         }
 
+        const dataConvertida = new Date(data);
+        const horarioInicioConvertido = new Date(horario_inicio);
+        const horarioFimConvertido = new Date(horario_fim);
+
         if (
-            !(data instanceof Date) || Array.isArray(data) ||
-            !(horario_inicio instanceof Date) || Array.isArray(horario_inicio) ||
-            !(horario_fim instanceof Date) || Array.isArray(horario_fim)
+            Array.isArray(data) || isNaN(dataConvertida.getTime()) ||
+            Array.isArray(horario_inicio) || isNaN(horarioInicioConvertido.getTime()) ||
+            Array.isArray(horario_fim) || isNaN(horarioFimConvertido.getTime())
         ) {
             response.status(400).json(new HttpError(400, 'Invalid body parameter', "controller"));
             return;
@@ -110,9 +123,9 @@ export class ReservaController {
 
         const requestOutput: reserva | HttpError = await this.reservaService.updateReserva(
             numericId,
-            data,
-            horario_inicio,
-            horario_fim
+            dataConvertida,
+            horarioInicioConvertido,
+            horarioFimConvertido
         );
 
         requestOutput instanceof HttpError

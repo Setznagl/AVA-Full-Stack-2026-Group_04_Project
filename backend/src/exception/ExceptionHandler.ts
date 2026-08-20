@@ -5,7 +5,7 @@ class ExceptionHandler {
 
     handle(exception: any , layer: "repository" | "service" | "controller"):HttpError {
 
-        let treatedException: HttpError = new HttpError(500, exception, layer);
+        let treatedException: HttpError = new HttpError(500, exception?.message || "Erro interno no servidor.", layer);
 
         if(exception instanceof PrismaClientKnownRequestError){
             switch (exception.code) {

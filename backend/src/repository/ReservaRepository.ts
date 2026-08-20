@@ -41,7 +41,9 @@ export class ReservaRepository {
     async findByJogadorID(provided_jogador_id: number): Promise<reserva[] | HttpError> {
         try {
             return await this.prisma.reserva.findMany({
-                where: {jogador_id: provided_jogador_id}
+                where: {jogador_id: provided_jogador_id},
+                include: { quadra: true },
+                orderBy: { data: "asc" }
             });
         } catch (exception: any) {
             console.error(exception);
