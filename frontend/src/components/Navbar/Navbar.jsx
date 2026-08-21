@@ -1,16 +1,16 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
 import "./Navbar.css";
 import avafsIcon from "../../assets/logo/avafs-icon.png";
 
 function Navbar({ usuario: usuarioProp }) {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isLandingPage = location.pathname === "/";
 
   const jogadorId = localStorage.getItem("jogadorId");
-  const jogadorNome =
-    localStorage.getItem("jogadorNome") || localStorage.getItem("jogadorNome");
+  const jogadorNome = localStorage.getItem("jogadorNome");
 
   const usuarioLogado =
     usuarioProp ||
@@ -22,6 +22,14 @@ function Navbar({ usuario: usuarioProp }) {
 
   const isQuadrasAtivo =
     location.pathname === "/quadras" || location.pathname.startsWith("/reservar");
+
+  const handleLogout = () => {
+    localStorage.removeItem("jogadorId");
+    localStorage.removeItem("jogadorNome");
+    localStorage.removeItem("token");
+
+    navigate("/");
+  };
 
   const obterIniciais = (nome) => {
     if (!nome) return "U";
@@ -84,6 +92,14 @@ function Navbar({ usuario: usuarioProp }) {
                   )}
                 </div>
               </Link>
+
+              <button 
+                onClick={handleLogout} 
+                className="navbar-logout-btn"
+                title="Sair da conta"
+              >
+                Sair
+              </button>
             </div>
           ) : (
             <Link to="/login">
