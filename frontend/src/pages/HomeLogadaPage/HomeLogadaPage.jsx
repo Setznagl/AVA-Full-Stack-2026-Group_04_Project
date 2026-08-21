@@ -115,7 +115,7 @@ function CardReservaAtiva({ reserva, onAbrirModalExclusao }) {
 }
 
 function HomeLogadaPage() {
-  const [nomeUsuario] = useState(() => localStorage.getItem("nomeUsuario"));
+  const [nomeUsuario] = useState(() => localStorage.getItem("jogadorNome"));
   const [reservas, setReservas] = useState([]);
   const [carregando, setCarregando] = useState(() => Boolean(localStorage.getItem("jogadorId")));
   
