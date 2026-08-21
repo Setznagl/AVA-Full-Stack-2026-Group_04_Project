@@ -67,7 +67,7 @@ O projeto está dividido em **Back-End** (API REST) e **Front-End** (interface w
 - ✅ Conteinerização do banco de dados principal (`postgres`) via Docker Compose
 - ✅ Banco de dados isolado para testes automatizados (`postgres-mock`), sem impactar os dados de produção
 - ✅ Testes unitários com **Jest** com cobertura de código de (100% Jogador, 100% Quadra, 100% Reserva)
-- 🔜 Interface web (front-end em React com Axios) em desenvolvimento
+- ✅ Interface web (front-end em React com Axios)
 - ✅ Documentação da API via Swagger Open API 3.0
 - ✅ Autenticação e autorização de usuários com JWT
 
@@ -187,7 +187,7 @@ Os testes usam um banco **separado** (`postgres-mock`, definido no `docker-compo
       </a>
         <p align="center"><b>Gabriel Setznagl de Mendonça</b></p>
         <b align="center">☕ Back-End</b> <br><br>
-        <b align="center">Implementação do Jogador, scripts Docker e testes unitários com Jest<br></b>
+        <b align="center">Implementação do Jogador, scripts Docker, testes unitários com Jest e autenticação com JWT<br></b>
         <br>
     </td> 
     <td align="center"> 
@@ -198,7 +198,7 @@ Os testes usam um banco **separado** (`postgres-mock`, definido no `docker-compo
         <p align="center"><b>Vitor Alencastro Pantoja</b></p>
         <b align="center">🎨 Front-End</b> <br>
         <b align="center">☕ Back-End</b> <br><br> 
-        <b align="center">Gerenciamento do repositório GitHub, README e início do front-end<br></b>
+        <b align="center">Gerenciamento do repositório GitHub, README e integração do front-end com o back-end<br></b>
         <br /> 
     </td> 
         <td align="center"> 
@@ -207,7 +207,8 @@ Os testes usam um banco **separado** (`postgres-mock`, definido no `docker-compo
         <br />
       </a>
         <p align="center"><b>Clara Bonan Vianna</b></p>
-        <b align="center">☕ Back-End</b> <br><br>
+        <b align="center">🎨 Front-End</b> <br>
+        <b align="center">☕ Back-End</b> <br><br> 
         <b align="center">Implementação de Reserva, validação de horário e filtros de data e quadra<br></b>
         <br /> 
     </td> 
@@ -238,8 +239,21 @@ Os testes usam um banco **separado** (`postgres-mock`, definido no `docker-compo
         <br />
       </a>
         <p align="center"><b>Camila Vitória</b></p>
+        <b align="center">🎨 Front-End</b>
         <b align="center"><br>👥 Scrum-Master</b> <br><br>
-        <b align="center">Gerenciamento e divisão de tarefas pelo Trello<br></b>
+        <b align="center">Gerenciamento e divisão de tarefas pelo Trello e apoio no desenvolvimento das telas do front-end<br></b>
+        <br /> 
+    </td>
+       </td> 
+        </td> 
+        <td align="center"> 
+      <a href="https://github.com/">
+        <img src="https://avatars.githubusercontent.com/u/131381230?v=4" width="100px;" alt="Foto do autor"/> 
+        <br />
+      </a>
+        <p align="center"><b>Dennis Araujo</b></p>
+        <b align="center"><br>🎨 Front-End</b> <br><br>
+        <b align="center">Refinamento dos componentes do front-end e ajustes finos<br></b>
         <br /> 
     </td> 
 
