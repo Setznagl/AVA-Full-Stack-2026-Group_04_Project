@@ -8,6 +8,7 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import TermosPage from "./pages/TermosPage/TermosPage";
 import PrivacidadePage from "./pages/PrivacidadePage/PrivacidadePage";
 import ContatoPage from "./pages/ContatoPage/ContatoPage";
+import HomeLogadaPage from "./pages/HomeLogadaPage/HomeLogadaPage";
 import WhatsAppButton from "./components/WhatsAppButton/WhatsAppButton";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/quadras" element={<QuadrasPage />} />
         <Route path="/reservar" element={<ReservaPage />} />
         <Route path="/perfil" element={<ProfilePage />} />
+        <Route path="/home" element={<HomeLogadaPage />} />
         <Route path="/termos" element={<TermosPage />} />
         <Route path="/privacidade" element={<PrivacidadePage />} />
         <Route path="/contato" element={<ContatoPage />} />

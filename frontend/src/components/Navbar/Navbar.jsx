@@ -9,7 +9,8 @@ function Navbar({ usuario: usuarioProp }) {
   const isLandingPage = location.pathname === "/";
 
   const jogadorId = localStorage.getItem("jogadorId");
-  const jogadorNome = localStorage.getItem("jogadorNome");
+  const jogadorNome =
+    localStorage.getItem("jogadorNome") || localStorage.getItem("nomeUsuario");
 
   const usuarioLogado =
     usuarioProp ||
@@ -17,9 +18,10 @@ function Navbar({ usuario: usuarioProp }) {
       ? { id: jogadorId, nome: jogadorNome || "Usuário" }
       : null);
 
-  const isHomeAtivo = location.pathname === "/";
+  const isHomeAtivo = location.pathname === "/home";
+
   const isQuadrasAtivo =
-    location.pathname === "/quadras" || location.pathname.includes("/reservar");
+    location.pathname === "/quadras" || location.pathname.startsWith("/reservar");
 
   const obterIniciais = (nome) => {
     if (!nome) return "U";
@@ -34,7 +36,7 @@ function Navbar({ usuario: usuarioProp }) {
     <header className="navbar-header">
       <div className="container navbar-container">
         <div className="navbar-left">
-          <Link to="/" className="navbar-logo">
+          <Link to={usuarioLogado ? "/home" : "/"} className="navbar-logo">
             <img src={avafsIcon} alt="AVAFS Quadras" className="navbar-logo__icon" />
             <span>
               AVAFS <span className="navbar-logo__accent">Quadras</span>
@@ -44,7 +46,7 @@ function Navbar({ usuario: usuarioProp }) {
           {!isLandingPage && (
             <nav className="navbar-menu" aria-label="Navegação principal">
               <Link
-                to="/"
+                to="/home"
                 className={`navbar-link ${isHomeAtivo ? "ativo" : ""}`}
               >
                 Página Inicial
