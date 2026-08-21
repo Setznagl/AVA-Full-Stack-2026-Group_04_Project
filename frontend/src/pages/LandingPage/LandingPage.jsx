@@ -10,7 +10,7 @@ import carlosFoto from "../../assets/images/carlos_leoneollo.jpg";
 import claraFoto from "../../assets/images/clara_vianna.jpg";
 import dennisFoto from "../../assets/images/dennis_eduardo.jpg";
 import gabrielFoto from "../../assets/images/gabriel_mendonca.jpg";
-import igorFoto from "../../assets/images/emoji_temp.jpg";
+import igorFoto from "../../assets/images/igor_ezequiel.png";
 import vitorFoto from "../../assets/images/vitor_pantoja.jpeg";
 
 const diferenciais = [
