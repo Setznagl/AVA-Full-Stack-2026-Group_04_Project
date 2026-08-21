@@ -10,7 +10,7 @@ function Navbar({ usuario: usuarioProp }) {
 
   const jogadorId = localStorage.getItem("jogadorId");
   const jogadorNome =
-    localStorage.getItem("jogadorNome") || localStorage.getItem("nomeUsuario");
+    localStorage.getItem("jogadorNome") || localStorage.getItem("jogadorNome");
 
   const usuarioLogado =
     usuarioProp ||

@@ -1,15 +1,33 @@
+import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import LandingPage from "./pages/LandingPage/LandingPage";
-import LoginPage from "./pages/LoginPage/LoginPage";
-import RegistrationPage from "./pages/RegistrationPage/RegistrationPage";
-import QuadrasPage from "./pages/QuadrasPage/QuadrasPage";
-import ReservaPage from "./pages/ReservaPage/ReservaPage";
-import ProfilePage from "./pages/ProfilePage/ProfilePage";
-import TermosPage from "./pages/TermosPage/TermosPage";
-import PrivacidadePage from "./pages/PrivacidadePage/PrivacidadePage";
-import ContatoPage from "./pages/ContatoPage/ContatoPage";
-import HomeLogadaPage from "./pages/HomeLogadaPage/HomeLogadaPage";
-import WhatsAppButton from "./components/WhatsAppButton/WhatsAppButton";
+
+const LandingPage = lazy(() =>
+  import("./pages/LandingPage/LandingPage")
+);
+
+const LoginPage = lazy(() =>
+  import("./pages/LoginPage/LoginPage")
+);
+
+const RegistrationPage = lazy(() =>
+  import("./pages/RegistrationPage/RegistrationPage")
+);
+
+const QuadrasPage = lazy(() =>
+  import("./pages/QuadrasPage/QuadrasPage")
+);
+
+const ReservaPage = lazy(() =>
+  import("./pages/ReservaPage/ReservaPage")
+);
+
+const ProfilePage = lazy(() =>
+  import("./pages/ProfilePage/ProfilePage")
+);
+
+const HomeLogadaPage = lazy(() =>
+  import("./pages/HomeLogadaPage/HomeLogadaPage")
+);
 
 function App() {
   return (
