@@ -66,11 +66,19 @@ function QuadrasPage() {
         setModalidadesDisponiveis(modalidadesUnicas);
       }
 
+      // ===== BLOCO NOVO À PROVA DE TELA BRANCA =====
       if (tipo === "NOME") {
-        setQuadras([dadosDoBanco]); 
+        if (!dadosDoBanco) {
+          setQuadras([]); // Se vier vazio, garante que a lista fica vazia
+        } else if (Array.isArray(dadosDoBanco)) {
+          setQuadras(dadosDoBanco); // Se o back já mandar uma lista, usa ela
+        } else {
+          setQuadras([dadosDoBanco]); // Se o back mandar só um objeto, transforma em lista
+        }
       } else {
-        setQuadras(dadosDoBanco); 
+        setQuadras(dadosDoBanco || []); 
       }
+      // ==============================================
       
     } catch (err) {
       // Tratamento de erros otimizado para o formato do Axios

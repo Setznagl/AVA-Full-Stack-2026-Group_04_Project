@@ -64,7 +64,12 @@ export class QuadraRepository {
 
         try {
             return await this.prisma.quadra.findFirst({
-                where: { nome: provided_nome.trim() },
+                where: { 
+                    nome: {
+                        contains: provided_nome.trim(), 
+                        mode: 'insensitive' 
+                    }
+                },
             });
         } catch (error: any) {
             return exceptionHandler.handle(error, "repository");
