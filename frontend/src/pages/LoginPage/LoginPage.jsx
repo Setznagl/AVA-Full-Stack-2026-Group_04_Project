@@ -37,7 +37,7 @@ function LoginPage() {
       localStorage.setItem("jogadorId", payload.id);
       localStorage.setItem("jogadorNome", payload.nome);
 
-      navigate("/quadras");
+      navigate("/home");
     } catch (err) {
       const mensagemErro = err.response?.data?.message || "Não foi possível entrar. Tente novamente.";
       setMessage(mensagemErro);
