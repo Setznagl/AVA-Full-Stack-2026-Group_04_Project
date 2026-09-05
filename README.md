@@ -1,4 +1,4 @@
-# 🏟️ Sistema de Agendamento de Quadras Esportivas
+# 🏟️ Sports Court Reservation System
 
 ![Node.js](https://img.shields.io/badge/Node.js-20+-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
@@ -10,118 +10,117 @@
 ![Jest](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
-> Projeto da disciplina **Desenvolvimento Full Stack Básico** (Atlântico Avanti) — Grupo 4 — Turma DFS-2026.2
+> Project from **FullStack** trail (Atlântico Avanti 2026) — Group 4 — FullStackDeveloper-2026.2
 
 ---
 
-## 💻 Sobre o projeto
+## 💻 About the project
 
-O **Sistema de Agendamento de Quadras Esportivas** é uma aplicação web voltada para a organização de reservas de quadras esportivas em bairros e centros esportivos.
+The **Sports Court Reservation System** is a full-stack web application designed to organize reservations of sports courts in neighborhoods and sports centers.
 
-A plataforma permite:
-- 🧑‍🤝‍🧑 Cadastrar **jogadores**;
-- 🏸 Cadastrar **quadras** e suas categorias (futebol, vôlei, tênis, etc.);
-- 📅 Registrar **reservas** de horário por quadra e data;
-- 🚫 Impedir **conflitos de agenda**, garantindo que a mesma quadra não seja reservada duas vezes no mesmo horário.
+The platform allows:
+- 🧑‍🤝‍🧑 Register **players**;
+- 🏸 Register **courts** with categories (soccer, volley, tennis, etc.);
+- 📅 Register **reservations** with validation of date and time, as well as filters by date and court;
+- 🚫 Prevent **schedule conflicts**, ensuring that no two reservations overlap for the same court.
 
-O projeto foi construído com uma arquitetura em camadas no back-end (API REST), banco de dados relacional gerenciado via ORM, testes automatizados isolados por ambiente e conteinerização completa via Docker — reproduzindo boas práticas de um fluxo de desenvolvimento profissional.
+The project was built using a layered back-end architecture (REST API), a relational database managed via ORM, automated tests isolated by environment, and full containerization via Docker—reflecting best practices for a professional development workflow.
 
 ---
 
-## 🛠 Tecnologias
+## 🛠 Tecnologies
 
-O projeto está dividido em **Back-End** (API REST) e **Front-End** (interface web), com o Docker orquestrando o ambiente de banco de dados.
+This project is divided into **Back-End** (REST API) and **Front-End** (web interface), with Docker orchestrating the database environment..
 
 ### 🎨 Front-End
 
-| Tecnologia | Descrição |
-|---|---|
-| ⚛️ **React** | Biblioteca para construção da interface do usuário |
-| ⚡ **Vite** | Build tool utilizada para desenvolvimento rápido do front-end |
+| Tecnology    | Description                                                   |
+|--------------|---------------------------------------------------------------|
+| ⚛️ **React** | Library for building user interfaces                          |
+| ⚡ **Vite**  | Build tool for rapid development of the front-end             |
 
 ### ⚙️ Back-End
 
-| Tecnologia | Descrição |
-|---|---|
-| 🟩 **Node.js** | Ambiente de execução JavaScript no servidor |
-| 🚂 **Express** | Framework para construção da API REST |
-| 🔷 **TypeScript** | Superset de JavaScript com tipagem estática |
-| ▲ **Prisma ORM** | Mapeamento objeto-relacional para acesso ao banco de dados |
-| 🐘 **PostgreSQL** | Banco de dados relacional principal da aplicação |
-| 🃏 **Jest** (+ `@swc/jest`) | Framework de testes unitários, com suporte a TypeScript/ESM |
+| Tecnology                   | Description                                                 |
+|-----------------------------|-------------------------------------------------------------|
+| 🟩 **Node.js**              | Server-side JavaScript runtime environment                  |
+| 🚂 **Express**              | Framework for building REST APIs                            |
+| 🔷 **TypeScript**           | A superset of JavaScript with static typing                 |
+| ▲ **Prisma ORM**            | Object-relational mapping for database access               |
+| 🐘 **PostgreSQL**           | The application’s primary relational database               |
+| 🃏 **Jest** (+ `@swc/jest`) | Unit testing framework with support for TypeScript/ESM      |
 
 ### 🐳 DevOps
 
 | Tecnologia | Descrição |
 |---|---|
-| 🐳 **Docker & Docker Compose** | Conteinerização do banco de dados de produção e do banco de testes (`postgres-mock`) |
+| 🐳 **Docker & Docker Compose** | Containerization of the production database and the test database (`postgres-mock`) |
 
 ---
 
-## 🚀 Funcionalidades
+## 🚀 Funcionabilities
 
-- ✅ Cadastro de **jogadores**
-- ✅ Cadastro de **quadras**, com filtros por categoria
-- ✅ Criação de **reservas**, com validação de horário e filtros por data e quadra
-- ✅ Bloqueio automático de **conflitos de agendamento** na mesma quadra
-- ✅ Conteinerização do banco de dados principal (`postgres`) via Docker Compose
-- ✅ Banco de dados isolado para testes automatizados (`postgres-mock`), sem impactar os dados de produção
-- ✅ Testes unitários com **Jest** com cobertura de código de (100% Jogador, 100% Quadra, 100% Reserva)
-- ✅ Interface web (front-end em React com Axios)
-- ✅ Documentação da API via Swagger Open API 3.0
-- ✅ Autenticação e autorização de usuários com JWT
+- ✅ Registration of **players**
+- ✅ Registration of **courts**, with filters by category
+- ✅ Creation of **reservations**, with time validation and filters by date and court
+- ✅ Automatic blocking of **scheduling conflicts** on the same court
+- ✅ Containerization of the main database (`postgres`) via Docker Compose
+- ✅ Isolated database for automated testing (`postgres-mock`), without impacting production data
+- ✅ Unit tests with **Jest** with code coverage of (100% Player, 100% Court, 100% Reservation)
+- ✅ Web interface (React front-end with Axios)
+- ✅ API documentation via Swagger Open API 3.0
+- ✅ User authentication and authorization with JWT
 
 ---
 
-## 📋 Pré-requisitos
+## 📋 Prerequisites
 
-Antes de começar, você vai precisar ter instalado:
+Before you begin, you'll need to have the following installed:
 
 - [Node.js](https://nodejs.org/) 20+
-- [Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/)
+- [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/)
 - [npm](https://www.npmjs.com/)
 
 ---
-## ⚙️ Como executar o front-end
+## ⚙️ How to run the front-end
 
-1. Clone o repositório e entre na pasta `frontend`:
+1. Clone the repository and enter the `frontend` folder:
 
    ```bash
    git clone <url-do-repositorio>
    cd frontend
    ```
 
-2. Instale as dependências:
+2. Install the dependencies:
 
    ```bash
    npm install
    ```
 
-3. Inicie o servidor de desenvolvimento:
+3. Initiate the development server:
 
    ```bash
    npm run dev
    ```
 
-   O front-end estará disponível em `http://localhost:5173` por padrão.
+   The front-end will be available at `http://localhost:5173` by default.
 
-## ⚙️ Como executar o back-end
+## ⚙️ How to run the back-end
 
-1. Clone o repositório e entre na pasta `backend`:
+1. Clone the repository and enter the `backend` folder:
 
    ```bash
    git clone <url-do-repositorio>
    cd backend
    ```
 
-2. Instale as dependências:
+2. Install the dependencies:
 
    ```bash
    npm install
    ```
 
-3. Crie o arquivo `backend/.env` na pasta `backend` (baseado no `.env.example`) com as variáveis de 
-  conexão do banco e segredos JWT de exemplo.:
+3. Create the `backend/.env` file in the `backend` folder (based on the `.env.example`) with the database connection variables and example JWT secrets.
 
    ```env
    DATABASE_URL="postgresql://admin:admin@localhost:5432/psql_db"
@@ -130,26 +129,26 @@ Antes de começar, você vai precisar ter instalado:
    REFRESH_SECRET_JWT="9CbOXnDO7SSTD|eK@-3C;*(3y3,Y^q@}Y$y!^d/kCZ8"
    ```
 
-4. Suba o banco de dados com Docker Compose:
+4. start the database with Docker Compose:
 
    ```bash
    docker compose -f docker/docker-compose.yml up -d
    ```
 
-5. Gere o cliente Prisma e aplique as migrations:
+5. Generate the Prisma client and apply the migrations:
 
    ```bash
    npx prisma generate
    npx prisma migrate deploy
    ```
 
-6. Inicie o servidor:
+6. Start the server:
 
    ```bash
    npm start
    ```
 
-   A API sobe por padrão na porta `3000`. Para confirmar que está no ar:
+   The API starts by default on port `3000`. To confirm that it's running:
 
    ```bash
    curl http://localhost:3000/v1/teste
@@ -157,27 +156,27 @@ Antes de começar, você vai precisar ter instalado:
 
 ---
 
-## 🧪 Como rodar os testes
+## 🧪 How to run the tests
 
-Os testes usam um banco **separado** (`postgres-mock`, definido no `docker-compose.yml`), garantindo que não interfiram nos dados do banco principal.
+The tests use a **separate** database (`postgres-mock`, defined in `docker-compose.yml`), ensuring that they don't interfere with the data in the main database.
 
-1. Suba o banco de testes (caso ainda não esteja rodando):
+1. Start the test database (if it's not already running):
 
    ```bash
    docker compose -f docker/docker-compose.yml up -d postgres-mock
    ```
 
-2. Rode os testes:
+2. Run the tests:
 
    ```bash
    npm test
    ```
 
-   Os testes usam **`@swc/jest`** (configurado em `jest.config.js`) para suportar TypeScript e ESM, incluindo os módulos internos do Prisma Client.
+   The tests use **`@swc/jest`** (configured on `jest.config.js`) to support TypeScript and ESM, including the internal modules of the Prisma Client.
 
 ---
 
-## 🌎 Autores e Contribuições
+## 🌎 Authors and Contributions
 <table> 
   <tr> 
     <td align="center"> 
@@ -187,7 +186,7 @@ Os testes usam um banco **separado** (`postgres-mock`, definido no `docker-compo
       </a>
         <p align="center"><b>Gabriel Setznagl de Mendonça</b></p>
         <b align="center">☕ Back-End</b> <br><br>
-        <b align="center">Implementação do Jogador, scripts Docker, testes unitários com Jest e autenticação com JWT<br></b>
+        <b align="center">Player Entity, README , Code refactor, Docker scripts, Unit tests with Jest and auth using JWT<br></b>
         <br>
     </td> 
     <td align="center"> 
@@ -198,7 +197,7 @@ Os testes usam um banco **separado** (`postgres-mock`, definido no `docker-compo
         <p align="center"><b>Vitor Alencastro Pantoja</b></p>
         <b align="center">🎨 Front-End</b> <br>
         <b align="center">☕ Back-End</b> <br><br> 
-        <b align="center">Gerenciamento do repositório GitHub, README e integração do front-end com o back-end<br></b>
+        <b align="center">Repository Management and integrations between front-end and back-end<br></b>
         <br /> 
     </td> 
         <td align="center"> 
@@ -209,7 +208,7 @@ Os testes usam um banco **separado** (`postgres-mock`, definido no `docker-compo
         <p align="center"><b>Clara Bonan Vianna</b></p>
         <b align="center">🎨 Front-End</b> <br>
         <b align="center">☕ Back-End</b> <br><br> 
-        <b align="center">Implementação de Reserva, validação de horário e filtros de data e quadra<br></b>
+        <b align="center">Reservation Entity, schedule validation and date and term filters<br></b>
         <br /> 
     </td> 
         <td align="center"> 
@@ -219,7 +218,7 @@ Os testes usam um banco **separado** (`postgres-mock`, definido no `docker-compo
       </a>
         <p align="center"><b>Carlos Leonello</b></p>
         <b align="center"><br>💾 Database</b> <br><br>
-        <b align="center">Modelagem do Banco de dados e modelo entidade-relacionamento<br></b>
+        <b align="center">Database modeling and entity-relationship model<br></b>
         <br /> 
     </td> 
         <td align="center"> 
@@ -229,7 +228,7 @@ Os testes usam um banco **separado** (`postgres-mock`, definido no `docker-compo
       </a>
         <p align="center"><b>Igor Ezequiel Duarte Barreto</b></p>
         <b align="center">☕ Back-End</b> <br><br>
-        <b align="center">Implementação de Quadra e filtros por categorias<br></b>
+        <b align="center">Court entity and category filters<br></b>
         <br /> 
     </td> 
         </td> 
@@ -241,7 +240,7 @@ Os testes usam um banco **separado** (`postgres-mock`, definido no `docker-compo
         <p align="center"><b>Camila Vitória</b></p>
         <b align="center">🎨 Front-End</b>
         <b align="center"><br>👥 Scrum-Master</b> <br><br>
-        <b align="center">Gerenciamento e divisão de tarefas pelo Trello e apoio no desenvolvimento das telas do front-end<br></b>
+        <b align="center">Agile Scrum Master using Trello and support in the development of the front-end screens<br></b>
         <br /> 
     </td>
        </td> 
@@ -253,7 +252,7 @@ Os testes usam um banco **separado** (`postgres-mock`, definido no `docker-compo
       </a>
         <p align="center"><b>Dennis Araujo</b></p>
         <b align="center"><br>🎨 Front-End</b> <br><br>
-        <b align="center">Refinamento dos componentes do front-end e ajustes finos<br></b>
+        <b align="center">Refinement of front-end components and fine-tuning<br></b>
         <br /> 
     </td> 
 
@@ -262,4 +261,4 @@ Os testes usam um banco **separado** (`postgres-mock`, definido no `docker-compo
 
 ## 📝 Licença
 
-Este projeto foi desenvolvido para fins educacionais no âmbito da disciplina **Desenvolvimento Full Stack Básico** — Atlântico Avanti, turma DFS-2026.2.
+This project was developed for educational purposes as part of the course **Full Stack Development** — Atlântico Avanti, turma FSD-2026.2.
