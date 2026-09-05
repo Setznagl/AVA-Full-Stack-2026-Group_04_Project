@@ -179,7 +179,7 @@ The tests use a **separate** database (`postgres-mock`, defined in `docker-compo
 ## 🌎 Authors and Contributions
 <table> 
   <tr> 
-    <td align="center"> 
+    <td align="center" width="13.75%"> 
       <a href="https://github.com/">
         <img src="https://avatars.githubusercontent.com/u/91721431?v=4" width="100%" style="min-width: 100px;"/> 
         <br />
@@ -189,7 +189,7 @@ The tests use a **separate** database (`postgres-mock`, defined in `docker-compo
         <b align="center">Player Entity, README , Code refactor, Docker scripts, Unit tests with Jest and auth using JWT<br></b>
         <br>
     </td> 
-    <td align="center"> 
+    <td align="center" width="13.75%"> 
       <a href="https://github.com/">
         <img src="https://avatars.githubusercontent.com/u/243326528?v=4" width="100%" style="min-width: 100px;"/> 
         <br />
@@ -200,7 +200,7 @@ The tests use a **separate** database (`postgres-mock`, defined in `docker-compo
         <b align="center">Repository Management and integrations between front-end and back-end<br></b>
         <br /> 
     </td> 
-        <td align="center"> 
+        <td align="center" width="13.75%"> 
       <a href="https://github.com/">
         <img src="https://avatars.githubusercontent.com/u/231565173?v=4" width="100%" style="min-width: 100px;"/> 
         <br />
@@ -211,7 +211,7 @@ The tests use a **separate** database (`postgres-mock`, defined in `docker-compo
         <b align="center">Reservation Entity, schedule validation and date and term filters<br></b>
         <br /> 
     </td> 
-        <td align="center"> 
+        <td align="center" width="13.75%"> 
       <a href="https://github.com/">
         <img src="https://avatars.githubusercontent.com/u/188599152?v=4" width="100%" style="min-width: 100px;"/> 
         <br />
@@ -221,7 +221,7 @@ The tests use a **separate** database (`postgres-mock`, defined in `docker-compo
         <b align="center">Database modeling and entity-relationship model<br></b>
         <br /> 
     </td> 
-        <td align="center"> 
+        <td align="center" width="13.75%"> 
       <a href="https://github.com/">
         <img src="https://avatars.githubusercontent.com/u/131815218?v=4" width="100%" style="min-width: 100px;"/> 
         <br />
@@ -232,7 +232,7 @@ The tests use a **separate** database (`postgres-mock`, defined in `docker-compo
         <br /> 
     </td> 
         </td> 
-        <td align="center"> 
+        <td align="center" width="13.75%"> 
       <a href="https://github.com/">
         <img src="https://avatars.githubusercontent.com/u/177791071?v=4" width="100%" style="min-width: 100px;"/> 
         <br />
@@ -245,7 +245,7 @@ The tests use a **separate** database (`postgres-mock`, defined in `docker-compo
     </td>
        </td> 
         </td> 
-        <td align="center"> 
+        <td align="center" width="13.75%">
       <a href="https://github.com/">
         <img src="https://avatars.githubusercontent.com/u/131381230?v=4" width="100%" style="min-width: 100px;"/> 
         <br />
