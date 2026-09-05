@@ -181,7 +181,7 @@ The tests use a **separate** database (`postgres-mock`, defined in `docker-compo
   <tr> 
     <td align="center" width="13.75%"> 
       <a href="https://github.com/">
-        <img src="https://avatars.githubusercontent.com/u/91721431?v=4" width="100%" style="min-width: 100px;"/> 
+        <img src="https://avatars.githubusercontent.com/u/91721431?v=4" width="100%"/> 
         <br />
       </a>
         <p align="center"><b>Gabriel Setznagl de Mendonça</b></p>
@@ -191,7 +191,7 @@ The tests use a **separate** database (`postgres-mock`, defined in `docker-compo
     </td> 
     <td align="center" width="13.75%"> 
       <a href="https://github.com/">
-        <img src="https://avatars.githubusercontent.com/u/243326528?v=4" width="100%" style="min-width: 100px;"/> 
+        <img src="https://avatars.githubusercontent.com/u/243326528?v=4" width="100%"/> 
         <br />
       </a>
         <p align="center"><b>Vitor Alencastro Pantoja</b></p>
@@ -202,7 +202,7 @@ The tests use a **separate** database (`postgres-mock`, defined in `docker-compo
     </td> 
         <td align="center" width="13.75%"> 
       <a href="https://github.com/">
-        <img src="https://avatars.githubusercontent.com/u/231565173?v=4" width="100%" style="min-width: 100px;"/> 
+        <img src="https://avatars.githubusercontent.com/u/231565173?v=4" width="100%"/> 
         <br />
       </a>
         <p align="center"><b>Clara Bonan Vianna</b></p>
@@ -213,7 +213,7 @@ The tests use a **separate** database (`postgres-mock`, defined in `docker-compo
     </td> 
         <td align="center" width="13.75%"> 
       <a href="https://github.com/">
-        <img src="https://avatars.githubusercontent.com/u/188599152?v=4" width="100%" style="min-width: 100px;"/> 
+        <img src="https://avatars.githubusercontent.com/u/188599152?v=4" width="100%"/> 
         <br />
       </a>
         <p align="center"><b>Carlos Leonello</b></p>
@@ -223,7 +223,7 @@ The tests use a **separate** database (`postgres-mock`, defined in `docker-compo
     </td> 
         <td align="center" width="13.75%"> 
       <a href="https://github.com/">
-        <img src="https://avatars.githubusercontent.com/u/131815218?v=4" width="100%" style="min-width: 100px;"/> 
+        <img src="https://avatars.githubusercontent.com/u/131815218?v=4" width="100%"/> 
         <br />
       </a>
         <p align="center"><b>Igor Ezequiel Duarte Barreto</b></p>
@@ -234,7 +234,7 @@ The tests use a **separate** database (`postgres-mock`, defined in `docker-compo
         </td> 
         <td align="center" width="13.75%"> 
       <a href="https://github.com/">
-        <img src="https://avatars.githubusercontent.com/u/177791071?v=4" width="100%" style="min-width: 100px;"/> 
+        <img src="https://avatars.githubusercontent.com/u/177791071?v=4" width="100%"/> 
         <br />
       </a>
         <p align="center"><b>Camila Vitória</b></p>
@@ -247,7 +247,7 @@ The tests use a **separate** database (`postgres-mock`, defined in `docker-compo
         </td> 
         <td align="center" width="13.75%">
       <a href="https://github.com/">
-        <img src="https://avatars.githubusercontent.com/u/131381230?v=4" width="100%" style="min-width: 100px;"/> 
+        <img src="https://avatars.githubusercontent.com/u/131381230?v=4" width="100%"/> 
         <br />
       </a>
         <p align="center"><b>Dennis Araujo</b></p>
